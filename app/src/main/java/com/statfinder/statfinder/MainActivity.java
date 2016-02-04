@@ -16,11 +16,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.login.widget.ProfilePictureView;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import android.content.pm.Signature;
+import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,6 +53,31 @@ public class MainActivity extends AppCompatActivity
 
         //Initialize Facebook SDK
         FacebookSdk.sdkInitialize(getApplicationContext());
+
+        //Gets the name of the user
+        final TextView user_name = (TextView) findViewById(R.id.usertextView);
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me", null,
+                HttpMethod.GET, new GraphRequest.Callback() {
+            public void onCompleted(GraphResponse response) {
+                //handle the response
+                final JSONObject jsonObject = response.getJSONObject();
+                String name = "";
+                try {
+                    name = jsonObject.getString("name");
+                    user_name.setText(name);
+                    Log.d("log",name);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).executeAsync();
+
+//        //Gets the picture of the user
+//        final ProfilePictureView profilePictureView;
+//        profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
+//        profilePictureView.setCropped(true);
+//        profilePictureView.setProfileId(AccessToken.getCurrentAccessToken().getUserId());
     }
 
     @Override
