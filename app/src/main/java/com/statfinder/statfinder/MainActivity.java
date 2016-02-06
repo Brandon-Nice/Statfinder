@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         }).executeAsync();
 
 //        //Gets the picture of the user
-//        ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
+//        final ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
 //        profilePictureView.setCropped(true);
 //        profilePictureView.setProfileId(AccessToken.getCurrentAccessToken().getUserId());
     }
