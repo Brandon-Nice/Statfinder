@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
     //Declaring variables
-    private TextView info;
+    //private TextView info;
     public static LoginButton loginButton;
     public static CallbackManager callbackManager;
     public AccessTokenTracker accessTokenTracker;
@@ -33,8 +34,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_login);
+
 
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -59,12 +63,12 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                info.setText("Login attempt canceled.");
+                //info.setText("Login attempt canceled.");
             }
 
             @Override
             public void onError(FacebookException error) {
-                info.setText("Login attempt failed.");
+                //info.setText("Login attempt failed.");
             }
 
         });
