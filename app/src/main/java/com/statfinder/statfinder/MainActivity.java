@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         //Gets the name of the user
-        final TextView user_name = (TextView) findViewById(R.id.usertextView);
         new GraphRequest(AccessToken.getCurrentAccessToken(), "/me", null,
                 HttpMethod.GET, new GraphRequest.Callback() {
             public void onCompleted(GraphResponse response) {
@@ -63,6 +62,7 @@ public class MainActivity extends AppCompatActivity
                 final JSONObject jsonObject = response.getJSONObject();
                 String name = "";
                 try {
+                    final TextView user_name = (TextView) findViewById(R.id.usertextView);
                     name = jsonObject.getString("name");
                     user_name.setText(name);
                     Log.d("log",name);
@@ -74,8 +74,7 @@ public class MainActivity extends AppCompatActivity
         }).executeAsync();
 
 //        //Gets the picture of the user
-//        final ProfilePictureView profilePictureView;
-//        profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
+//        ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
 //        profilePictureView.setCropped(true);
 //        profilePictureView.setProfileId(AccessToken.getCurrentAccessToken().getUserId());
     }

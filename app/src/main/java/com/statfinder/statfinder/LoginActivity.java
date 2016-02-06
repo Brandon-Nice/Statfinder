@@ -73,26 +73,26 @@ public class LoginActivity extends AppCompatActivity {
 
         });
 
-//        if (isLoggedIn())
-//        {
-//            boolean fromNavMenu = false;
-//            if (getIntent().hasExtra("FromNavMenu"))
-//            {
-//                fromNavMenu = getIntent().getExtras().getBoolean("FromNavMenu");
-//            }
-//
-//            if (fromNavMenu == false)
-//            {
-//                //loginStudent(AccessToken.getCurrentAccessToken().getUserId());
-//                //If already logged in, start MainActivity
-//                Intent init = new Intent(LoginActivity.this, MainActivity.class);
-//                init.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(init);
-//                finish();
-//
-//            }
-//
-//        }
+        if (isLoggedIn())
+        {
+            boolean fromNavMenu = false;
+            if (getIntent().hasExtra("FromNavMenu"))
+            {
+                fromNavMenu = getIntent().getExtras().getBoolean("FromNavMenu");
+            }
+
+            if (fromNavMenu == false)
+            {
+                //loginStudent(AccessToken.getCurrentAccessToken().getUserId());
+                //If already logged in, start MainActivity
+                Intent init = new Intent(LoginActivity.this, MainActivity.class);
+                init.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(init);
+                finish();
+
+            }
+
+        }
 
         AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
             @Override
