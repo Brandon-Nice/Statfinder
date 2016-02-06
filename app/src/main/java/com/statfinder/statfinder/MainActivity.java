@@ -1,5 +1,6 @@
 package com.statfinder.statfinder;
 
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -55,23 +56,23 @@ public class MainActivity extends AppCompatActivity
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         //Gets the name of the user
-        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me", null,
-                HttpMethod.GET, new GraphRequest.Callback() {
-            public void onCompleted(GraphResponse response) {
-                //handle the response
-                final JSONObject jsonObject = response.getJSONObject();
-                String name = "";
-                try {
-                    final TextView user_name = (TextView) findViewById(R.id.usertextView);
-                    name = jsonObject.getString("name");
-                    user_name.setText(name);
-                    Log.d("log",name);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).executeAsync();
+//        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me", null,
+//                HttpMethod.GET, new GraphRequest.Callback() {
+//            public void onCompleted(GraphResponse response) {
+//                //handle the response
+//                final JSONObject jsonObject = response.getJSONObject();
+//                String name;
+//                try {
+//                    final TextView user_name = (TextView) findViewById(R.id.usertextView);
+//                    name = jsonObject.getString("name");
+//                    user_name.setText(name);
+//                    Log.d("log",name);
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).executeAsync();
 
 //        //Gets the picture of the user
 //        final ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
@@ -107,6 +108,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
+        else if (id == R.id.search_button) {
+            Intent init = new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(init);
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -117,8 +122,9 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_add) {
+            Intent init = new Intent(MainActivity.this, AddQuestionActivity.class);
+            startActivity(init);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

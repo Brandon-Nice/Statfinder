@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="none">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_add"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Add Question" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
@@ -19,6 +19,42 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="Tools" />
     </group>
+
+       <item android:title="Categories">
+    <group android:checkableBehavior="all">
+        <menu>
+            <item
+                android:id="@id/nav_gallery"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Sports" />
+            <item
+                android:id="@id/nav_gallery"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Entertainment" />
+            <item
+                android:id="@id/nav_gallery"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Games" />
+            <item
+                android:id="@id/nav_gallery"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Art" />
+            <item
+                android:id="@id/nav_gallery"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="History/Geography" />
+            <item
+                android:id="@id/nav_gallery"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Science and Technology" />
+            <item
+                android:id="@id/nav_gallery"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Books" />
+        </menu>
+        </group>
+       </item>
+
 
     <item android:title="Communicate">
         <menu>
