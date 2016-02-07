@@ -108,8 +108,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-
-
+        //add visualizations here
+        ArrayList<String> labels = new ArrayList<String>();
+        //labels.add("Jua")
 
 
     }
