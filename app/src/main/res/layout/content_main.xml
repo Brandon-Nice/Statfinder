@@ -46,7 +46,8 @@
         android:layout_alignRight="@+id/answer1Button"
         android:layout_alignEnd="@+id/answer1Button"
         android:textAlignment="center"
-        android:textColor="#992288" />
+        android:textColor="#992288"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,7 +59,8 @@
         android:layout_alignLeft="@+id/answer2Button"
         android:layout_alignStart="@+id/answer2Button"
         android:textAlignment="center"
-        android:textColor="#3366aa"/>
+        android:textColor="#3366aa"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
