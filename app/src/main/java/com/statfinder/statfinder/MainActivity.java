@@ -3,6 +3,7 @@ package com.statfinder.statfinder;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,6 +29,7 @@ import com.facebook.login.widget.ProfilePictureView;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import android.content.pm.Signature;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -39,6 +41,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Initialize Facebook SDK
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -52,30 +57,30 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Initialize Facebook SDK
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
         //Gets the name of the user
-//        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me", null,
-//                HttpMethod.GET, new GraphRequest.Callback() {
-//            public void onCompleted(GraphResponse response) {
-//                //handle the response
-//                final JSONObject jsonObject = response.getJSONObject();
-//                String name;
-//                try {
-//                    final TextView user_name = (TextView) findViewById(R.id.usertextView);
-//                    name = jsonObject.getString("name");
-//                    user_name.setText(name);
-//                    Log.d("log",name);
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).executeAsync();
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me", null,
+                HttpMethod.GET, new GraphRequest.Callback() {
+            public void onCompleted(GraphResponse response) {
+                //handle the response
+                final JSONObject jsonObject = response.getJSONObject();
+                String name;
+                try {
+                    final TextView user_name = (TextView) findViewById(R.id.usertextView);
+                    name = jsonObject.getString("name");
+                    user_name.setText(name);
+                    Log.d("log", name);
 
-//        //Gets the picture of the user
-//        final ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).executeAsync();
+
+        //Gets the picture of the user
+//        setContentView(R.layout.nav_header_main);
+//
+//        final ProfilePictureView profilePictureView;
+//        profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
 //        profilePictureView.setCropped(true);
 //        profilePictureView.setProfileId(AccessToken.getCurrentAccessToken().getUserId());
     }
