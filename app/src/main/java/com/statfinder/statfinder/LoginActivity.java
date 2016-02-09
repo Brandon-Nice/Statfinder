@@ -22,6 +22,18 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import android.graphics.Color;
+import android.support.v7.app.ActionBarActivity;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
@@ -108,12 +120,50 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        //add visualizations here
-        ArrayList<String> labels = new ArrayList<String>();
-        //labels.add("Jua")
-
+        BarChart chart = (BarChart) findViewById(R.id.chart);
+        BarData data = new BarData(getXAxisValues(), getDataSet());
+        getXAxisValues().clear();
+        YAxis leftAxis = chart.getAxisLeft();                           /* left, right and x axises set to be disabled*/
+        YAxis rightAxis = chart.getAxisRight();
+        XAxis xAxis = chart.getXAxis();
+        rightAxis.setEnabled(false);
+        xAxis.setEnabled(false);
+        leftAxis.setEnabled(false);
+        chart.setData(data);
+        chart.setDescription(" ");
+        chart.setDrawGridBackground(false);
+        chart.animateXY(2000, 2000);
+        chart.invalidate();
 
     }
+
+    private ArrayList<IBarDataSet> getDataSet() {
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
+        ArrayList<BarEntry> valueSet1 = new ArrayList<>();
+        BarEntry v1e1 = new BarEntry(40.000f, 0);
+        valueSet1.add(v1e1);
+        BarEntry v1e2 = new BarEntry(60.000f, 1);
+        valueSet1.add(v1e2);
+        BarEntry v1e3 = new BarEntry(80.000f, 2);
+        valueSet1.add(v1e3);
+
+        BarDataSet barDataSet1 = new BarDataSet(valueSet1, " ");
+        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+        barDataSet1.setValueTextSize(0);
+        barDataSet1.setLabel(" ");
+        dataSets.add(barDataSet1);
+        return dataSets;
+    }
+
+    private ArrayList<String> getXAxisValues() {
+        ArrayList<String> xAxis = new ArrayList<>();
+        xAxis.add("1");
+        xAxis.add("2");
+        xAxis.add("3");
+        return xAxis;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
