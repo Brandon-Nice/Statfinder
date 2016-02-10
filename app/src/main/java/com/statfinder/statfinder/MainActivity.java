@@ -1,5 +1,6 @@
 package com.statfinder.statfinder;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -29,6 +30,7 @@ import com.facebook.login.widget.ProfilePictureView;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import android.content.pm.Signature;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -75,6 +77,23 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }).executeAsync();
+
+
+        /* Connect to results page on button click (For answer 1 and answer 2 */
+        Button btn1 = (Button)findViewById(R.id.answer1Button);
+        Button btn2 = (Button)findViewById(R.id.answer2Button);
+
+        btn1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ResultsActivity.class));
+            }
+        });
+
+        btn2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ResultsActivity.class));
+            }
+        });
 
         //Gets the picture of the user
 //        setContentView(R.layout.nav_header_main);
