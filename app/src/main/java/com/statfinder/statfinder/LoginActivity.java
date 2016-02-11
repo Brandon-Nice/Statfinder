@@ -85,7 +85,8 @@ public class LoginActivity extends AppCompatActivity {
 
             if (fromNavMenu == false)
             {
-                //loginStudent(AccessToken.getCurrentAccessToken().getUserId());
+                //TODO
+                //loginUser(AccessToken.getCurrentAccessToken().getUserId());
                 //If already logged in, start MainActivity
                 Intent init = new Intent(LoginActivity.this, MainActivity.class);
                 init.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -160,16 +161,6 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    //LoginButton getter
-    static LoginButton getLoginButton() {
-        return loginButton;
-    }
-    //CallbackManager getter
-    static CallbackManager getCallbackManager() {
-        return callbackManager;
-    }
-
     public boolean isLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         return accessToken != null;
@@ -183,5 +174,17 @@ public class LoginActivity extends AppCompatActivity {
             accessTokenTracker.stopTracking();
         }
     }
+
+    //TODO
+//    public void loginUser(final String userID)
+//    {
+//        User currentUser = new User();
+//        currentUser.setId(userID);
+//        ((MyApplication) getApplication()).setUser(currentUser);
+//        Intent init = new Intent(LoginActivity.this, MainActivity.class);
+//        init.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(init);
+//        finish();
+//    }
 
 }

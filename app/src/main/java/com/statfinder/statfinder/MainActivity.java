@@ -69,8 +69,9 @@ public class MainActivity extends AppCompatActivity
                     user_name.setText(name);
                     String firstName = name.substring(0, name.indexOf(" "));
                     String lastName = name.substring(name.indexOf(" ") + 1);
-                    ((MyApplication) getApplication()).getUser().setFirstName(firstName);
-                    ((MyApplication) getApplication()).getUser().setLastName(lastName);
+                    //TODO
+//                    ((MyApplication) getApplication()).getUser().setFirstName(firstName);
+//                    ((MyApplication) getApplication()).getUser().setLastName(lastName);
                     Log.d("log", name);
 
                 } catch (JSONException e) {
@@ -103,20 +104,6 @@ public class MainActivity extends AppCompatActivity
 //        profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
 //        profilePictureView.setCropped(true);
 //        profilePictureView.setProfileId(AccessToken.getCurrentAccessToken().getUserId());
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Gets the picture of the user
-//        setContentView(R.layout.nav_header_main);
-//
-        final ProfilePictureView profilePictureView;
-        profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
-        profilePictureView.setCropped(true);
-        profilePictureView.setProfileId(AccessToken.getCurrentAccessToken().getUserId());
-
-
     }
 
     @Override
