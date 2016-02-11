@@ -67,6 +67,10 @@ public class MainActivity extends AppCompatActivity
                     final TextView user_name = (TextView) findViewById(R.id.usertextView);
                     name = jsonObject.getString("name");
                     user_name.setText(name);
+                    String firstName = name.substring(0, name.indexOf(" "));
+                    String lastName = name.substring(name.indexOf(" ") + 1);
+                    //((MyApplication) getApplication()).getUser().setFirstName(firstName);
+                    //((MyApplication) getApplication()).getUser().setLastName(lastName);
                     Log.d("log", name);
 
                 } catch (JSONException e) {
