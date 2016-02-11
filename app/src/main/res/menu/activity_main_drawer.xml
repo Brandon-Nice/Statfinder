@@ -4,7 +4,7 @@
     <group android:checkableBehavior="none">
         <item
             android:id="@+id/nav_add"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_add_black_24dp"
             android:title="Add Question" />
         <item
             android:id="@+id/nav_gallery"
@@ -25,19 +25,19 @@
         <menu>
             <item
                 android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
+                android:icon="@drawable/ic_directions_run_black_24dp"
                 android:title="Sports" />
             <item
                 android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
+                android:icon="@drawable/ic_movie_creation_black_24dp"
                 android:title="Entertainment" />
             <item
                 android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
+                android:icon="@drawable/ic_videogame_asset_black_24dp"
                 android:title="Games" />
             <item
                 android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
+                android:icon="@drawable/ic_color_lens_black_24dp"
                 android:title="Art" />
             <item
                 android:id="@id/nav_gallery"
