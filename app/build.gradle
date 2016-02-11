@@ -29,4 +29,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.facebook.android:facebook-android-sdk:4.8.1'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.0'
+    compile 'com.firebase:firebase-client-android:2.5.0+'
 }

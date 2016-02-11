@@ -1,16 +1,8 @@
 package com.statfinder.statfinder;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Base64;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,15 +19,18 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.widget.ProfilePictureView;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import android.content.pm.Signature;
+import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.firebase.client.Firebase;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,8 +38,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Initialize Facebook SDK
+
+        //Initialize Facebook SDK and Firebase
         FacebookSdk.sdkInitialize(getApplicationContext());
+        Firebase.setAndroidContext(this);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -70,6 +67,10 @@ public class MainActivity extends AppCompatActivity
                     final TextView user_name = (TextView) findViewById(R.id.usertextView);
                     name = jsonObject.getString("name");
                     user_name.setText(name);
+                    String firstName = name.substring(0, name.indexOf(" "));
+                    String lastName = name.substring(name.indexOf(" ") + 1);
+                    //((MyApplication) getApplication()).getUser().setFirstName(firstName);
+                    //((MyApplication) getApplication()).getUser().setLastName(lastName);
                     Log.d("log", name);
 
                 } catch (JSONException e) {
