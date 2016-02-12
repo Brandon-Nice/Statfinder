@@ -96,7 +96,7 @@ public class ResultsActivity extends AppCompatActivity {
         /*  In the future, need to pass this the string for the next question in
         *   the unanswered list so that when the next button is clicked, a new
         *   question appears in the MainActivity. Known way to do this is to use
-         *  a "Bundle" */
+         *  a "Bundle"  */
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(ResultsActivity.this, MainActivity.class));
