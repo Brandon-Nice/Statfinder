@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
                     //TODO
 //                    ((MyApplication) getApplication()).getUser().setFirstName(firstName);
 //                    ((MyApplication) getApplication()).getUser().setLastName(lastName);
-                    Log.d("log", name);
+//                   Log.d("log", name);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
