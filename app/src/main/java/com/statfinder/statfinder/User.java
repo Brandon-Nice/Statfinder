@@ -1,5 +1,8 @@
 package com.statfinder.statfinder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by niceb on 2/10/2016.
  */
@@ -8,18 +11,17 @@ public class User {
     //The user's unique identification number
     private String id;
 
-    //The user's first name
-    private String firstName;
+    //The user's moderator status
+    private Boolean modStatus;
 
-    //The user's last name
-    private String lastName;
+    //The user's created questions
+    private HashMap<String, ArrayList<String>> createdQuestions;
 
-    //The user's Latitude
-    private double Latitude;
+    //The user's skipped questions
+    private HashMap<String, ArrayList<String>> skippedQuestions;
 
-    //The user's Longitude
-    private double Longitude;
-
+    //The user's answered questions
+    private HashMap<String, ArrayList<String>> answeredQuestions;
 
     //An empty User
     public User()
@@ -28,12 +30,9 @@ public class User {
     }
 
     //A complete User
-    public User(String id, String firstName, String lastName, double Latitude, double Longitude) {
+    public User(String id, Boolean modStatus) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.Latitude = Latitude;
-        this.Longitude = Longitude;
+        this.modStatus = modStatus;
     }
 
     // Get methods
@@ -41,17 +40,17 @@ public class User {
     // Get the user's id
     public String getId() { return id; }
 
-    // Get the user's first name
-    public String getFirstName() { return firstName; }
+    // Get the user's mod status
+    public Boolean getModStatus() {return modStatus;}
 
-    // Get the user's last name
-    public String getLastName() { return lastName; }
+    // Get the user's createdQuestions
+    public HashMap<String, ArrayList<String>> getCreatedQuestions() {return createdQuestions;}
 
-    // Get the user's Latitude
-    public double getLatitude() { return Latitude; }
+    // Get the user's skippedQuestions
+    public HashMap<String, ArrayList<String>> getSkippedQuestions() {return skippedQuestions;}
 
-    // Get the user's Longitude
-    public double getLongitude() { return Longitude;}
+    // Get the user's answeredQuestions
+    public HashMap<String, ArrayList<String>> getAnsweredQuestions() {return answeredQuestions;}
 
     // Set methods
 
@@ -61,29 +60,24 @@ public class User {
         this.id = id;
     }
 
-    // Set the user's first name
-    public void setFirstName(String firstName)
-    {
-        this.firstName = firstName;
+    // Set the user's mod status
+    public void setModStatus(Boolean modStatus) {
+        this.modStatus = modStatus;
     }
 
-    // Set the user's last name
-    public void setLastName(String lastName)
-    {
-        this.lastName = lastName;
+    // Set the user's createdQuestions
+    public void setCreatedQuestions(HashMap<String, ArrayList<String>> createdQuestions) {
+        this.createdQuestions = createdQuestions;
     }
 
-    // Set the user's Latitude
-    public void setLatitude(double Latitude)
-    {
-        this.Latitude = Latitude;
+    // Set the user's skippedQuestions
+    public void setSkippedQuestions(HashMap<String, ArrayList<String>> skippedQuestions) {
+        this.skippedQuestions = skippedQuestions;
     }
 
-    // Set the user's Latitude
-    public void setLongitude(double Longitude)
-    {
-        this.Longitude = Longitude;
+    // Set the user's answeredQuestions
+    public void setAnsweredQuestions(HashMap<String, ArrayList<String>> answeredQuestions) {
+        this.answeredQuestions = answeredQuestions;
     }
-
 
 }

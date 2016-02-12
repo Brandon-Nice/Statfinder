@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                //loginStudent(loginResult.getAccessToken().getUserId());
+                loginUser(loginResult.getAccessToken().getUserId());
                 Intent init = new Intent(LoginActivity.this, MainActivity.class);
                 init.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(init);
@@ -85,8 +85,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if (fromNavMenu == false)
             {
-                //TODO
-                //loginUser(AccessToken.getCurrentAccessToken().getUserId());
+                loginUser(AccessToken.getCurrentAccessToken().getUserId());
                 //If already logged in, start MainActivity
                 Intent init = new Intent(LoginActivity.this, MainActivity.class);
                 init.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -175,16 +174,16 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    //TODO
-//    public void loginUser(final String userID)
-//    {
-//        User currentUser = new User();
-//        currentUser.setId(userID);
-//        ((MyApplication) getApplication()).setUser(currentUser);
-//        Intent init = new Intent(LoginActivity.this, MainActivity.class);
-//        init.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        startActivity(init);
-//        finish();
-//    }
+    public void loginUser(final String userID)
+    {
+        User currentUser = new User();
+        currentUser.setId(userID);
+        currentUser.setModStatus(false);
+        ((MyApplication) getApplication()).setUser(currentUser);
+        Intent init = new Intent(LoginActivity.this, MainActivity.class);
+        init.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(init);
+        finish();
+    }
 
 }

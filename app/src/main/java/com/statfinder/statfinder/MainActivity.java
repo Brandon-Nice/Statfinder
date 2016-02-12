@@ -31,6 +31,8 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.HashMap;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -69,10 +71,11 @@ public class MainActivity extends AppCompatActivity
                     user_name.setText(name);
                     String firstName = name.substring(0, name.indexOf(" "));
                     String lastName = name.substring(name.indexOf(" ") + 1);
-                    //TODO
-//                    ((MyApplication) getApplication()).getUser().setFirstName(firstName);
-//                    ((MyApplication) getApplication()).getUser().setLastName(lastName);
-//                   Log.d("log", name);
+                    if(firstName.equals("Brandon") || firstName.equals("Milia") ||
+                            firstName.equals("Jake") || firstName.equals("Kenny")) {
+                        ((MyApplication) getApplication()).getUser().setModStatus(true);
+                    }
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -80,6 +83,8 @@ public class MainActivity extends AppCompatActivity
             }
         }).executeAsync();
 
+        //setUser
+        setUser();
 
         /* Connect to results page on button click (For answer 1 and answer 2 */
         Button btn1 = (Button)findViewById(R.id.answer1Button);
@@ -166,5 +171,33 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setUser() {
+        Firebase.setAndroidContext(this);
+        final User currentUser = ((MyApplication) getApplication()).getUser();
+        final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                HashMap<String, Object> val = (HashMap) snapshot.getValue();
+                if (val == null) {
+                    HashMap<String, Boolean> dataBaseUser = new HashMap();
+                    dataBaseUser.put("modStatus", currentUser.getModStatus());
+                    ref.setValue(dataBaseUser);
+                }
+                else {
+                    HashMap<String, Boolean> dataBaseUser = new HashMap();
+                    dataBaseUser.put("modStatus", currentUser.getModStatus());
+                    ref.setValue(dataBaseUser);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 }
