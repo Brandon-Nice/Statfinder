@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <group android:checkableBehavior="none">
         <item
             android:id="@+id/nav_add"
@@ -20,37 +19,42 @@
             android:title="Tools" />
     </group>
 
-       <item android:title="Categories">
+    <item android:title="Categories">
     <group android:checkableBehavior="all">
-        <menu>
+        <menu android:id="@id/categories_menu">
             <item
                 android:id="@id/nav_gallery"
                 android:icon="@drawable/ic_directions_run_black_24dp"
-                android:title="Sports" />
+                android:title="Sports"
+                android:checkable="true"/>
             <item
                 android:id="@id/nav_gallery"
                 android:icon="@drawable/ic_movie_creation_black_24dp"
-                android:title="Entertainment" />
+                android:title="Entertainment"
+                android:checkable="true"/>
             <item
                 android:id="@id/nav_gallery"
                 android:icon="@drawable/ic_videogame_asset_black_24dp"
-                android:title="Games" />
+                android:title="Games"
+                android:checkable="true"/>
             <item
                 android:id="@id/nav_gallery"
                 android:icon="@drawable/ic_color_lens_black_24dp"
-                android:title="Art" />
+                android:title="Art"
+                android:checkable="true"/>
             <item
                 android:id="@id/nav_gallery"
                 android:icon="@drawable/ic_public_black_24dp"
-                android:title="History" />
+                android:title="History"
+                android:checkable="true"/>
             <item
                 android:id="@id/nav_gallery"
                 android:icon="@drawable/ic_laptop_black_24dp"
-                android:title="Science and Technology" />
-
+                android:title="Science and Technology"
+                android:checkable="true"/>
         </menu>
-        </group>
-       </item>
+    </group>
+    </item>
 
 
     <item android:title="Communicate">

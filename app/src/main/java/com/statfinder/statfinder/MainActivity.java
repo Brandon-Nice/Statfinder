@@ -35,7 +35,7 @@ import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MenuItem.OnMenuItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,4 +201,16 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
+    //Menu stuff - TODO: Add category stuff once Firebase setup is done
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        return false;
+    }
+
+//    @Override
+//    public boolean isChecked(){
+//        return true;
+//    }
+
 }
