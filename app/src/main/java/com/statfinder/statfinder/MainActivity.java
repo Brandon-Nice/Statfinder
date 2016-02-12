@@ -71,8 +71,9 @@ public class MainActivity extends AppCompatActivity
                     user_name.setText(name);
                     String firstName = name.substring(0, name.indexOf(" "));
                     String lastName = name.substring(name.indexOf(" ") + 1);
-                    if(firstName.equals("Brandon") || firstName.equals("Milia") ||
-                            firstName.equals("Jake") || firstName.equals("Kenny")) {
+                    if((firstName.equals("Brandon")&& lastName.equals("Nice")) || (firstName.equals("Michael")&& lastName.equals("Rollberg"))
+                            || (firstName.equals("Milia")&& lastName.equals("Enane")) || (firstName.equals("Jake")&& lastName.equals("Losin"))
+                            || (firstName.equals("Kenny")&& lastName.equals("Tam"))) {
                         ((MyApplication) getApplication()).getUser().setModStatus(true);
                     }
 
