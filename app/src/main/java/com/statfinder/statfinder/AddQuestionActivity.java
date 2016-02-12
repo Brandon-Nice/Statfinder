@@ -11,6 +11,8 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -45,6 +47,20 @@ public class AddQuestionActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Firebase.setAndroidContext(this);
 
+        InputFilter filter = new InputFilter() {
+            public CharSequence filter(CharSequence source, int start, int end,
+                                       Spanned dest, int dstart, int dend) {
+                for (int i = start; i < end; i++) {
+                    if (source.charAt(i) == '/' || source.charAt(i) == '.' || source.charAt(i) == '#' || source.charAt(i) == '$'
+                            || source.charAt(i) == '[' || source.charAt(i) == ']') {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
+
+
         final EditText question = (EditText) findViewById(R.id.questionText);
         final EditText firstAnswer = (EditText) findViewById(R.id.answer1);
         final EditText secondAnswer = (EditText) findViewById(R.id.answer2);
@@ -56,6 +72,13 @@ public class AddQuestionActivity extends AppCompatActivity {
         final Button minusAnswer = (Button) findViewById(R.id.minusButton);
         final Button submitButton = (Button) findViewById(R.id.submitButton);
         final View focusTheif = findViewById(R.id.focus_thief);
+
+        question.setFilters(new InputFilter[]{filter});
+        firstAnswer.setFilters(new InputFilter[]{filter});
+        secondAnswer.setFilters(new InputFilter[]{filter});
+        thirdAnswer.setFilters(new InputFilter[]{filter});
+        fourthAnswer.setFilters(new InputFilter[]{filter});
+        fifthAnswer.setFilters(new InputFilter[]{filter});
 
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
         question.requestFocus();
