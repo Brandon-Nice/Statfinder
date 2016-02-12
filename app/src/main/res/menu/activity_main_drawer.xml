@@ -41,16 +41,13 @@
                 android:title="Art" />
             <item
                 android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
-                android:title="History/Geography" />
+                android:icon="@drawable/ic_public_black_24dp"
+                android:title="History" />
             <item
                 android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
+                android:icon="@drawable/ic_laptop_black_24dp"
                 android:title="Science and Technology" />
-            <item
-                android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
-                android:title="Books" />
+
         </menu>
         </group>
        </item>
