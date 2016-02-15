@@ -47,7 +47,6 @@ public class ResultsActivity extends AppCompatActivity {
         entries.add(new Entry(10, 3));
         /* entries.add(new Entry(18f, 4)); */
 
-
         PieDataSet dataset = new PieDataSet(entries, "");
 
         /* creating labels */
@@ -87,8 +86,11 @@ public class ResultsActivity extends AppCompatActivity {
 
         pieChart.setUsePercentValues(true);
 
+        /* Setting formatter */
+        dataset.setValueFormatter(new PercentFormatter());
+
         /* Animate pie chart */
-        //pieChart.animateXY(5000, 5000);
+        //pieChart.animateXY(500, 500);
 
         /* Button code to send to MainActivity after viewing question results */
         Button next = (Button)findViewById(R.id.nextButton);

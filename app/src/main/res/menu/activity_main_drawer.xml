@@ -21,7 +21,7 @@
 
     <item android:title="Categories">
     <group android:checkableBehavior="all">
-        <menu android:id="@id/categories_menu">
+        <menu>
             <item
                 android:id="@id/nav_gallery"
                 android:icon="@drawable/ic_directions_run_black_24dp"
@@ -55,7 +55,6 @@
         </menu>
     </group>
     </item>
-
 
     <item android:title="Communicate">
         <menu>
