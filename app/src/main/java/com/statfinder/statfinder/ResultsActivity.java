@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import com.github.mikephil.charting.charts.Chart;
@@ -22,6 +24,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.R.color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,21 +44,53 @@ public class ResultsActivity extends AppCompatActivity {
         /* creating data values */
         /* Use ValueFormatter to remove the decimals and add percentage % */
         ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(4, 0));
-        entries.add(new Entry(6, 1));
-        entries.add(new Entry(8, 2));
-        entries.add(new Entry(10, 3));
-        /* entries.add(new Entry(18f, 4)); */
+        entries.add(new Entry(0, 0));
+        entries.add(new Entry(3, 1));
+        entries.add(new Entry(4, 2));
+        entries.add(new Entry(5, 3));
 
-        PieDataSet dataset = new PieDataSet(entries, "");
+        /* Parse the entries and remove the entry if value is 0.0 */
+        /* Record index at which entry was removed */
+        int i;
+        int entrySize = entries.size();
+        int[] removedList = new int[entrySize];
+        ArrayList<Entry> newEntries = new ArrayList<>();
+
+        for (i = 0; i < entrySize; i++) {
+            float val = entries.get(i).getVal();
+            if (val == 0.0) {
+                //entries.remove(i);
+                removedList[i] = 1;
+            }
+            else {
+                newEntries.add(entries.get(i));
+            }
+        }
+
+        int newSize = newEntries.size();
+
+        PieDataSet dataset = new PieDataSet(newEntries, "");
+
+        /* Answers Array */
+        ArrayList<String> answers = new ArrayList<>();
+        /* Populate answers list */
+        answers.add("January");
+        answers.add("February");
+        answers.add("March");
+        answers.add("April");
 
         /* creating labels */
         ArrayList<String> labels = new ArrayList<String>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
-        // labels.add("May");
+        for (int n = 0; n < entrySize; n++) {
+            if (removedList[n] != 1) {
+                labels.add(answers.get(n));
+                Log.d("ANSWERS", answers.get(n));
+            }
+        }
+        //labels.add("January");
+        //labels.add("February");
+        //labels.add("March");
+        //labels.add("April");
 
         PieData data = new PieData(labels, dataset); // initialize Pie data
         pieChart.setData(data); //set data into chart
@@ -67,7 +102,7 @@ public class ResultsActivity extends AppCompatActivity {
         dataset.setColors(ColorTemplate.VORDIPLOM_COLORS); // set the color
 
         /* Text size in pie chart */
-        dataset.setValueTextSize(15);
+        dataset.setValueTextSize(13);
 
         /* Changing size of hole in pie chart */
         pieChart.setHoleRadius(0);
