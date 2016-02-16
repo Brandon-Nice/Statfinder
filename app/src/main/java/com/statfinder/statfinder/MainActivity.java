@@ -35,7 +35,7 @@ import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MenuItem.OnMenuItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +110,9 @@ public class MainActivity extends AppCompatActivity
 //        profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
 //        profilePictureView.setCropped(true);
 //        profilePictureView.setProfileId(AccessToken.getCurrentAccessToken().getUserId());
+
+        //Gets the categories selected
+        //setNavDrawer();
     }
 
     @Override
@@ -138,6 +141,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent init = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(init);
             return true;
         }
         else if (id == R.id.search_button) {
@@ -152,12 +157,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        Log.i("yo", "In first method!");
         int id = item.getItemId();
 
         if (id == R.id.nav_add) {
             Intent init = new Intent(MainActivity.this, AddQuestionActivity.class);
             startActivity(init);
         } else if (id == R.id.nav_gallery) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            startActivity(init);
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -169,8 +177,8 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -203,14 +211,63 @@ public class MainActivity extends AppCompatActivity
     }
 
     //Menu stuff - TODO: Add category stuff once Firebase setup is done
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        return false;
-    }
-
-//    @Override
-//    public boolean isChecked(){
-//        return true;
+//    private void setNavDrawer(){
+//        //Initializing NavigationView
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
+//        // Initializing Toolbar and setting it as the actionbar
+////        toolbar = (Toolbar) findViewById(R.id.toolbar);
+////        setSupportActionBar(toolbar);
+//
+//        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
+//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//
+//            // This method will trigger on item Click of navigation menu
+//            @Override
+//            public boolean onNavigationItemSelected(MenuItem menuItem) {
+//                //Checking if the item is in checked state or not, if not make it in checked state
+//                // I THINK THAT I NEED EDIT HERE...
+//                Log.i("yo", "In second method!");
+//                if (menuItem.isChecked()) {
+//                    menuItem.setChecked(false);
+//                }
+//
+//                else {
+//                    menuItem.setChecked(true);
+//                }
+//
+//                //Closing drawer on item click
+//                //drawerLayout.closeDrawers();
+////                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+////                drawer.closeDrawer(GravityCompat.START);
+//
+//
+//                //Check to see which item was being clicked and perform appropriate action
+////                switch (menuItem.getItemId()) {
+////                    //Replacing the main content with ContentFragment
+////                    case R.id.home:
+////                        return true;
+////                }
+//                int id = menuItem.getItemId();
+//
+//                if (id == R.id.nav_add) {
+//                    Intent init = new Intent(MainActivity.this, AddQuestionActivity.class);
+//                    startActivity(init);
+//                } else if (id == R.id.nav_gallery) {
+//
+//                } else if (id == R.id.nav_slideshow) {
+//
+//                } else if (id == R.id.nav_manage) {
+//
+//                } else if (id == R.id.nav_share) {
+//
+//                } else if (id == R.id.nav_send) {
+//
+//                }
+//
+//                return true;
+//            }
+//        });
 //    }
 
 }

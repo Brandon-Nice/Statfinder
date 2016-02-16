@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.statfinder.statfinder" >
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -35,9 +35,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".SearchActivity" />
-        <activity
-            android:name=".AddQuestionActivity"/>
+        <activity android:name=".AddQuestionActivity" />
         <activity android:name=".ResultsActivity" >
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".QuestionActivity"
+            android:label="@string/title_activity_question"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
 

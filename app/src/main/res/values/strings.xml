@@ -7,4 +7,6 @@
     <string name="action_settings">Settings</string>
 
     <string name="facebook_app_id">512161802287204</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_question">QuestionActivity</string>
 </resources>

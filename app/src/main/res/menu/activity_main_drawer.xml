@@ -20,40 +20,45 @@
     </group>
 
     <item android:title="Categories">
-    <group android:checkableBehavior="all">
         <menu>
-            <item
-                android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_directions_run_black_24dp"
-                android:title="Sports"
-                android:checkable="true"/>
-            <item
-                android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_movie_creation_black_24dp"
-                android:title="Entertainment"
-                android:checkable="true"/>
-            <item
-                android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_videogame_asset_black_24dp"
-                android:title="Games"
-                android:checkable="true"/>
-            <item
-                android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_color_lens_black_24dp"
-                android:title="Art"
-                android:checkable="true"/>
-            <item
-                android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_public_black_24dp"
-                android:title="History"
-                android:checkable="true"/>
-            <item
-                android:id="@id/nav_gallery"
-                android:icon="@drawable/ic_laptop_black_24dp"
-                android:title="Science and Technology"
-                android:checkable="true"/>
+            <group android:checkableBehavior="all">
+                <item
+                    android:id="@id/nav_gallery"
+                    android:icon="@drawable/ic_directions_run_black_24dp"
+                    android:title="Sports"
+                    android:checkable="true"/>
+                <item
+                    android:id="@id/nav_gallery"
+                    android:icon="@drawable/ic_movie_creation_black_24dp"
+                    android:title="Entertainment"
+                    android:checkable="true"/>
+                <item
+                    android:id="@id/nav_gallery"
+                    android:icon="@drawable/ic_videogame_asset_black_24dp"
+                    android:title="Games"
+                    android:checkable="true"/>
+                <item
+                    android:id="@id/nav_gallery"
+                    android:icon="@drawable/ic_color_lens_black_24dp"
+                    android:title="Art"
+                    android:checkable="true"/>
+                <item
+                    android:id="@id/nav_gallery"
+                    android:icon="@drawable/ic_public_black_24dp"
+                    android:title="History"
+                    android:checkable="true"/>
+                <item
+                    android:id="@id/nav_gallery"
+                    android:icon="@drawable/ic_laptop_black_24dp"
+                    android:title="Science and Technology"
+                    android:checkable="true"/>
+                <item
+                    android:id="@id/nav_gallery"
+                    android:icon="@drawable/ic_menu_share"
+                    android:title="General"
+                    android:checkable="true"/>
+            </group>
         </menu>
-    </group>
     </item>
 
     <item android:title="Communicate">
