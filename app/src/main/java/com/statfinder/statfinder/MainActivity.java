@@ -190,6 +190,12 @@ public class MainActivity extends AppCompatActivity
             //Sets the general category
             ArrayList<String> selCat = new ArrayList<String>() {{
                 add("General");
+                add("Sports");
+                add("Entertainment");
+                add("Games");
+                add("Art");
+                add("History");
+                add("SciTech");
             }};
             currentUser.setSelCat(selCat);
         }

@@ -122,7 +122,7 @@ public class ResultsActivity extends AppCompatActivity {
         dataset.setValueFormatter(new PercentFormatter());
 
         /* Animate pie chart */
-        pieChart.animateXY(500, 500);
+        pieChart.animateXY(1500, 1000);
 
         /* Button code to send to MainActivity after viewing question results */
         Button next = (Button)findViewById(R.id.nextButton);
