@@ -14,6 +14,9 @@ public class User {
     //The user's moderator status
     private Boolean modStatus;
 
+    //The user's selected catagories
+    private ArrayList<String> selCat;
+
     //The user's created questions
     private HashMap<String, ArrayList<String>> createdQuestions;
 
@@ -52,6 +55,9 @@ public class User {
     // Get the user's answeredQuestions
     public HashMap<String, ArrayList<String>> getAnsweredQuestions() {return answeredQuestions;}
 
+    // Get the user's selected categories
+    public ArrayList<String> getSelCat() {return selCat;}
+
     // Set methods
 
     // Set the user's unique identification number
@@ -78,6 +84,11 @@ public class User {
     // Set the user's answeredQuestions
     public void setAnsweredQuestions(HashMap<String, ArrayList<String>> answeredQuestions) {
         this.answeredQuestions = answeredQuestions;
+    }
+
+    // Set the user's selected categories
+    public void setSelCat(ArrayList<String> selCat) {
+        this.selCat = selCat;
     }
 
 }

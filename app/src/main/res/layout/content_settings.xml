@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="General"
-        android:id="@+id/checkBox"
+        android:id="@+id/generalCheckBox"
         android:layout_below="@+id/textView4"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -44,8 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sports"
-        android:id="@+id/checkBox2"
-        android:layout_below="@+id/checkBox"
+        android:id="@+id/sportsCheckBox"
+        android:layout_below="@+id/generalCheckBox"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:checked="false" />
@@ -54,8 +54,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Entertainment"
-        android:id="@+id/checkBox3"
-        android:layout_below="@+id/checkBox2"
+        android:id="@+id/entertainmentCheckBox"
+        android:layout_below="@+id/sportsCheckBox"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:checked="false" />
@@ -64,8 +64,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Games"
-        android:id="@+id/checkBox4"
-        android:layout_below="@+id/checkBox3"
+        android:id="@+id/gamesCheckBox"
+        android:layout_below="@+id/entertainmentCheckBox"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:checked="false" />
@@ -74,8 +74,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Art"
-        android:id="@+id/checkBox5"
-        android:layout_below="@+id/checkBox4"
+        android:id="@+id/artCheckBox"
+        android:layout_below="@+id/gamesCheckBox"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:checked="false" />
@@ -84,8 +84,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="History"
-        android:id="@+id/checkBox6"
-        android:layout_below="@+id/checkBox5"
+        android:id="@+id/historyCheckBox"
+        android:layout_below="@+id/artCheckBox"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:checked="false" />
@@ -94,9 +94,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Science and Technology"
-        android:id="@+id/checkBox7"
-        android:layout_below="@+id/checkBox6"
+        android:id="@+id/scitechCheckBox"
+        android:layout_below="@+id/historyCheckBox"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:checked="false" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apply"
+        android:id="@+id/applyButton"
+        android:layout_below="@+id/scitechCheckBox"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="86dp" />
 </RelativeLayout>

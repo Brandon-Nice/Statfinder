@@ -179,6 +179,8 @@ public class LoginActivity extends AppCompatActivity {
         User currentUser = new User();
         currentUser.setId(userID);
         currentUser.setModStatus(false);
+        ArrayList<String> selCat = new ArrayList<>();
+        currentUser.setSelCat(selCat);
         ((MyApplication) getApplication()).setUser(currentUser);
         Intent init = new Intent(LoginActivity.this, MainActivity.class);
         init.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

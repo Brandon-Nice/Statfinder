@@ -31,6 +31,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -71,11 +72,11 @@ public class MainActivity extends AppCompatActivity
                     user_name.setText(name);
                     String firstName = name.substring(0, name.indexOf(" "));
                     String lastName = name.substring(name.indexOf(" ") + 1);
-                    if((firstName.equals("Brandon")&& lastName.equals("Nice")) || (firstName.equals("Michael")&& lastName.equals("Rollberg"))
-                            || (firstName.equals("Milia")&& lastName.equals("Enane")) || (firstName.equals("Jake")&& lastName.equals("Losin"))
-                            || (firstName.equals("Kenny")&& lastName.equals("Tam"))) {
-                        ((MyApplication) getApplication()).getUser().setModStatus(true);
-                    }
+//                    if((firstName.equals("Brandon")&& lastName.equals("Nice")) || (firstName.equals("Michael")&& lastName.equals("Rollberg"))
+//                            || (firstName.equals("Milia")&& lastName.equals("Enane")) || (firstName.equals("Jake")&& lastName.equals("Losin"))
+//                            || (firstName.equals("Kenny")&& lastName.equals("Tam"))) {
+//                        ((MyApplication) getApplication()).getUser().setModStatus(true);
+//                    }
 
 
                 } catch (JSONException e) {
@@ -185,6 +186,14 @@ public class MainActivity extends AppCompatActivity
     private void setUser() {
         Firebase.setAndroidContext(this);
         final User currentUser = ((MyApplication) getApplication()).getUser();
+        if(currentUser.getSelCat().size() == 0) {
+            //Sets the general category
+            ArrayList<String> selCat = new ArrayList<String>() {{
+                add("General");
+            }};
+            currentUser.setSelCat(selCat);
+        }
+        //Firebase
         final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
