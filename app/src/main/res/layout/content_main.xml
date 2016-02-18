@@ -19,21 +19,22 @@
         android:layout_height="50dp"
         android:text="Sample Answer 1"
         android:id="@+id/answer1Button"
-        android:layout_alignTop="@+id/answer2Button"
+        android:background="#992288"
+        android:layout_alignBaseline="@+id/answer2Button"
+        android:layout_alignBottom="@+id/answer2Button"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="#992288" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:text="Sample Answer 2"
         android:id="@+id/answer2Button"
-        android:layout_marginBottom="170dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="#3366aa" />
+        android:layout_marginBottom="58dp"
+        android:background="#3366aa"
+        android:layout_above="@+id/skipButton"
+        android:layout_alignRight="@+id/skipButton"
+        android:layout_alignEnd="@+id/skipButton" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,13 +42,15 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Sample Answer 1"
         android:id="@+id/answer1Text"
-        android:layout_marginTop="99dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/answer1Button"
-        android:layout_alignEnd="@+id/answer1Button"
         android:textAlignment="center"
         android:textColor="#992288"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_below="@+id/questionText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="92dp"
+        android:layout_toLeftOf="@+id/orText"
+        android:layout_toStartOf="@+id/orText" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,11 +71,11 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Sample Question:"
         android:id="@+id/questionText"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp"
         android:textAlignment="center"
-        android:textColor="#b3b3b3" />
+        android:textColor="#b3b3b3"
+        android:layout_below="@+id/userLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -94,5 +97,51 @@
         android:layout_alignBottom="@+id/answer1Text"
         android:layout_centerHorizontal="true"
         android:textColor="#b3b3b3"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Category: "
+        android:id="@+id/categoryLabel"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="#51fa03" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="User/Moderator:"
+        android:id="@+id/userLabel"
+        android:textColor="#51fa03"
+        android:layout_below="@+id/categoryLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/questionText"
+        android:layout_alignRight="@+id/answer1Button"
+        android:layout_alignEnd="@+id/answer1Button" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Sample Category"
+        android:id="@+id/categoryText"
+        android:layout_above="@+id/userLabel"
+        android:layout_toRightOf="@+id/categoryLabel"
+        android:layout_toEndOf="@+id/categoryLabel"
+        android:textColor="#51fa03" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="User or Moderator"
+        android:id="@+id/userText"
+        android:layout_below="@+id/categoryText"
+        android:layout_centerHorizontal="true"
+        android:textColor="#51fa03" />
 
 </RelativeLayout>

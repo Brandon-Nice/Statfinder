@@ -44,7 +44,7 @@ public class ResultsActivity extends AppCompatActivity {
         /* creating data values */
         /* Use ValueFormatter to remove the decimals and add percentage % */
         ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(0, 0));
+        entries.add(new Entry(1, 0));
         entries.add(new Entry(3, 1));
         entries.add(new Entry(4, 2));
         entries.add(new Entry(5, 3));
@@ -84,13 +84,10 @@ public class ResultsActivity extends AppCompatActivity {
         for (int n = 0; n < entrySize; n++) {
             if (removedList[n] != 1) {
                 labels.add(answers.get(n));
-                Log.d("ANSWERS", answers.get(n));
+                /* Debugging content of answers */
+                //Log.d("ANSWERS", answers.get(n));
             }
         }
-        //labels.add("January");
-        //labels.add("February");
-        //labels.add("March");
-        //labels.add("April");
 
         PieData data = new PieData(labels, dataset); // initialize Pie data
         pieChart.setData(data); //set data into chart
@@ -125,7 +122,7 @@ public class ResultsActivity extends AppCompatActivity {
         dataset.setValueFormatter(new PercentFormatter());
 
         /* Animate pie chart */
-        //pieChart.animateXY(500, 500);
+        pieChart.animateXY(500, 500);
 
         /* Button code to send to MainActivity after viewing question results */
         Button next = (Button)findViewById(R.id.nextButton);
