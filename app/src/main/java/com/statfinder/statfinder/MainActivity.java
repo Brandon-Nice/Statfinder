@@ -1,5 +1,6 @@
 package com.statfinder.statfinder;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.facebook.HttpMethod;
 import com.facebook.login.widget.ProfilePictureView;
 
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         //Initialize Facebook SDK and Firebase
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
         Firebase.setAndroidContext(this);
 
         setContentView(R.layout.activity_main);
@@ -105,15 +107,19 @@ public class MainActivity extends AppCompatActivity
         });
 
         //Gets the picture of the user
-//        setContentView(R.layout.nav_header_main);
 //
-//        final ProfilePictureView profilePictureView;
-//        profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
-//        profilePictureView.setCropped(true);
-//        profilePictureView.setProfileId(AccessToken.getCurrentAccessToken().getUserId());
-
+//        if(isLoggedIn()) {
+//            final ProfilePictureView profilePictureView;
+//            profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
+//            profilePictureView.setCropped(true);
+//            profilePictureView.setProfileId(AccessToken.getCurrentAccessToken().getUserId());
+//        }
         //Gets the categories selected
         //setNavDrawer();
+    }
+    public boolean isLoggedIn() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
     }
 
     @Override
