@@ -302,7 +302,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                         value++;
                         String incHex = Integer.toHexString(value);
                         ref.child("Questions/NumQuestions").setValue(incHex);
-                        ref.child("Questions/" + finalCity + "," + finalState + "," + finalCountry + "/" + (String) snapshot.getValue()).setValue(questionInfo);
+                        ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" + (String) snapshot.getValue()).setValue(questionInfo);
                         finish();
                     }
 
