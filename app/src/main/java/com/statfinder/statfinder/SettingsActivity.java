@@ -7,9 +7,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -58,6 +63,8 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
+        //TODO: set the switch using currentUser. Make sure to set it in setUser in Main. default is no
+
         Button applyButton = (Button) findViewById(R.id.applyButton);
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,15 +100,41 @@ public class SettingsActivity extends AppCompatActivity {
                     atLeastOne = true;
                 }
 
+                Switch modSwitch = (Switch) findViewById(R.id.switch1);
+                modSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(isChecked) {
+                            //only moderator questions
+
+                        }
+                        else {
+                            //user and moderator questions
+
+
+                        }
+                    }
+                });
+
                 if(!atLeastOne) {
                     Toast.makeText(getApplicationContext(), "Please select at least one category.",
                             Toast.LENGTH_LONG).show();
                 }
                 else {
-                    ((MyApplication) getApplication()).getUser().setSelCat(selCat);
+                    User currentUser = ((MyApplication) getApplication()).getUser();
+                    currentUser.setSelCat(selCat);
+                    //Upload to Firebase
+                    final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId());
+//                    HashMap<String, ArrayList<String>> dbSelCat = new HashMap();
+//                    dbSelCat.put("selectedCategory",selCat);
+//                    ref.setValue(dbSelCat);
+                    ref.child("selectedCategory").setValue(selCat);
+
                     Intent init = new Intent(SettingsActivity.this, MainActivity.class);
                     startActivity(init);
                 }
+
+
 
             }
         });

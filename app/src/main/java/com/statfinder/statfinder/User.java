@@ -58,6 +58,8 @@ public class User {
     // Get the user's selected categories
     public ArrayList<String> getSelCat() {return selCat;}
 
+    // TODO: Get the user's moderator question preference
+
     // Set methods
 
     // Set the user's unique identification number
@@ -90,5 +92,8 @@ public class User {
     public void setSelCat(ArrayList<String> selCat) {
         this.selCat = selCat;
     }
+
+    // TODO: set the user's moderator questions preference
+
 
 }

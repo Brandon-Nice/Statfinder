@@ -194,16 +194,7 @@ public class MainActivity extends AppCompatActivity
         final User currentUser = ((MyApplication) getApplication()).getUser();
         if(currentUser.getSelCat().size() == 0) {
             //Sets the general category
-            ArrayList<String> selCat = new ArrayList<String>() {{
-                add("General");
-                add("Sports");
-                add("Entertainment");
-                add("Games");
-                add("Art");
-                add("History");
-                add("SciTech");
-            }};
-            currentUser.setSelCat(selCat);
+            currentUser.setSelCat(((MyApplication) getApplication()).defCat);
         }
         //Firebase
         final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId());
@@ -211,15 +202,29 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 HashMap<String, Object> val = (HashMap) snapshot.getValue();
+                //User does not have any information stored on Firebase, set defaults
                 if (val == null) {
-                    HashMap<String, Boolean> dataBaseUser = new HashMap();
-                    dataBaseUser.put("modStatus", currentUser.getModStatus());
-                    ref.setValue(dataBaseUser);
+                    HashMap<String, Boolean> ModStatus = new HashMap();
+                    ModStatus.put("modStatus", currentUser.getModStatus());
+                    ref.setValue(ModStatus);
+
+//                    HashMap<String, ArrayList<String>> SelCat = new HashMap();
+//                    SelCat.put("selectedCategory",currentUser.getSelCat());
+//                    ref.setValue(SelCat);
+                    ref.child("selectedCategory").setValue(currentUser.getSelCat());
                 }
                 else {
-                    HashMap<String, Boolean> dataBaseUser = new HashMap();
-                    dataBaseUser.put("modStatus", currentUser.getModStatus());
-                    ref.setValue(dataBaseUser);
+                    //User has information stored on Firebase, retrieve it
+                    Boolean dbModStatus = (Boolean) val.get("modStatus");
+                    ArrayList<String> dbSelCat = (ArrayList<String>) val.get("selectedCategory");
+                    //TODO: find the moderator preference in firebase here and set currentUser
+                    if (dbModStatus != null) {
+                        currentUser.setModStatus(dbModStatus);
+                    }
+                    if (dbSelCat != null) {
+                        currentUser.setSelCat(dbSelCat);
+                    }
+
                 }
 
             }

@@ -2,6 +2,8 @@ package com.statfinder.statfinder;
 
 import android.app.Application;
 
+import java.util.ArrayList;
+
 /**
  * Created by niceb on 2/10/2016.
  */
@@ -21,5 +23,16 @@ public class MyApplication extends Application {
     {
         this.user = user;
     }
+
+    //Default ArrayList of categories
+    public ArrayList<String> defCat = new ArrayList<String>() {{
+        add("General");
+        add("Sports");
+        add("Entertainment");
+        add("Games");
+        add("Art");
+        add("History");
+        add("SciTech");
+    }};
 
 }
