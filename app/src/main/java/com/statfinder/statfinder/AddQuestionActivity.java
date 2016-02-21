@@ -21,9 +21,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.firebase.client.DataSnapshot;
@@ -76,6 +78,12 @@ public class AddQuestionActivity extends AppCompatActivity {
         final Button minusAnswer = (Button) findViewById(R.id.minusButton);
         final Button submitButton = (Button) findViewById(R.id.submitButton);
         final View focusTheif = findViewById(R.id.focus_thief);
+        final Spinner categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, R.layout.spinner_item, ((MyApplication) getApplication()).defCat);
+        categorySpinner.setAdapter(adapter);
 
         question.setFilters(new InputFilter[]{filter});
         firstAnswer.setFilters(new InputFilter[]{filter});
@@ -257,7 +265,10 @@ public class AddQuestionActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/");
-                if (question.getText().toString().equals("Reset database") && firstAnswer.getText().toString().equals("Do") && secondAnswer.getText().toString().equals("It") && ((MyApplication) getApplication()).getUser().getModStatus())
+                if (question.getText().toString().trim().equals("Reset database")
+                        && firstAnswer.getText().toString().trim().equals("Do")
+                        && secondAnswer.getText().toString().trim().equals("It")
+                        && ((MyApplication) getApplication()).getUser().getModStatus())
                 {
                     ref.child("Questions/").removeValue();
                     ref.child("Questions/NumQuestions").setValue("0");
@@ -265,31 +276,32 @@ public class AddQuestionActivity extends AppCompatActivity {
                 final HashMap<String, Object> idMap = new HashMap();
                 final HashMap<String, Object> questionInfo = new HashMap();
                 HashMap<String, String> answersMap = new HashMap();
-                answersMap.put(firstAnswer.getText().toString(), "0");
-                answersMap.put(secondAnswer.getText().toString(), "0");
+                answersMap.put(firstAnswer.getText().toString().trim(), "0");
+                answersMap.put(secondAnswer.getText().toString().trim(), "0");
                 if (thirdAnswer.getText().length() != 0 && thirdAnswer.getVisibility() == View.VISIBLE)
                 {
-                    answersMap.put(thirdAnswer.getText().toString(), "0");
+                    answersMap.put(thirdAnswer.getText().toString().trim(), "0");
                 }
                 if (fourthAnswer.getText().length() != 0 && fourthAnswer.getVisibility() == View.VISIBLE)
                 {
-                    answersMap.put(fourthAnswer.getText().toString(), "0");
+                    answersMap.put(fourthAnswer.getText().toString().trim(), "0");
                 }
                 if (fifthAnswer.getText().length() != 0 && fifthAnswer.getVisibility() == View.VISIBLE)
                 {
-                    answersMap.put(fourthAnswer.getText().toString(), "0");
+                    answersMap.put(fourthAnswer.getText().toString().trim(), "0");
                 }
                 if (otherCheckBox.isChecked())
                 {
                     answersMap.put("Other", "0");
                 }
-                questionInfo.put("Name", question.getText().toString());
+                questionInfo.put("Name", question.getText().toString().trim());
                 questionInfo.put("Answers", answersMap);
                 questionInfo.put("Flags", "0");
                 Long tsLong = System.currentTimeMillis()/1000;
                 String ts = tsLong.toString();
                 questionInfo.put("Time Created", ts);
                 questionInfo.put("Moderated", ((MyApplication) getApplication()).getUser().getModStatus());
+                questionInfo.put("Category", categorySpinner.getSelectedItem().toString());
                 //TODO: Add categories to the questions
                 // questionInfo.put("Categories", ...);
                 final String finalCity = city;

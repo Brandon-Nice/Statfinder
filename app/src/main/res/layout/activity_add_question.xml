@@ -16,9 +16,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Question:"
         android:id="@+id/textView"
+        android:gravity="left"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="left"/>
+        android:layout_toRightOf="@+id/focus_thief"
+        android:layout_toEndOf="@+id/focus_thief"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -55,9 +56,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/submitButton"
+        android:layout_above="@+id/categorySpinner"
         android:fillViewport="true"
-        android:isScrollContainer="false">
+        android:isScrollContainer="false"
+        android:id="@+id/scrollView">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -156,11 +158,18 @@
                     android:visibility="invisible">
                 </Button>
             </LinearLayout>
+
         </RelativeLayout>
     </ScrollView>
 
 
-
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/categorySpinner"
+        android:layout_above="@+id/submitButton"
+        android:layout_toRightOf="@+id/textView5"
+        />
 
     <View
         android:id="@+id/focus_thief"
@@ -177,8 +186,18 @@
         android:text="Submit"
         android:id="@+id/submitButton"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/focus_thief"
-        android:layout_alignRight="@+id/answersLayout"
-        android:layout_alignEnd="@+id/answersLayout"/>
+        android:layout_toRightOf="@+id/focus_thief"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Category:  "
+        android:id="@+id/textView5"
+        android:layout_above="@+id/submitButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignBottom="@+id/categorySpinner"
+        android:layout_below="@+id/scrollView"/>
 
 </RelativeLayout>
