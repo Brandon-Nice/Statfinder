@@ -179,6 +179,7 @@ public class LoginActivity extends AppCompatActivity {
         User currentUser = new User();
         currentUser.setId(userID);
         currentUser.setModStatus(false);
+        currentUser.setModPreference(false);
         ArrayList<String> selCat = new ArrayList<>();
         currentUser.setSelCat(selCat);
         ((MyApplication) getApplication()).setUser(currentUser);

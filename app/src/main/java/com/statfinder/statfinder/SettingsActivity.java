@@ -27,6 +27,8 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Settings");
 
+        final Boolean isChecked = false;
+
         //Gets all the checkboxes
         final CheckBox general = (CheckBox) findViewById(R.id.generalCheckBox);
         final CheckBox sports = (CheckBox) findViewById(R.id.sportsCheckBox);
@@ -64,6 +66,33 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         //TODO: set the switch using currentUser. Make sure to set it in setUser in Main. default is no
+        final Switch modSwitch = (Switch) findViewById(R.id.switch1);
+        if(currentUser.getModPreference()) {
+            modSwitch.setChecked(true);
+        }
+        else {
+            modSwitch.setChecked(false);
+        }
+        modSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    //only moderator questions
+                    User currentUser = ((MyApplication) getApplication()).getUser();
+                    final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId());
+                    ref.child("modPreference").setValue(true);
+                    currentUser.setModPreference(true);
+                }
+                else {
+                    User currentUser = ((MyApplication) getApplication()).getUser();
+                    final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId());
+                    //user and moderator questions
+                    ref.child("modPreference").setValue(false);
+                    currentUser.setModPreference(false);
+                }
+            }
+        });
+
 
         Button applyButton = (Button) findViewById(R.id.applyButton);
         applyButton.setOnClickListener(new View.OnClickListener() {
@@ -100,21 +129,8 @@ public class SettingsActivity extends AppCompatActivity {
                     atLeastOne = true;
                 }
 
-                Switch modSwitch = (Switch) findViewById(R.id.switch1);
-                modSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(isChecked) {
-                            //only moderator questions
-
-                        }
-                        else {
-                            //user and moderator questions
 
 
-                        }
-                    }
-                });
 
                 if(!atLeastOne) {
                     Toast.makeText(getApplicationContext(), "Please select at least one category.",
@@ -129,6 +145,7 @@ public class SettingsActivity extends AppCompatActivity {
 //                    dbSelCat.put("selectedCategory",selCat);
 //                    ref.setValue(dbSelCat);
                     ref.child("selectedCategory").setValue(selCat);
+
 
                     Intent init = new Intent(SettingsActivity.this, MainActivity.class);
                     startActivity(init);

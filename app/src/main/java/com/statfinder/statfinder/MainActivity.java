@@ -211,18 +211,27 @@ public class MainActivity extends AppCompatActivity
 //                    HashMap<String, ArrayList<String>> SelCat = new HashMap();
 //                    SelCat.put("selectedCategory",currentUser.getSelCat());
 //                    ref.setValue(SelCat);
+
+                    //selectedCategory
                     ref.child("selectedCategory").setValue(currentUser.getSelCat());
+
+                    //modPreference
+                    ref.child("modPreference").setValue(currentUser.getModPreference());
                 }
                 else {
                     //User has information stored on Firebase, retrieve it
                     Boolean dbModStatus = (Boolean) val.get("modStatus");
+                    Boolean dbModPreference = (Boolean) val.get("modPreference");
                     ArrayList<String> dbSelCat = (ArrayList<String>) val.get("selectedCategory");
-                    //TODO: find the moderator preference in firebase here and set currentUser
+
                     if (dbModStatus != null) {
                         currentUser.setModStatus(dbModStatus);
                     }
                     if (dbSelCat != null) {
                         currentUser.setSelCat(dbSelCat);
+                    }
+                    if (dbModPreference != null) {
+                        currentUser.setModPreference(dbModPreference);
                     }
 
                 }

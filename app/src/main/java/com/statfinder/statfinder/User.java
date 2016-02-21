@@ -26,6 +26,9 @@ public class User {
     //The user's answered questions
     private HashMap<String, ArrayList<String>> answeredQuestions;
 
+    //The user's mod/user preference
+    private Boolean modPreference;
+
     //An empty User
     public User()
     {
@@ -58,7 +61,7 @@ public class User {
     // Get the user's selected categories
     public ArrayList<String> getSelCat() {return selCat;}
 
-    // TODO: Get the user's moderator question preference
+    public Boolean getModPreference() { return modPreference;}
 
     // Set methods
 
@@ -93,7 +96,9 @@ public class User {
         this.selCat = selCat;
     }
 
-    // TODO: set the user's moderator questions preference
+    public void setModPreference(Boolean modPreference) {
+        this.modPreference = modPreference;
+    }
 
 
 }
