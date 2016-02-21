@@ -180,8 +180,7 @@ public class LoginActivity extends AppCompatActivity {
         currentUser.setId(userID);
         currentUser.setModStatus(false);
         currentUser.setModPreference(false);
-        ArrayList<String> selCat = new ArrayList<>();
-        currentUser.setSelCat(selCat);
+        currentUser.setSelCat(((MyApplication) getApplication()).defCat);
         ((MyApplication) getApplication()).setUser(currentUser);
         Intent init = new Intent(LoginActivity.this, MainActivity.class);
         init.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
