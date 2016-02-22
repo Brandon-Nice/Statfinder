@@ -5,17 +5,24 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.View;
 
-public class QuestionActivity extends AppCompatActivity {
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Random;
+
+public class QuestionActivity extends AppCompatActivity {
+    Firebase questionRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -25,12 +32,27 @@ public class QuestionActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+        questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/United%20States/Indiana/West%20Lafayette");
+        questionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                HashMap<String, Object> questionsHashMap = (HashMap)dataSnapshot.getValue();
+                //Random r = new Random();
+                //int randomQuestionNumber = r.nextInt(questionsHashMap.size());
+                //HashMap<String, Object> questionEntry = questionsHashMap
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
 
 }
