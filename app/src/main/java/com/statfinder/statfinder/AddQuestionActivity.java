@@ -53,7 +53,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Firebase.setAndroidContext(this);
 
-        InputFilter filter = new InputFilter() {
+        InputFilter characterFilter = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end,
                                        Spanned dest, int dstart, int dend) {
                 for (int i = start; i < end; i++) {
@@ -62,9 +62,17 @@ public class AddQuestionActivity extends AppCompatActivity {
                         return "";
                     }
                 }
+
                 return null;
             }
         };
+
+        InputFilter answerLength = new InputFilter.LengthFilter(50);
+        InputFilter questionLength = new InputFilter.LengthFilter(80);
+
+        InputFilter[] answerFilters = new InputFilter[]{characterFilter, answerLength};
+        InputFilter[] questionFilters = new InputFilter[]{characterFilter, questionLength};
+
 
 
         final EditText question = (EditText) findViewById(R.id.questionText);
@@ -85,12 +93,12 @@ public class AddQuestionActivity extends AppCompatActivity {
                 this, R.layout.spinner_item, ((MyApplication) getApplication()).defCat);
         categorySpinner.setAdapter(adapter);
 
-        question.setFilters(new InputFilter[]{filter});
-        firstAnswer.setFilters(new InputFilter[]{filter});
-        secondAnswer.setFilters(new InputFilter[]{filter});
-        thirdAnswer.setFilters(new InputFilter[]{filter});
-        fourthAnswer.setFilters(new InputFilter[]{filter});
-        fifthAnswer.setFilters(new InputFilter[]{filter});
+        question.setFilters(questionFilters);
+        firstAnswer.setFilters(answerFilters);
+        secondAnswer.setFilters(answerFilters);
+        thirdAnswer.setFilters(answerFilters);
+        fourthAnswer.setFilters(answerFilters);
+        fifthAnswer.setFilters(answerFilters);
 
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
         question.requestFocus();
