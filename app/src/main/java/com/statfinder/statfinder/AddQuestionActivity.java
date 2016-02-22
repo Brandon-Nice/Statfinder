@@ -237,7 +237,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please enter a question.", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (firstAnswer.getText().length() == 0 && secondAnswer.getText().length() == 0)
+                if (firstAnswer.getText().length() == 0 || secondAnswer.getText().length() == 0)
                 {
                     Toast.makeText(getApplicationContext(), "Please enter at least two answers.", Toast.LENGTH_LONG).show();
                     return;
