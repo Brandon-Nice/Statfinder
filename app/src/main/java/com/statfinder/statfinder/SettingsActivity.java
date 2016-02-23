@@ -65,7 +65,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
-        //TODO: set the switch using currentUser. Make sure to set it in setUser in Main. default is no
         final Switch modSwitch = (Switch) findViewById(R.id.switch1);
         if(currentUser.getModPreference()) {
             modSwitch.setChecked(true);

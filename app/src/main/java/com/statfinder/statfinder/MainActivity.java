@@ -170,17 +170,33 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_add) {
             Intent init = new Intent(MainActivity.this, AddQuestionActivity.class);
             startActivity(init);
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_sports) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             startActivity(init);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_entertainment) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            startActivity(init);
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_games) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            startActivity(init);
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_art) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            startActivity(init);
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_history) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            startActivity(init);
+
+        } else if (id == R.id.nav_scitech) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            startActivity(init);
+
+        } else if (id == R.id.nav_general) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            startActivity(init);
 
         }
 
@@ -203,10 +219,6 @@ public class MainActivity extends AppCompatActivity
                     HashMap<String, Boolean> ModStatus = new HashMap();
                     ModStatus.put("modStatus", currentUser.getModStatus());
                     ref.setValue(ModStatus);
-
-//                    HashMap<String, ArrayList<String>> SelCat = new HashMap();
-//                    SelCat.put("selectedCategory",currentUser.getSelCat());
-//                    ref.setValue(SelCat);
 
                     //selectedCategory
                     ref.child("selectedCategory").setValue(currentUser.getSelCat());

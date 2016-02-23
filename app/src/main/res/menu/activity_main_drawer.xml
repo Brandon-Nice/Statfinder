@@ -23,37 +23,37 @@
         <menu>
             <group android:checkableBehavior="all">
                 <item
-                    android:id="@id/nav_gallery"
+                    android:id="@+id/nav_sports"
                     android:icon="@drawable/ic_directions_run_black_24dp"
                     android:title="Sports"
                     android:checkable="true"/>
                 <item
-                    android:id="@id/nav_gallery"
+                    android:id="@+id/nav_entertainment"
                     android:icon="@drawable/ic_movie_creation_black_24dp"
                     android:title="Entertainment"
                     android:checkable="true"/>
                 <item
-                    android:id="@id/nav_gallery"
+                    android:id="@+id/nav_games"
                     android:icon="@drawable/ic_videogame_asset_black_24dp"
                     android:title="Games"
                     android:checkable="true"/>
                 <item
-                    android:id="@id/nav_gallery"
+                    android:id="@+id/nav_art"
                     android:icon="@drawable/ic_color_lens_black_24dp"
                     android:title="Art"
                     android:checkable="true"/>
                 <item
-                    android:id="@id/nav_gallery"
+                    android:id="@+id/nav_history"
                     android:icon="@drawable/ic_public_black_24dp"
                     android:title="History"
                     android:checkable="true"/>
                 <item
-                    android:id="@id/nav_gallery"
+                    android:id="@+id/nav_scitech"
                     android:icon="@drawable/ic_laptop_black_24dp"
                     android:title="Science and Technology"
                     android:checkable="true"/>
                 <item
-                    android:id="@id/nav_gallery"
+                    android:id="@+id/nav_general"
                     android:icon="@drawable/ic_menu_share"
                     android:title="General"
                     android:checkable="true"/>
