@@ -164,7 +164,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        Log.i("yo", "In first method!");
         int id = item.getItemId();
 
         if (id == R.id.nav_add) {
@@ -172,30 +171,37 @@ public class MainActivity extends AppCompatActivity
             startActivity(init);
         } else if (id == R.id.nav_sports) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "sports");
             startActivity(init);
 
         } else if (id == R.id.nav_entertainment) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "entertainment");
             startActivity(init);
 
         } else if (id == R.id.nav_games) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "games");
             startActivity(init);
 
         } else if (id == R.id.nav_art) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "art");
             startActivity(init);
 
         } else if (id == R.id.nav_history) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "history");
             startActivity(init);
 
         } else if (id == R.id.nav_scitech) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "scitech");
             startActivity(init);
 
         } else if (id == R.id.nav_general) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "general");
             startActivity(init);
 
         }
