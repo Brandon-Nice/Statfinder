@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -28,6 +29,9 @@ public class QuestionActivity extends AppCompatActivity {
         String cameFrom;
         cameFrom = init.getStringExtra("category");
 
+        TextView categoryText = (TextView)findViewById(R.id.categoryText);
+        categoryText.setText(cameFrom);
+
         //cameFrom now has the category that the user clicks on in the drawer menu. TODO: This will eventually include "popular" and "random"
 
         questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/United%20States/Indiana/West%20Lafayette");
@@ -38,8 +42,6 @@ public class QuestionActivity extends AppCompatActivity {
                 //Random r = new Random();
                 //int randomQuestionNumber = r.nextInt(questionsHashMap.size());
                 //HashMap<String, Object> questionEntry = questionsHashMap
-
-
 
 
             }

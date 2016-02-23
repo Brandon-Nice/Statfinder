@@ -90,21 +90,6 @@ public class MainActivity extends AppCompatActivity
         //setUser
         setUser();
 
-        /* Connect to results page on button click (For answer 1 and answer 2 */
-        Button btn1 = (Button)findViewById(R.id.answer1Button);
-        Button btn2 = (Button)findViewById(R.id.answer2Button);
-
-        btn1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ResultsActivity.class));
-            }
-        });
-
-        btn2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ResultsActivity.class));
-            }
-        });
 
         //Gets the picture of the user
 //
@@ -171,37 +156,37 @@ public class MainActivity extends AppCompatActivity
             startActivity(init);
         } else if (id == R.id.nav_sports) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
-            init.putExtra("category", "sports");
+            init.putExtra("category", "Sports");
             startActivity(init);
 
         } else if (id == R.id.nav_entertainment) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
-            init.putExtra("category", "entertainment");
+            init.putExtra("category", "Entertainment");
             startActivity(init);
 
         } else if (id == R.id.nav_games) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
-            init.putExtra("category", "games");
+            init.putExtra("category", "Games");
             startActivity(init);
 
         } else if (id == R.id.nav_art) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
-            init.putExtra("category", "art");
+            init.putExtra("category", "Art");
             startActivity(init);
 
         } else if (id == R.id.nav_history) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
-            init.putExtra("category", "history");
+            init.putExtra("category", "History");
             startActivity(init);
 
         } else if (id == R.id.nav_scitech) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
-            init.putExtra("category", "scitech");
+            init.putExtra("category", "Scitech");
             startActivity(init);
 
         } else if (id == R.id.nav_general) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
-            init.putExtra("category", "general");
+            init.putExtra("category", "General");
             startActivity(init);
 
         }
