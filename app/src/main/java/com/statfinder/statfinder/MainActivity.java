@@ -91,22 +91,6 @@ public class MainActivity extends AppCompatActivity
         //setUser
         setUser();
 
-        /* Connect to results page on button click (For answer 1 and answer 2 */
-        Button btn1 = (Button)findViewById(R.id.answer1Button);
-        Button btn2 = (Button)findViewById(R.id.answer2Button);
-
-        btn1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ResultsActivity.class));
-            }
-        });
-
-        btn2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ResultsActivity.class));
-            }
-        });
-
         //Gets the picture of the user
 //
 //        if(isLoggedIn()) {
@@ -117,6 +101,26 @@ public class MainActivity extends AppCompatActivity
 //        }
         //Gets the categories selected
         //setNavDrawer();
+
+        /* Create button object for making a question */
+        Button makeQuestionButton = (Button)findViewById(R.id.makequestionButton);
+        /* Send user to the add question page on button press */
+        makeQuestionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AddQuestionActivity.class));
+            }
+        });
+
+        /* Buttons on home page */
+        Button popularButton = (Button)findViewById(R.id.popularButton);
+        Button randomButton = (Button)findViewById(R.id.randomButton);
+
+        /* Use database to set text in buttons to any popular or random question */
+        /* Question will be added from the database when we have that working */
+        popularButton.setText("Popular Questions\n" + "This is a popular question");
+        randomButton.setText("Random Questions\n" + "This is a random question");
+
     }
     public boolean isLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -165,23 +169,45 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        Log.i("yo", "In first method!");
         int id = item.getItemId();
 
         if (id == R.id.nav_add) {
             Intent init = new Intent(MainActivity.this, AddQuestionActivity.class);
             startActivity(init);
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_sports) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "Sports");
             startActivity(init);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_entertainment) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "Entertainment");
+            startActivity(init);
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_games) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "Games");
+            startActivity(init);
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_art) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "Art");
+            startActivity(init);
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_history) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "History");
+            startActivity(init);
+
+        } else if (id == R.id.nav_scitech) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "Science & Tech");
+            startActivity(init);
+
+        } else if (id == R.id.nav_general) {
+            Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+            init.putExtra("category", "General");
+            startActivity(init);
 
         }
 
@@ -189,6 +215,7 @@ public class MainActivity extends AppCompatActivity
 //        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     private void setUser() {
         Firebase.setAndroidContext(this);
@@ -241,10 +268,6 @@ public class MainActivity extends AppCompatActivity
                     HashMap<String, Boolean> ModStatus = new HashMap();
                     ModStatus.put("modStatus", currentUser.getModStatus());
                     ref.setValue(ModStatus);
-
-//                    HashMap<String, ArrayList<String>> SelCat = new HashMap();
-//                    SelCat.put("selectedCategory",currentUser.getSelCat());
-//                    ref.setValue(SelCat);
 
                     //selectedCategory
                     ref.child("selectedCategory").setValue(currentUser.getSelCat());

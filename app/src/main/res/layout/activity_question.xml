@@ -127,7 +127,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Sample Category"
         android:id="@+id/categoryText"
         android:layout_above="@+id/userLabel"
         android:layout_toRightOf="@+id/categoryLabel"
