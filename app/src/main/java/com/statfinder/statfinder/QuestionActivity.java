@@ -93,7 +93,7 @@ public class QuestionActivity extends AppCompatActivity {
 //                                    "Sorry! No questions available at this time :(", Toast.LENGTH_LONG).show();
 //                        }
                         TextView tv = (TextView) findViewById(R.id.questionContent);
-                        tv.setText(questionName);
+                        tv.setText("Question: " + questionName);
 
                         //Answers are essentially an array list with String keys and int values for each entry
                         System.out.println("Shit that matters: " + coolStuff.get("Answers")); //testing

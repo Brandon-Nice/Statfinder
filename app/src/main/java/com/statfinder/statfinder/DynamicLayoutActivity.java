@@ -41,7 +41,7 @@ public class DynamicLayoutActivity extends AppCompatActivity {
 
         //Set the question text
         TextView q = (TextView) findViewById(R.id.qText);
-        q.setText(question);
+        q.setText("Question: " + question);
 
         //For each answer add a button
         for(int i = 0; i < size; i++) {

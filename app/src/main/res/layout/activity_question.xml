@@ -19,10 +19,8 @@
         android:text="Sample Answer 1"
         android:id="@+id/answer1Button"
         android:background="#992288"
-        android:layout_below="@+id/questionContent"
-        android:layout_alignRight="@+id/questionText"
-        android:layout_alignEnd="@+id/questionText"
-        android:layout_marginTop="36dp" />
+        android:layout_toStartOf="@+id/skipButton"
+        android:layout_above="@+id/orText" />
 
     <Button
         android:layout_width="150dp"
@@ -31,21 +29,9 @@
         android:id="@+id/answer2Button"
         android:background="#3366aa"
         android:layout_below="@+id/orText"
-        android:layout_alignLeft="@+id/answer1Button"
         android:layout_alignStart="@+id/answer1Button"
-        android:layout_marginTop="36dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Sample Question:"
-        android:id="@+id/questionText"
-        android:textAlignment="center"
-        android:textColor="#b3b3b3"
-        android:layout_below="@+id/userLabel"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="36dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -66,7 +52,8 @@
         android:id="@+id/orText"
         android:textColor="#b3b3b3"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -89,10 +76,9 @@
         android:layout_below="@+id/categoryLabel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/questionText"
-        android:layout_toLeftOf="@+id/questionText"
         android:layout_alignRight="@+id/answer1Button"
-        android:layout_alignEnd="@+id/answer1Button" />
+        android:layout_alignEnd="@+id/answer1Button"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -110,17 +96,20 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="User or Moderator"
         android:id="@+id/userText"
-        android:layout_below="@+id/categoryText"
         android:layout_centerHorizontal="true"
-        android:textColor="#51fa03" />
+        android:textColor="#51fa03"
+        android:layout_alignTop="@+id/userLabel" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Question goes here"
         android:id="@+id/questionContent"
-        android:layout_below="@+id/questionText"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/userLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:textColor="#b3b3b3"
+        android:textSize="20dp" />
 
 </RelativeLayout>
 
