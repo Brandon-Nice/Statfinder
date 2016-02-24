@@ -142,10 +142,13 @@ public class QuestionActivity extends AppCompatActivity {
                             Button answer2Button = (Button) findViewById(R.id.answer2Button);
 
                             /*set the text for the buttons*/
-                            TextView ans1 = (TextView) findViewById(R.id.answer1Text);
-                            ans1.setText(questionName);
-                            TextView ans2 = (TextView) findViewById(R.id.answer2Text);
-                            ans2.setText(questionName);
+                            //TextView ans1 = (TextView) findViewById(R.id.answer1Text);
+                            //ans1.setText(questionName);
+                            //TextView ans2 = (TextView) findViewById(R.id.answer2Text);
+                            //ans2.setText(questionName);
+
+                            answer1Button.setText(values[0].toString());
+                            answer2Button.setText(values[1].toString());
                             /* Send user to ResultsActivity on answer selection */
                             answer1Button.setOnClickListener(new View.OnClickListener() {
                                 @Override

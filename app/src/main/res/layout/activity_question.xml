@@ -19,50 +19,21 @@
         android:text="Sample Answer 1"
         android:id="@+id/answer1Button"
         android:background="#992288"
-        android:layout_alignBaseline="@+id/answer2Button"
-        android:layout_alignBottom="@+id/answer2Button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/questionContent"
+        android:layout_alignRight="@+id/questionText"
+        android:layout_alignEnd="@+id/questionText"
+        android:layout_marginTop="36dp" />
 
     <Button
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:text="Sample Answer 2"
         android:id="@+id/answer2Button"
-        android:layout_marginBottom="58dp"
         android:background="#3366aa"
-        android:layout_above="@+id/skipButton"
-        android:layout_alignRight="@+id/skipButton"
-        android:layout_alignEnd="@+id/skipButton" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Sample Answer 1"
-        android:id="@+id/answer1Text"
-        android:textAlignment="center"
-        android:textColor="#992288"
-        android:textStyle="bold"
-        android:layout_below="@+id/questionText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="92dp"
-        android:layout_toLeftOf="@+id/orText"
-        android:layout_toStartOf="@+id/orText" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Sample Answer 2"
-        android:id="@+id/answer2Text"
-        android:layout_alignTop="@+id/answer1Text"
-        android:layout_alignLeft="@+id/answer2Button"
-        android:layout_alignStart="@+id/answer2Button"
-        android:textAlignment="center"
-        android:textColor="#3366aa"
-        android:textStyle="bold" />
+        android:layout_below="@+id/orText"
+        android:layout_alignLeft="@+id/answer1Button"
+        android:layout_alignStart="@+id/answer1Button"
+        android:layout_marginTop="36dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -93,9 +64,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="or"
         android:id="@+id/orText"
-        android:layout_alignBottom="@+id/answer1Text"
-        android:layout_centerHorizontal="true"
-        android:textColor="#b3b3b3"/>
+        android:textColor="#b3b3b3"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
