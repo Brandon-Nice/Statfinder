@@ -35,20 +35,23 @@ public class DynamicLayoutActivity extends AppCompatActivity {
 
         Intent init = getIntent();
         String mapsize = init.getStringExtra("size");
-        String answer = init.getStringExtra("answer");
+        String question = init.getStringExtra("question");
+        String index = "";
         int size = Integer.valueOf(mapsize);
 
-        for(int i = 0; i < size; i++) { //for each answer add a button
+        //Set the question text
+        TextView q = (TextView) findViewById(R.id.qText);
+        q.setText(question);
+
+        //For each answer add a button
+        for(int i = 0; i < size; i++) {
+
             LinearLayout ll = (LinearLayout) findViewById(R.id.buttonlayout);
             ll.setOrientation(LinearLayout.VERTICAL);
             Button btn = new Button(this);
-
-//            for(int j = i; j < size; j++){ //iterate through the answer text to set each button with the corresponding text
-//                String answer = init.getStringExtra("answer");
-//                btn.setText(answer);
-//            }
-            btn.setText(answer);
-            btn.setId(i);
+            index = "answer_" + String.valueOf(i);
+            btn.setText(init.getStringExtra(index)); //set each button with the corresponding text
+            //btn.setId(i);
             LayoutParams lp = new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             ll.addView(btn, lp);
         }

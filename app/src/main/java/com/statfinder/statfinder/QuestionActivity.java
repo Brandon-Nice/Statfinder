@@ -99,20 +99,30 @@ public class QuestionActivity extends AppCompatActivity {
                         System.out.println("Shit that matters: " + coolStuff.get("Answers")); //testing
                         System.out.println(cool + " : " + temptry.getKey() + " - " + temptry.getValue()); //testing
 
-                        HashMap<String, String> answersList = (HashMap) coolStuff.get("Answers"); //gets the list of answers for each question
-                        System.out.println("Yooooo" + answersList.get(0)); //testing
+                        HashMap<String, Object> answersList = (HashMap) coolStuff.get("Answers"); //gets the list of answers for each question
+                        Object question = coolStuff.get("Name"); //gets the question
+                        System.out.println("Yooooo " + answersList.entrySet() + " : " +  answersList.keySet()); //testing
+                        Object values[] = answersList.keySet().toArray(); //make the answers an array for easy access
 
+                        for(int k = 0; k < answersList.size(); k++){
+                            System.out.println("Dis be da values= " + values[k]);
+                        }
+                        //System.out.println(answersList.keySet().toArray()[0]);
                         if (answersList.size() > 2) {
                             System.out.println("Multiple answers detected");
-                            //startActivity(new Intent(QuestionActivity.this, DynamicLayoutActivity.class));
 
                             //pass the size to the activity
                             Intent init = new Intent(QuestionActivity.this, DynamicLayoutActivity.class);
                             init.putExtra("size", String.valueOf(answersList.size()));
 
+                            //pass the question to the activity
+                            init.putExtra("question", question.toString());
+
                             //pass the actual answers to the activity
+                            String index = ""; //creates a unique index for each string
                             for (int i = 0; i < answersList.size(); i++){
-                                init.putExtra("answer", answersList.get("")); //TODO: Figure out how to get the actual answers
+                                index = "answer_" + String.valueOf(i); //makes a unique string for each name
+                                init.putExtra(index, values[i].toString()); //TODO: Figure out how to get the actual answers
                             }
                             startActivity(init);
 
@@ -131,7 +141,12 @@ public class QuestionActivity extends AppCompatActivity {
                             Button answer1Button = (Button) findViewById(R.id.answer1Button);
                             Button answer2Button = (Button) findViewById(R.id.answer2Button);
 
-            /* Send user to ResultsActivity on answer selection */
+                            /*set the text for the buttons*/
+                            TextView ans1 = (TextView) findViewById(R.id.answer1Text);
+                            ans1.setText(questionName);
+                            TextView ans2 = (TextView) findViewById(R.id.answer2Text);
+                            ans2.setText(questionName);
+                            /* Send user to ResultsActivity on answer selection */
                             answer1Button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
