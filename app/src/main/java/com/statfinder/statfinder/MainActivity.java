@@ -35,6 +35,7 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class MainActivity extends AppCompatActivity
@@ -197,6 +198,43 @@ public class MainActivity extends AppCompatActivity
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                //Kenny's playground
+                Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/United States/Indiana/West Lafayette");
+                questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        //Random r = new Random();
+                        //int randomQuestionNumber = r.nextInt(questionsHashMap.size());
+                        //HashMap<String, Object> questionEntry = questionsHashMap
+                        HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
+                        //System.out.println("VALUE OF datasnapshot ENTRY: " + dataSnapshot);
+                        Iterator it = questionsHashMap.entrySet().iterator();
+                        //for(int i = 0; i < questionsHashMap.size(); i++) {
+                        int cool = 0;
+                        while (it.hasNext()) {
+                            HashMap.Entry temptry = (HashMap.Entry) it.next();
+                            HashMap<String, Object> coolStuff = (HashMap)temptry.getValue();
+
+                            //Answers are essentially an array list with String keys and int values for each entry
+                            System.out.println("Shit that matters: " + coolStuff.get("Answers"));
+
+                            //System.out.println(cool + " : " + temptry.getKey() + " - " + temptry.getValue());
+                            //cool++;
+                        }
+                        //}
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+                //Kenny's domain ends here
+
                 HashMap<String, Object> val = (HashMap) snapshot.getValue();
                 //User does not have any information stored on Firebase, set defaults
                 if (val == null) {
