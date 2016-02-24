@@ -111,6 +111,15 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        /* Buttons on home page */
+        Button popularButton = (Button)findViewById(R.id.popularButton);
+        Button randomButton = (Button)findViewById(R.id.randomButton);
+
+        /* Use database to set text in buttons to any popular or random question */
+        /* Question will be added from the database when we have that working */
+        popularButton.setText("Popular Questions\n" + "This is a popular question");
+        randomButton.setText("Random Questions\n" + "This is a random question");
+
     }
     public boolean isLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();

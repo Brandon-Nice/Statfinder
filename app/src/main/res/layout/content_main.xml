@@ -24,7 +24,7 @@
     <Button
         android:layout_width="283dp"
         android:layout_height="wrap_content"
-        android:text="Popular Questions\n What is my favorite color?"
+        android:text="Popular Questions"
         android:id="@+id/popularButton"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.10" />
