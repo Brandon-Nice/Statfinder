@@ -133,9 +133,18 @@ public class ResultsActivity extends AppCompatActivity {
          *  a "Bundle"  */
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                startActivity(new Intent(ResultsActivity.this, QuestionActivity.class));
+            }
+        });
+
+        /* Button code to go back to the home page (MainActivity) */
+        Button home = (Button)findViewById(R.id.homeButton);
+        home.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 startActivity(new Intent(ResultsActivity.this, MainActivity.class));
             }
         });
+
     }
 
 }
