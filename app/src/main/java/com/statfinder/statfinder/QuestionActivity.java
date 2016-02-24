@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -43,7 +44,6 @@ public class QuestionActivity extends AppCompatActivity {
                 //int randomQuestionNumber = r.nextInt(questionsHashMap.size());
                 //HashMap<String, Object> questionEntry = questionsHashMap
 
-
             }
 
             @Override
@@ -52,6 +52,24 @@ public class QuestionActivity extends AppCompatActivity {
             }
         });
 
+        /* Creating buttons */
+        Button answer1Button = (Button)findViewById(R.id.answer1Button);
+        Button answer2Button = (Button)findViewById(R.id.answer2Button);
+
+        /* Send user to ResultsActivity on answer selection */
+        answer1Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(QuestionActivity.this, ResultsActivity.class));
+            }
+        });
+
+        answer2Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(QuestionActivity.this, ResultsActivity.class));
+            }
+        });
     }
 
 

@@ -130,7 +130,6 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
-
                 if(!atLeastOne) {
                     Toast.makeText(getApplicationContext(), "Please select at least one category.",
                             Toast.LENGTH_LONG).show();

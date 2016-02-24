@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity
         //setUser
         setUser();
 
-
         //Gets the picture of the user
 //
 //        if(isLoggedIn()) {
@@ -101,6 +100,17 @@ public class MainActivity extends AppCompatActivity
 //        }
         //Gets the categories selected
         //setNavDrawer();
+
+        /* Create button object for making a question */
+        Button makeQuestionButton = (Button)findViewById(R.id.makequestionButton);
+        /* Send user to the add question page on button press */
+        makeQuestionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AddQuestionActivity.class));
+            }
+        });
+
     }
     public boolean isLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -181,7 +191,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_scitech) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
-            init.putExtra("category", "Scitech");
+            init.putExtra("category", "Science & Tech");
             startActivity(init);
 
         } else if (id == R.id.nav_general) {
@@ -195,6 +205,7 @@ public class MainActivity extends AppCompatActivity
 //        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     private void setUser() {
         Firebase.setAndroidContext(this);
