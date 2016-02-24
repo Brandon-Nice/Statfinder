@@ -234,22 +234,22 @@ public class MainActivity extends AppCompatActivity
                         //Random r = new Random();
                         //int randomQuestionNumber = r.nextInt(questionsHashMap.size());
                         //HashMap<String, Object> questionEntry = questionsHashMap
-                        HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
-                        //System.out.println("VALUE OF datasnapshot ENTRY: " + dataSnapshot);
-                        Iterator it = questionsHashMap.entrySet().iterator();
-                        //for(int i = 0; i < questionsHashMap.size(); i++) {
-                        int cool = 0;
-                        while (it.hasNext()) {
-                            HashMap.Entry temptry = (HashMap.Entry) it.next();
-                            HashMap<String, Object> coolStuff = (HashMap)temptry.getValue();
-
-                            //Answers are essentially an array list with String keys and int values for each entry
-                            System.out.println("Shit that matters: " + coolStuff.get("Answers"));
-
-                            //System.out.println(cool + " : " + temptry.getKey() + " - " + temptry.getValue());
-                            //cool++;
-                        }
-                        //}
+//                        HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
+//                        //System.out.println("VALUE OF datasnapshot ENTRY: " + dataSnapshot);
+//                        Iterator it = questionsHashMap.entrySet().iterator();
+//                        //for(int i = 0; i < questionsHashMap.size(); i++) {
+//                        int cool = 0;
+//                        while (it.hasNext()) {
+//                            HashMap.Entry temptry = (HashMap.Entry) it.next();
+//                            HashMap<String, Object> coolStuff = (HashMap)temptry.getValue();
+//
+//                            //Answers are essentially an array list with String keys and int values for each entry
+//                            System.out.println("Shit that matters: " + coolStuff.get("Answers"));
+//
+//                            //System.out.println(cool + " : " + temptry.getKey() + " - " + temptry.getValue());
+//                            //cool++;
+//                        }
+//                        //}
 
 
                     }

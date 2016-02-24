@@ -9,4 +9,5 @@
     <string name="facebook_app_id">512161802287204</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_question">QuestionActivity</string>
+    <string name="title_activity_dynamic_layout">DynamicLayoutActivity</string>
 </resources>
