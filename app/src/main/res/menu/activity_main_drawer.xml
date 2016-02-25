@@ -54,7 +54,7 @@
                     android:checkable="true"/>
                 <item
                     android:id="@+id/nav_general"
-                    android:icon="@drawable/ic_menu_share"
+                    android:icon="@drawable/ic_widgets_black_24dp"
                     android:title="General"
                     android:checkable="true"/>
             </group>

@@ -122,7 +122,7 @@ public class QuestionActivity extends AppCompatActivity {
                             String index = ""; //creates a unique index for each string
                             for (int i = 0; i < answersList.size(); i++){
                                 index = "answer_" + String.valueOf(i); //makes a unique string for each name
-                                init.putExtra(index, values[i].toString()); //TODO: Figure out how to get the actual answers
+                                init.putExtra(index, values[i].toString());
                             }
                             startActivity(init);
 
