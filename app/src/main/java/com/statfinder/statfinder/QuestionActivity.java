@@ -2,33 +2,39 @@ package com.statfinder.statfinder;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Random;
+import java.util.List;
 
-public class QuestionActivity extends AppCompatActivity {
+public class QuestionActivity extends FragmentActivity {
     Firebase questionRef;
+    private PagerAdapter mPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
+
+        List<Fragment> fragments = new ArrayList<Fragment>();
+        fragments.add(Fragment.instantiate(this, AnswersFragment.class.getName()));
+        fragments.add(Fragment.instantiate(this, ResultsFragment.class.getName()));
+        this.mPagerAdapter  = new MyPagerAdapter(super.getSupportFragmentManager(), fragments);
+        //
+        final MyViewPager pager = (MyViewPager) super.findViewById(R.id.viewpager);
+        pager.setAdapter(this.mPagerAdapter);
 
         Intent init = getIntent();
         final String cameFrom;
@@ -149,18 +155,19 @@ public class QuestionActivity extends AppCompatActivity {
 
                             answer1Button.setText(values[0].toString());
                             answer2Button.setText(values[1].toString());
-                            /* Send user to ResultsActivity on answer selection */
+                            /* Send user to ResultsFragment on answer selection */
                             answer1Button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    startActivity(new Intent(QuestionActivity.this, ResultsActivity.class));
+                                    pager.setCurrentItem(1, true);
+                                    pager.setPagingEnabled(true);
                                 }
                             });
 
                             answer2Button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    startActivity(new Intent(QuestionActivity.this, ResultsActivity.class));
+                                    pager.setCurrentItem(1, true);
                                 }
                             });
                         } else {
@@ -197,18 +204,18 @@ public class QuestionActivity extends AppCompatActivity {
 //        Button answer1Button = (Button)findViewById(R.id.answer1Button);
 //        Button answer2Button = (Button)findViewById(R.id.answer2Button);
 //
-//        /* Send user to ResultsActivity on answer selection */
+//        /* Send user to ResultsFragment on answer selection */
 //        answer1Button.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                startActivity(new Intent(QuestionActivity.this, ResultsActivity.class));
+//                startActivity(new Intent(QuestionActivity.this, ResultsFragment.class));
 //            }
 //        });
 //
 //        answer2Button.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                startActivity(new Intent(QuestionActivity.this, ResultsActivity.class));
+//                startActivity(new Intent(QuestionActivity.this, ResultsFragment.class));
 //            }
 //        });
     }

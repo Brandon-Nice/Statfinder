@@ -12,48 +12,15 @@
                 tools:context="com.statfinder.statfinder.QuestionActivity"
                 android:background="#444444">
 
+    <com.statfinder.statfinder.MyViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/questionContent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"/>
 
-    <Button
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="Sample Answer 1"
-        android:id="@+id/answer1Button"
-        android:background="#992288"
-        android:layout_toStartOf="@+id/skipButton"
-        android:layout_above="@+id/orText" />
 
-    <Button
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="Sample Answer 2"
-        android:id="@+id/answer2Button"
-        android:background="#3366aa"
-        android:layout_below="@+id/orText"
-        android:layout_alignStart="@+id/answer1Button"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="36dp" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:text="Skip"
-        android:id="@+id/skipButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="53dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="or"
-        android:id="@+id/orText"
-        android:textColor="#b3b3b3"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -2,6 +2,8 @@ package com.statfinder.statfinder;
 
 import android.content.Intent;
 import android.graphics.Paint;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -25,21 +27,30 @@ import android.graphics.Color;
 import android.R.color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class ResultsActivity extends AppCompatActivity {
+public class ResultsFragment extends Fragment {
+
+    private RelativeLayout llLayout;
+    private FragmentActivity faActivity;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        PieChart pieChart = (PieChart) findViewById(R.id.chart);
+        faActivity  = (FragmentActivity)    super.getActivity();
+        llLayout    = (RelativeLayout)    inflater.inflate(R.layout.activity_results, container, false);
+
+        PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
+        pieChart.setTouchEnabled(false);
 
         /* creating data values */
         /* Use ValueFormatter to remove the decimals and add percentage % */
@@ -125,7 +136,7 @@ public class ResultsActivity extends AppCompatActivity {
         //pieChart.animateXY(1500, 1000);
 
         /* Button code to send to MainActivity after viewing question results */
-        Button next = (Button)findViewById(R.id.nextButton);
+        Button next = (Button) llLayout.findViewById(R.id.nextButton);
 
         /*  In the future, need to pass this the string for the next question in
         *   the unanswered list so that when the next button is clicked, a new
@@ -133,17 +144,19 @@ public class ResultsActivity extends AppCompatActivity {
          *  a "Bundle"  */
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(ResultsActivity.this, QuestionActivity.class));
+                startActivity(new Intent(faActivity, QuestionActivity.class));
             }
         });
 
         /* Button code to go back to the home page (MainActivity) */
-        Button home = (Button)findViewById(R.id.homeButton);
+        Button home = (Button) llLayout.findViewById(R.id.homeButton);
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(ResultsActivity.this, MainActivity.class));
+                startActivity(new Intent(faActivity, MainActivity.class));
             }
         });
+
+        return llLayout;
 
     }
 
