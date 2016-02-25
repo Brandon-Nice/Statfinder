@@ -64,6 +64,9 @@
             android:name=".DynamicLayoutActivity"
             android:label="@string/title_activity_dynamic_layout"
             android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
     </application>
 
