@@ -2,8 +2,6 @@ package com.statfinder.statfinder;
 
 import android.content.Intent;
 import android.graphics.Paint;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -27,30 +25,26 @@ import android.graphics.Color;
 import android.R.color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class ResultsFragment extends Fragment {
-
-    private RelativeLayout llLayout;
-    private FragmentActivity faActivity;
+public class ResultsActivity extends AppCompatActivity {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_results);
 
-        faActivity  = (FragmentActivity)    super.getActivity();
-        llLayout    = (RelativeLayout)    inflater.inflate(R.layout.activity_results, container, false);
+        /* Getting category from QuestionActivity */
+        Intent init = getIntent();
+        String cameFrom;
+        cameFrom = init.getStringExtra("category");
 
-        PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
-        pieChart.setTouchEnabled(false);
+        PieChart pieChart = (PieChart) findViewById(R.id.chart);
 
         /* creating data values */
         /* Use ValueFormatter to remove the decimals and add percentage % */
@@ -136,27 +130,28 @@ public class ResultsFragment extends Fragment {
         //pieChart.animateXY(1500, 1000);
 
         /* Button code to send to MainActivity after viewing question results */
-        Button next = (Button) llLayout.findViewById(R.id.nextButton);
+        Button next = (Button)findViewById(R.id.nextButton);
 
         /*  In the future, need to pass this the string for the next question in
         *   the unanswered list so that when the next button is clicked, a new
         *   question appears in the MainActivity. Known way to do this is to use
          *  a "Bundle"  */
+        final String cat = cameFrom;
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(faActivity, QuestionActivity.class));
+                Intent init = new Intent(ResultsActivity.this, QuestionActivity.class);
+                init.putExtra("category", cat);
+                startActivity(init);
             }
         });
 
         /* Button code to go back to the home page (MainActivity) */
-        Button home = (Button) llLayout.findViewById(R.id.homeButton);
+        Button home = (Button)findViewById(R.id.homeButton);
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(faActivity, MainActivity.class));
+                startActivity(new Intent(ResultsActivity.this, MainActivity.class));
             }
         });
-
-        return llLayout;
 
     }
 

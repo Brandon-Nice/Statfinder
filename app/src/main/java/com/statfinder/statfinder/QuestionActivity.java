@@ -53,7 +53,6 @@ public class QuestionActivity extends FragmentActivity {
 //                //Random r = new Random();
 //                //int randomQuestionNumber = r.nextInt(questionsHashMap.size());
 //                //HashMap<String, Object> questionEntry = questionsHashMap
-//
 //            }
 //
 //            @Override
