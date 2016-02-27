@@ -112,6 +112,32 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+         /* Create button object for making a question */
+        Button popularQuestionButton = (Button)findViewById(R.id.popularButton);
+        /* Send user to the add question page on button press */
+        popularQuestionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+                init.putExtra("category", "Popular");
+                startActivity(init);
+                //startActivity(new Intent(MainActivity.this, QuestionActivity.class));
+
+            }
+        });
+
+        Button randomQuestionButton = (Button)findViewById(R.id.randomButton);
+        /* Send user to the add question page on button press */
+        randomQuestionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent init = new Intent(MainActivity.this, QuestionActivity.class);
+                init.putExtra("category", "Random");
+                startActivity(init);
+                //startActivity(new Intent(MainActivity.this, QuestionActivity.class));
+            }
+        });
+
         /* Buttons on home page */
         Button popularButton = (Button)findViewById(R.id.popularButton);
         Button randomButton = (Button)findViewById(R.id.randomButton);
