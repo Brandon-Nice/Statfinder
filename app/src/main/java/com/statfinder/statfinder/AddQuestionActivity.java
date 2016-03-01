@@ -283,48 +283,8 @@ public class AddQuestionActivity extends AppCompatActivity {
                     ref.child("Questions/NumQuestions").setValue("0");
                     addQuestions();
                 }
-                /*final HashMap<String, Object> questionInfo = new HashMap();
-                ArrayList<HashMap> answers = new ArrayList();
-                HashMap<String, String> firstAnswerMap = new HashMap();
-                firstAnswerMap.put(firstAnswer.getText().toString().trim(), "0");
-                answers.add(firstAnswerMap);
-                HashMap<String, String> secondAnswerMap = new HashMap();
-                secondAnswerMap.put(secondAnswer.getText().toString().trim(), "0");
-                answers.add(secondAnswerMap);
-                if (thirdAnswer.getText().length() != 0 && thirdAnswer.getVisibility() == View.VISIBLE)
-                {
-                    HashMap<String, String> thirdAnswerMap = new HashMap();
-                    thirdAnswerMap.put(thirdAnswer.getText().toString().trim(), "0");
-                    answers.add(thirdAnswerMap);
-                }
-                if (fourthAnswer.getText().length() != 0 && fourthAnswer.getVisibility() == View.VISIBLE)
-                {
-                    HashMap<String, String> fourthAnswerMap = new HashMap();
-                    fourthAnswerMap.put(fourthAnswer.getText().toString().trim(), "0");
-                    answers.add(fourthAnswerMap);
-                }
-                if (fifthAnswer.getText().length() != 0 && fifthAnswer.getVisibility() == View.VISIBLE)
-                {
-                    HashMap<String, String> fifthAnswerMap = new HashMap();
-                    fifthAnswerMap.put(fifthAnswer.getText().toString().trim(), "0");
-                    answers.add(fifthAnswerMap);
-                }
-                if (otherCheckBox.isChecked())
-                {
-                    HashMap<String, String> otherAnswerMap = new HashMap();
-                    otherAnswerMap.put("Other", "0");
-                    answers.add(otherAnswerMap);
-                }
-                questionInfo.put("Name", question.getText().toString().trim());
-                questionInfo.put("Answers", answers);
-                questionInfo.put("Flags", "0");
-                Long tsLong = System.currentTimeMillis()/1000;
-                String ts = tsLong.toString();
-                questionInfo.put("Time Created", tsLong);
-                questionInfo.put("Moderated", ((MyApplication) getApplication()).getUser().getModStatus());
-                questionInfo.put("Category", categorySpinner.getSelectedItem().toString());*/
                 String questionName = question.getText().toString().trim();
-                ArrayList<String> answers = new ArrayList();
+                final ArrayList<String> answers = new ArrayList();
                 answers.add(firstAnswer.getText().toString());
                 answers.add(secondAnswer.getText().toString());
                 if (thirdAnswer.getText().length() != 0 && thirdAnswer.getVisibility() == View.VISIBLE)
@@ -357,7 +317,15 @@ public class AddQuestionActivity extends AppCompatActivity {
                         value++;
                         String incHex = Integer.toHexString(value);
                         ref.child("Questions/NumQuestions").setValue(incHex);
-                        ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" + category + "/" + (String) snapshot.getValue()).setValue(questionInfo);
+                        Firebase questionRef = ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" + category + "/" + (String) snapshot.getValue());
+                        questionRef.setValue(questionInfo);
+                        questionRef.setPriority(0);
+                        for (int i = 0; i < answers.size(); i++)
+                        {
+                            Firebase answerRef = ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" + category + "/" + (String) snapshot.getValue() + "/Answers/" + answers.get(i));
+                            answerRef.setValue(0);
+                            answerRef.setPriority(i);
+                        }
                         finish();
                     }
 
@@ -379,8 +347,8 @@ public class AddQuestionActivity extends AppCompatActivity {
         ref.child("5").setValue(createQuestion("How many puppies would you get if you had unlimited money?", true, new ArrayList<String>() {{add("1");add("5");add("Unlimited puppies!");}}));
         ref.child("6").setValue(createQuestion("jhihihuv", true, new ArrayList<String>() {{add("hrxuif");add("If kcjx");}}));
         ref.child("7").setValue(createQuestion("How can I get rich quick?", true, new ArrayList<String>() {{add("Ask your dad for a small loan of 1 million dollars");add("Die poor");add("Work at Ford for the rest of your life");}}));
-        ref.child("8").setValue(createQuestion("How can I get rich quick?", true, new ArrayList<String>() {{add("7:12pm");add("Adventure Time!");add("Mail Time");}}));
-        ref.child("9").setValue(createQuestion("What theory about the universe do you believe?", true, new ArrayList<String>() {{add("Multiverse theory");add("Reality is an illilusion, the universe is a hologram, buy gold, buuuuuuuuuuyyyy!");}}));
+        ref.child("8").setValue(createQuestion("What time is it?", true, new ArrayList<String>() {{add("7:12pm");add("Adventure Time!");add("Mail Time");}}));
+        ref.child("9").setValue(createQuestion("What theory about the universe do you believe?", true, new ArrayList<String>() {{add("Multiverse theory");add("Reality is an illusion, the universe is a hologram, buy gold, buuuuuuuuuuyyyy!");}}));
         ref.child("a").setValue(createQuestion("Fudge", true, new ArrayList<String>() {{add("buttzzzzz");add("do you");add("feel like");add("making some");}}));
         ref.child("b").setValue(createQuestion("bing", true, new ArrayList<String>() {{add("bang");add("bong");add("kapow");}}));
 
@@ -389,19 +357,12 @@ public class AddQuestionActivity extends AppCompatActivity {
     private HashMap createQuestion(String question, Boolean moderated, ArrayList<String> answers)
     {
         HashMap questionMap = new HashMap();
-        ArrayList<HashMap> answersMap = new ArrayList();
-        for (int i = 0; i < answers.size(); i++)
-        {
-            HashMap<String, String> answer = new HashMap();
-            answer.put(answers.get(i).trim().replaceAll(" ", "_"), "0");
-            answersMap.add(answer);
-        }
-        questionMap.put("Answers", answersMap);
         questionMap.put("Flags", 0);
         questionMap.put("Name", question.trim().replaceAll(" ", "_"));
         questionMap.put("Moderated", moderated);
         Long tsLong = System.currentTimeMillis()/1000;
         questionMap.put("Time_Created", tsLong);
+        questionMap.put("Total_Votes", 0);
         return questionMap;
     }
 
