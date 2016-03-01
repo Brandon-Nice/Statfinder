@@ -59,7 +59,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                                        Spanned dest, int dstart, int dend) {
                 for (int i = start; i < end; i++) {
                     if (source.charAt(i) == '/' || source.charAt(i) == '.' || source.charAt(i) == '#' || source.charAt(i) == '$'
-                            || source.charAt(i) == '[' || source.charAt(i) == ']') {
+                            || source.charAt(i) == '[' || source.charAt(i) == ']' || source.charAt(i) == '_') {
                         return "";
                     }
                 }
