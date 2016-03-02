@@ -2,12 +2,11 @@ package com.statfinder.statfinder;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -15,172 +14,100 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
-public class QuestionActivity extends FragmentActivity {
-    Firebase questionRef;
-    private PagerAdapter mPagerAdapter;
+public class QuestionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
 
-        List<Fragment> fragments = new ArrayList<Fragment>();
-        fragments.add(Fragment.instantiate(this, AnswersFragment.class.getName()));
-        fragments.add(Fragment.instantiate(this, ResultsFragment.class.getName()));
-        this.mPagerAdapter  = new MyPagerAdapter(super.getSupportFragmentManager(), fragments);
+        //Michael's code - DO NOT ERASE
+        //List<Fragment> fragments = new ArrayList<Fragment>();
+        //fragments.add(Fragment.instantiate(this, AnswersFragment.class.getName()));
+        //fragments.add(Fragment.instantiate(this, ResultsFragment.class.getName()));
+        //this.mPagerAdapter  = new MyPagerAdapter(super.getSupportFragmentManager(), fragments);
         //
-        final MyViewPager pager = (MyViewPager) super.findViewById(R.id.viewpager);
-        pager.setAdapter(this.mPagerAdapter);
+        //final MyViewPager pager = (MyViewPager) super.findViewById(R.id.viewpager);
+        //pager.setAdapter(this.mPagerAdapter);
 
+        newQuestion();
+        //listen for if the user presses the skip button
+//        Button skip = ((Button) findViewById(R.id.skipButton));
+//
+//        skip.setOnClickListener(new View.OnClickListener()
+//
+//                                {
+//                                    public void onClick(View view) {
+//                                        newQuestion();
+//                                    }
+//                                }
+//
+//        );
+
+    }
+
+    public void newQuestion() {
         Intent init = getIntent();
         final String cameFrom;
         cameFrom = init.getStringExtra("category");
         System.out.println("this is the category:" + cameFrom); //testing
-        TextView categoryText = (TextView)findViewById(R.id.categoryText);
-        categoryText.setText(cameFrom);
 
-        //cameFrom now has the category that the user clicks on in the drawer menu. TODO: This will eventually include "popular" and "random"
-
-//        questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/United%20States/Indiana/West%20Lafayette");
-//        questionRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                HashMap<String, Object> questionsHashMap = (HashMap)dataSnapshot.getValue();
-//                //Random r = new Random();
-//                //int randomQuestionNumber = r.nextInt(questionsHashMap.size());
-//                //HashMap<String, Object> questionEntry = questionsHashMap
-//            }
-//
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
-//
-//            }
-//        });
-
-        //Kenny's playground
         Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
         questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        @Override
 
-                //Random r = new Random();
-                //int randomQuestionNumber = r.nextInt(questionsHashMap.size());
-                //HashMap<String, Object> questionEntry = questionsHashMap
-                HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
-                //System.out.println("VALUE OF datasnapshot ENTRY: " + dataSnapshot);
-                Iterator it = questionsHashMap.entrySet().iterator();
-                //for(int i = 0; i < questionsHashMap.size(); i++) {
+    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                int cool = 0;
-                while (it.hasNext()) {
-                    HashMap.Entry temptry = (HashMap.Entry) it.next();
-                    HashMap<String, Object> coolStuff = (HashMap)temptry.getValue(); //stores each node in database
+        HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
+        Iterator it = questionsHashMap.entrySet().iterator();
 
-                    //listen for if the user presses the skip button
-                    Button skip = ((Button) findViewById(R.id.skipButton));
-                    skip.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View view) {
-                           //TODO: Add code for skip button
-                        }
-                    });
+        HashMap.Entry temptry = (HashMap.Entry) it.next();
+        HashMap<String, Object> coolStuff = (HashMap) temptry.getValue(); //stores each node in database
 
-                    //Get the category first
-                    String category = coolStuff.get("Category").toString();
-                    if(category.equals(cameFrom)) { //if the category from the question matches what the user selects
+        //Get the category first
+        String category = coolStuff.get("Category").toString();
 
-                        //Get the Question name
-                        String questionName = coolStuff.get("Name").toString();
-//                        if(questionName.isEmpty()){
-//                            Toast.makeText(getApplicationContext(),
-//                                    "Sorry! No questions available at this time :(", Toast.LENGTH_LONG).show();
-//                        }
-                        TextView tv = (TextView) findViewById(R.id.questionContent);
-                        tv.setText("Question: " + questionName);
+        //if the category from the question matches what the user selects
+        if (category.equals(cameFrom)) {
 
-                        //Answers are essentially an array list with String keys and int values for each entry
-                        //System.out.println("Shit that matters: " + coolStuff.get("Answers")); //testing
-                        //System.out.println(cool + " : " + temptry.getKey() + " - " + temptry.getValue()); //testing
+            //Get the Question name
+            String questionName = coolStuff.get("Name").toString();
+            System.out.println("Question: " + questionName);
+            TextView tv = (TextView) findViewById(R.id.qText);
+            tv.setText(questionName);
 
-                        HashMap<String, Object> answersList = (HashMap) coolStuff.get("Answers"); //gets the list of answers for each question
-                        Object question = coolStuff.get("Name"); //gets the question
-                        System.out.println("Yo " + answersList.entrySet() + " : " +  answersList.keySet()); //testing
-                        Object values[] = answersList.keySet().toArray(); //make the answers an array for easy access
 
-                       // for(int k = 0; k < answersList.size(); k++){
-                       //     System.out.println("Dis be da values= " + values[k]);
-                       // }
-                        //System.out.println(answersList.keySet().toArray()[0]);
-                        if (answersList.size() > 2) {
-                            //System.out.println("Multiple answers detected");
+            HashMap<String, Object> answersList = (HashMap) coolStuff.get("Answers"); //gets the list of answers for each question
+            System.out.println("Check");
+            System.out.println("Current question's answer list: " + answersList);
+            Object question = coolStuff.get("Name"); //gets the question
+            System.out.println("Current question: " + question);
+            //System.out.println("Yooooo " + answersList.entrySet() + " : " +  answersList.keySet()); //testing
 
-                            //pass the size to the activity
-                            Intent init = new Intent(QuestionActivity.this, DynamicLayoutActivity.class);
+            Object values[] = answersList.keySet().toArray(); //make the answers an array for easy access
 
-                            init.putExtra("size", String.valueOf(answersList.size()));
+            //pass the size to the activity
+            int mapsize = answersList.size();
 
-                            //pass the question to the activity
-                            init.putExtra("question", question.toString());
-
-                            //pass the actual answers to the activity
-                            String index = ""; //creates a unique index for each string
-                            for (int i = 0; i < answersList.size(); i++){
-                                index = "answer_" + String.valueOf(i); //makes a unique string for each name
-                                init.putExtra(index, values[i].toString());
-                            }
-                            startActivity(init);
-
-                            //for(int i = 0; i < answersList.size(); i++) { //for each answer add a button
-//                                LinearLayout ll = (LinearLayout) findViewById(R.id.buttonlayout);
-//                                ll.setOrientation(LinearLayout.VERTICAL);
-//                                Button btn = new Button(QuestionActivity.this);
-//                                btn.setText("Push Me");
-//                                btn.setId(i);
-                                //AbsListView.LayoutParams lp = new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
-                                //ll.addView(btn, lp);
-                           //}
-
-                        } else if (answersList.size() == 2) {
-                            /* Creating buttons */
-                            Button answer1Button = (Button) findViewById(R.id.answer1Button);
-                            Button answer2Button = (Button) findViewById(R.id.answer2Button);
-
-                            answer1Button.setText(values[0].toString());
-                            answer2Button.setText(values[1].toString());
-                            /* Send user to ResultsFragment on answer selection */
-                            answer1Button.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    pager.setCurrentItem(1, true);
-                                    pager.setPagingEnabled(true);
-                                }
-                            });
-
-                            answer2Button.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    pager.setCurrentItem(1, true);
-                                }
-                            });
-                        } else {
-                            System.out.println("Error");
-                        }
-                        cool++;
-
-                    }
-
-//                    else {
-//                        Toast.makeText(getApplicationContext(),
-//                                "Sorry! No questions available at this time :(", Toast.LENGTH_LONG).show();
-//                    }
-
-                    //cool++;
-                }
-                //}
+            //For each answer add a button
+            for (int i = 0; i < mapsize; i++) {
+                LinearLayout ll = (LinearLayout) findViewById(R.id.buttonlayout);
+                ll.setOrientation(LinearLayout.VERTICAL);
+                Button btn = new Button(QuestionActivity.this);
+                btn.setText(values[i].toString()); //set each button with the corresponding text
+                //btn.setId(i);
+                LayoutParams lp = new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+                ll.addView(btn, lp);
             }
+
+        } else {
+            System.out.println("Error");
+        }
+
+    }
+
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
@@ -188,27 +115,6 @@ public class QuestionActivity extends FragmentActivity {
             }
         });
 
-        //Kenny's domain ends here
-
-//        /* Creating buttons */
-//        Button answer1Button = (Button)findViewById(R.id.answer1Button);
-//        Button answer2Button = (Button)findViewById(R.id.answer2Button);
-//
-//        /* Send user to ResultsFragment on answer selection */
-//        answer1Button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(QuestionActivity.this, ResultsFragment.class));
-//            }
-//        });
-//
-//        answer2Button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(QuestionActivity.this, ResultsFragment.class));
-//            }
-//        });
-    }
-
-
 }
+}
+

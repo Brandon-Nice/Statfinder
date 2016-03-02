@@ -11,70 +11,73 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:context="com.statfinder.statfinder.QuestionActivity"
                 android:background="#444444">
+    <include
+        layout="@layout/content_question"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <!--<com.statfinder.statfinder.MyViewPager-->
+        <!--android:id="@+id/viewpager"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:layout_below="@+id/questionContent"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_marginBottom="20dp"/>-->
 
-    <com.statfinder.statfinder.MyViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/questionContent"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"/>
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+        <!--android:text="Category: "-->
+        <!--android:id="@+id/categoryLabel"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:textColor="#51fa03" />-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Category: "
-        android:id="@+id/categoryLabel"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textColor="#51fa03" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+        <!--android:text="User/Moderator:"-->
+        <!--android:id="@+id/userLabel"-->
+        <!--android:textColor="#51fa03"-->
+        <!--android:layout_below="@+id/categoryLabel"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_alignRight="@+id/answer1Button"-->
+        <!--android:layout_alignEnd="@+id/answer1Button"-->
+        <!--android:layout_centerHorizontal="true" />-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="User/Moderator:"
-        android:id="@+id/userLabel"
-        android:textColor="#51fa03"
-        android:layout_below="@+id/categoryLabel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/answer1Button"
-        android:layout_alignEnd="@+id/answer1Button"
-        android:layout_centerHorizontal="true" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+        <!--android:id="@+id/categoryText"-->
+        <!--android:layout_above="@+id/userLabel"-->
+        <!--android:layout_toRightOf="@+id/categoryLabel"-->
+        <!--android:layout_toEndOf="@+id/categoryLabel"-->
+        <!--android:textColor="#51fa03" />-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/categoryText"
-        android:layout_above="@+id/userLabel"
-        android:layout_toRightOf="@+id/categoryLabel"
-        android:layout_toEndOf="@+id/categoryLabel"
-        android:textColor="#51fa03" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+        <!--android:text="User or Moderator"-->
+        <!--android:id="@+id/userText"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:textColor="#51fa03"-->
+        <!--android:layout_alignTop="@+id/userLabel" />-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="User or Moderator"
-        android:id="@+id/userText"
-        android:layout_centerHorizontal="true"
-        android:textColor="#51fa03"
-        android:layout_alignTop="@+id/userLabel" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Question goes here"
-        android:id="@+id/questionContent"
-        android:layout_below="@+id/userLabel"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="34dp"
-        android:textColor="#b3b3b3"
-        android:textSize="20dp" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Question goes here"-->
+        <!--android:id="@+id/questionContent"-->
+        <!--android:layout_below="@+id/userLabel"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="34dp"-->
+        <!--android:textColor="#b3b3b3"-->
+        <!--android:textSize="20dp" />-->
 
 </RelativeLayout>
 

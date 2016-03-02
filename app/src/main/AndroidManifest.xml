@@ -55,13 +55,6 @@
         </activity>
         <activity
             android:name=".QuestionActivity"
-            android:label="@string/title_activity_question" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity
-            android:name=".DynamicLayoutActivity"
             android:label="@string/title_activity_dynamic_layout"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
