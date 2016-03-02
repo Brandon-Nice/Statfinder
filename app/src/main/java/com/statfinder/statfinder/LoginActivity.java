@@ -41,16 +41,12 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
 
         callbackManager = CallbackManager.Factory.create();
         //gets the login button from activity_login.xml
         loginButton = (LoginButton) findViewById(R.id.fb_button);
         loginButton.setReadPermissions("public_profile");
-
 
         //Creates a callback function to handle the results of the login attempts
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -124,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
         chart.setDrawGridBackground(false);
         chart.animateXY(2000, 2000);
         chart.invalidate();
+        chart.setTouchEnabled(false);
 
     }
 

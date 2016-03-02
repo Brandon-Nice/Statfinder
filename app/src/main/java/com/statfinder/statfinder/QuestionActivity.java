@@ -60,8 +60,9 @@ public class QuestionActivity extends FragmentActivity {
 //
 //            }
 //        });
+
         //Kenny's playground
-        Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/United States/Indiana/West Lafayette");
+        Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
         questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -101,23 +102,24 @@ public class QuestionActivity extends FragmentActivity {
                         tv.setText("Question: " + questionName);
 
                         //Answers are essentially an array list with String keys and int values for each entry
-                        System.out.println("Shit that matters: " + coolStuff.get("Answers")); //testing
-                        System.out.println(cool + " : " + temptry.getKey() + " - " + temptry.getValue()); //testing
+                        //System.out.println("Shit that matters: " + coolStuff.get("Answers")); //testing
+                        //System.out.println(cool + " : " + temptry.getKey() + " - " + temptry.getValue()); //testing
 
                         HashMap<String, Object> answersList = (HashMap) coolStuff.get("Answers"); //gets the list of answers for each question
                         Object question = coolStuff.get("Name"); //gets the question
-                        System.out.println("Yooooo " + answersList.entrySet() + " : " +  answersList.keySet()); //testing
+                        System.out.println("Yo " + answersList.entrySet() + " : " +  answersList.keySet()); //testing
                         Object values[] = answersList.keySet().toArray(); //make the answers an array for easy access
 
-                        for(int k = 0; k < answersList.size(); k++){
-                            System.out.println("Dis be da values= " + values[k]);
-                        }
+                       // for(int k = 0; k < answersList.size(); k++){
+                       //     System.out.println("Dis be da values= " + values[k]);
+                       // }
                         //System.out.println(answersList.keySet().toArray()[0]);
                         if (answersList.size() > 2) {
-                            System.out.println("Multiple answers detected");
+                            //System.out.println("Multiple answers detected");
 
                             //pass the size to the activity
                             Intent init = new Intent(QuestionActivity.this, DynamicLayoutActivity.class);
+
                             init.putExtra("size", String.valueOf(answersList.size()));
 
                             //pass the question to the activity
@@ -146,12 +148,6 @@ public class QuestionActivity extends FragmentActivity {
                             Button answer1Button = (Button) findViewById(R.id.answer1Button);
                             Button answer2Button = (Button) findViewById(R.id.answer2Button);
 
-                            /*set the text for the buttons*/
-                            //TextView ans1 = (TextView) findViewById(R.id.answer1Text);
-                            //ans1.setText(questionName);
-                            //TextView ans2 = (TextView) findViewById(R.id.answer2Text);
-                            //ans2.setText(questionName);
-
                             answer1Button.setText(values[0].toString());
                             answer2Button.setText(values[1].toString());
                             /* Send user to ResultsFragment on answer selection */
@@ -176,19 +172,14 @@ public class QuestionActivity extends FragmentActivity {
 
                     }
 
-
-
 //                    else {
 //                        Toast.makeText(getApplicationContext(),
 //                                "Sorry! No questions available at this time :(", Toast.LENGTH_LONG).show();
-//
 //                    }
 
                     //cool++;
                 }
                 //}
-
-
             }
 
             @Override

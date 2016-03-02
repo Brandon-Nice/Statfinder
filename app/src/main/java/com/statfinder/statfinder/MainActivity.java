@@ -91,17 +91,6 @@ public class MainActivity extends AppCompatActivity
         //setUser
         setUser();
 
-        //Gets the picture of the user
-//
-//        if(isLoggedIn()) {
-//            final ProfilePictureView profilePictureView;
-//            profilePictureView = (ProfilePictureView) findViewById(R.id.userimageView);
-//            profilePictureView.setCropped(true);
-//            profilePictureView.setProfileId(AccessToken.getCurrentAccessToken().getUserId());
-//        }
-        //Gets the categories selected
-        //setNavDrawer();
-
         /* Create button object for making a question */
         Button makeQuestionButton = (Button)findViewById(R.id.makequestionButton);
         /* Send user to the add question page on button press */
@@ -112,7 +101,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-         /* Create button object for making a question */
+        /* Create button object for making a question */
         Button popularQuestionButton = (Button)findViewById(R.id.popularButton);
         /* Send user to the add question page on button press */
         popularQuestionButton.setOnClickListener(new View.OnClickListener() {
@@ -125,8 +114,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-
-        Button randomQuestionButton = (Button)findViewById(R.id.randomButton);
+        final Button randomQuestionButton = (Button)findViewById(R.id.randomButton);
         /* Send user to the add question page on button press */
         randomQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,14 +126,10 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        /* Buttons on home page */
-        Button popularButton = (Button)findViewById(R.id.popularButton);
-        Button randomButton = (Button)findViewById(R.id.randomButton);
-
         /* Use database to set text in buttons to any popular or random question */
         /* Question will be added from the database when we have that working */
-        popularButton.setText("Popular Questions\n" + "This is a popular question");
-        randomButton.setText("Random Questions\n" + "This is a random question");
+        //popularQuestionButton.setText("Popular Questions\n" + "This is a popular question");
+        //randomQuestionButton.setText("Random Questions\n" + "This is a random question");
 
     }
     public boolean isLoggedIn() {
@@ -252,32 +236,37 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //Kenny's playground
-                Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/United States/Indiana/West Lafayette");
+                Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
                 questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
+                        Iterator it = questionsHashMap.entrySet().iterator();
 
-                        //Random r = new Random();
-                        //int randomQuestionNumber = r.nextInt(questionsHashMap.size());
-                        //HashMap<String, Object> questionEntry = questionsHashMap
-//                        HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
-//                        //System.out.println("VALUE OF datasnapshot ENTRY: " + dataSnapshot);
-//                        Iterator it = questionsHashMap.entrySet().iterator();
-//                        //for(int i = 0; i < questionsHashMap.size(); i++) {
-//                        int cool = 0;
-//                        while (it.hasNext()) {
-//                            HashMap.Entry temptry = (HashMap.Entry) it.next();
-//                            HashMap<String, Object> coolStuff = (HashMap)temptry.getValue();
-//
-//                            //Answers are essentially an array list with String keys and int values for each entry
-//                            System.out.println("Shit that matters: " + coolStuff.get("Answers"));
-//
-//                            //System.out.println(cool + " : " + temptry.getKey() + " - " + temptry.getValue());
-//                            //cool++;
-//                        }
-//                        //}
+                        Button popularQuestionButton = (Button)findViewById(R.id.popularButton);
+                        Button randomQuestionButton = (Button)findViewById(R.id.randomButton);
+                        String questionName;
 
+                        //while(it.hasNext()) {
+                            HashMap.Entry temptry = (HashMap.Entry) it.next();
+                            HashMap<String, Object> entries = (HashMap)temptry.getValue();
+                            questionName = entries.get("Name").toString();
+                            int questionSize = questionName.length();
 
+                            String moddedQ = "";
+                            char c;
+                            for(int i = 0; i < questionSize; i++) {
+                                c = questionName.charAt(i);
+                                if (c == '_') {
+                                    c = ' ';
+                                    moddedQ += c;
+                                }
+                                else {
+                                    moddedQ += c;
+                                }
+                            }
+                            randomQuestionButton.setText("Random Question:\n" + moddedQ);
+                            popularQuestionButton.setText("Popular Question:\n" + moddedQ);
                     }
 
                     @Override
@@ -327,65 +316,5 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-
-    //Menu stuff - TODO: Add category stuff once Firebase setup is done
-//    private void setNavDrawer(){
-//        //Initializing NavigationView
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
-//        // Initializing Toolbar and setting it as the actionbar
-////        toolbar = (Toolbar) findViewById(R.id.toolbar);
-////        setSupportActionBar(toolbar);
-//
-//        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//
-//            // This method will trigger on item Click of navigation menu
-//            @Override
-//            public boolean onNavigationItemSelected(MenuItem menuItem) {
-//                //Checking if the item is in checked state or not, if not make it in checked state
-//                // I THINK THAT I NEED EDIT HERE...
-//                Log.i("yo", "In second method!");
-//                if (menuItem.isChecked()) {
-//                    menuItem.setChecked(false);
-//                }
-//
-//                else {
-//                    menuItem.setChecked(true);
-//                }
-//
-//                //Closing drawer on item click
-//                //drawerLayout.closeDrawers();
-////                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-////                drawer.closeDrawer(GravityCompat.START);
-//
-//
-//                //Check to see which item was being clicked and perform appropriate action
-////                switch (menuItem.getItemId()) {
-////                    //Replacing the main content with ContentFragment
-////                    case R.id.home:
-////                        return true;
-////                }
-//                int id = menuItem.getItemId();
-//
-//                if (id == R.id.nav_add) {
-//                    Intent init = new Intent(MainActivity.this, AddQuestionActivity.class);
-//                    startActivity(init);
-//                } else if (id == R.id.nav_gallery) {
-//
-//                } else if (id == R.id.nav_slideshow) {
-//
-//                } else if (id == R.id.nav_manage) {
-//
-//                } else if (id == R.id.nav_share) {
-//
-//                } else if (id == R.id.nav_send) {
-//
-//                }
-//
-//                return true;
-//            }
-//        });
-//    }
 
 }

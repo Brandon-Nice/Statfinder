@@ -45,7 +45,6 @@ public class DynamicLayoutActivity extends AppCompatActivity {
 
         //For each answer add a button
         for(int i = 0; i < size; i++) {
-
             LinearLayout ll = (LinearLayout) findViewById(R.id.buttonlayout);
             ll.setOrientation(LinearLayout.VERTICAL);
             Button btn = new Button(this);
@@ -55,6 +54,8 @@ public class DynamicLayoutActivity extends AppCompatActivity {
             LayoutParams lp = new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             ll.addView(btn, lp);
         }
+
+
 
 
 
