@@ -219,6 +219,12 @@ public class MainActivity extends AppCompatActivity
             init.putExtra("category", "General");
             startActivity(init);
 
+        } else if (id == R.id.nav_about) {
+            Intent init = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(init);
+        } else if (id == R.id.nav_contact) {
+            Intent init = new Intent(MainActivity.this, ContactActivity.class);
+            startActivity(init);
         }
 
 //        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
