@@ -1,41 +1,28 @@
 package com.statfinder.statfinder;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 //import com.github.mikephil.charting.utils.Highlight;
 //import com.github.mikephil.charting.utils.PercentFormatter;
 
-import android.app.Activity;
 import android.graphics.Color;
-import android.R.color;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 public class ResultsFragment extends Fragment {
 
@@ -47,7 +34,7 @@ public class ResultsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         faActivity  = (FragmentActivity)    super.getActivity();
-        llLayout    = (RelativeLayout)    inflater.inflate(R.layout.activity_results, container, false);
+        llLayout    = (RelativeLayout)    inflater.inflate(R.layout.fragment_results, container, false);
 
         PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
         /* Turn off pie chart spinning */
@@ -134,26 +121,12 @@ public class ResultsFragment extends Fragment {
         /* Animate pie chart */
         //pieChart.animateXY(1500, 1000);
 
-        /* Button code to send to MainActivity after viewing question results */
-        Button next = (Button) llLayout.findViewById(R.id.nextButton);
 
-        /*  In the future, need to pass this the string for the next question in
-        *   the unanswered list so that when the next button is clicked, a new
-        *   question appears in the MainActivity. Known way to do this is to use
-         *  a "Bundle"  */
-        next.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(faActivity, QuestionActivity.class));
-            }
-        });
+
+
 
         /* Button code to go back to the home page (MainActivity) */
-        Button home = (Button) llLayout.findViewById(R.id.homeButton);
-        home.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(faActivity, MainActivity.class));
-            }
-        });
+
 
         return llLayout;
 

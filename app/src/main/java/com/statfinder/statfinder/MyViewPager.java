@@ -46,6 +46,7 @@ public class MyViewPager extends ViewPager {
         this.isPagingEnabled = b;
     }
 
+
     public class MyScroller extends Scroller {
         public MyScroller(Context context) {
             super(context, new DecelerateInterpolator());
