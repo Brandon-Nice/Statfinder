@@ -1,8 +1,15 @@
 package com.statfinder.statfinder;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +31,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,11 +39,16 @@ import org.json.JSONObject;
 import com.firebase.client.Firebase;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
 import com.firebase.client.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity
@@ -87,6 +100,8 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }).executeAsync();
+
+
 
         //setUser
         setUser();
@@ -254,25 +269,25 @@ public class MainActivity extends AppCompatActivity
                         String questionName;
 
                         //while(it.hasNext()) {
-                            HashMap.Entry temptry = (HashMap.Entry) it.next();
-                            HashMap<String, Object> entries = (HashMap)temptry.getValue();
-                            questionName = entries.get("Name").toString();
-                            int questionSize = questionName.length();
+                        HashMap.Entry temptry = (HashMap.Entry) it.next();
+                        HashMap<String, Object> entries = (HashMap)temptry.getValue();
+                        questionName = entries.get("Name").toString();
+                        int questionSize = questionName.length();
 
-                            String moddedQ = "";
-                            char c;
-                            for(int i = 0; i < questionSize; i++) {
-                                c = questionName.charAt(i);
-                                if (c == '_') {
-                                    c = ' ';
-                                    moddedQ += c;
-                                }
-                                else {
-                                    moddedQ += c;
-                                }
+                        String moddedQ = "";
+                        char c;
+                        for(int i = 0; i < questionSize; i++) {
+                            c = questionName.charAt(i);
+                            if (c == '_') {
+                                c = ' ';
+                                moddedQ += c;
                             }
-                            randomQuestionButton.setText("Random Question:\n" + moddedQ);
-                            popularQuestionButton.setText("Popular Question:\n" + moddedQ);
+                            else {
+                                moddedQ += c;
+                            }
+                        }
+                        randomQuestionButton.setText("Random Question:\n" + moddedQ);
+                        popularQuestionButton.setText("Popular Question:\n" + moddedQ);
                     }
 
                     @Override
@@ -314,6 +329,121 @@ public class MainActivity extends AppCompatActivity
 
                 }
 
+                Location location = null;
+                double longitude;
+                double latitude;
+                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    location = getLastKnownLocation();
+                }
+                if (location == null) {
+                    Toast.makeText(getApplicationContext(), "Please enable location services so we could get your location", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                Geocoder geocoder = new Geocoder(MainActivity.this);
+                String city = null;
+                String state = null;
+                String country = null;
+                try {
+                    Address address = geocoder.getFromLocation(latitude, longitude, 1).get(0);
+                    city = address.getLocality();
+                    state = address.getAdminArea();
+                    country = address.getCountryName();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                currentUser.setCity(city);
+                currentUser.setState(state);
+                currentUser.setCountry(country);
+
+                final String finalCity = city;
+                final String finalCountry = country;
+                final String finalState = state;
+
+                final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/");
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        System.out.println(dataSnapshot);
+                        if (dataSnapshot.getValue() == null) {
+                            ArrayList<String> categories = ((MyApplication) getApplication()).defCat;
+                            for (int i = 0; i < categories.size(); i++) {
+                                final Firebase moderatedRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" + categories.get(i));
+                                moderatedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        if (snapshot.getValue() != null) {
+                                            HashMap<String, Object> questions = (HashMap) snapshot.getValue();
+                                            final String category = snapshot.getKey();
+                                            for (Map.Entry<String, Object> question : questions.entrySet()) {
+                                                HashMap moderatedQuestion = (HashMap) question.getValue();
+                                                HashMap<String, Object> questionInfo = new HashMap();
+                                                questionInfo.put("Flags", moderatedQuestion.get("Flags"));
+                                                questionInfo.put("Moderated", moderatedQuestion.get("Moderated"));
+                                                questionInfo.put("Name", moderatedQuestion.get("Name"));
+                                                questionInfo.put("Total_Votes", moderatedQuestion.get("Total_Votes"));
+                                                final Firebase questionRef = ref.child(category + "/" + question.getKey() + "/");
+                                                questionRef.setValue(questionInfo);
+                                                questionRef.setPriority(0);
+                                                Firebase answersRef = moderatedRef.child(question.getKey() + "/Answers");
+                                                answersRef.orderByPriority().addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        int childNumber = 0;
+                                                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                                            Firebase answerRef = questionRef.child("Answers/" + child.getKey());
+                                                            answerRef.setValue(0);
+                                                            answerRef.setPriority(childNumber++);
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                                    }
+                                                });
+                                                Firebase numQuestionRef = ref.child("NumQuestions");
+                                                numQuestionRef.runTransaction(new Transaction.Handler() {
+                                                    @Override
+                                                    public Transaction.Result doTransaction(MutableData mutableData) {
+                                                        if (mutableData.getValue() == null) {
+                                                            mutableData.setValue("1");
+                                                        } else {
+                                                            int value = Integer.parseInt((String) mutableData.getValue(), 16);
+                                                            value++;
+                                                            String incHex = Integer.toHexString(value);
+                                                            mutableData.setValue(incHex);
+                                                        }
+                                                        return Transaction.success(mutableData);
+                                                    }
+
+                                                    @Override
+                                                    public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled (FirebaseError firebaseError){
+
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -321,6 +451,29 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+
+    }
+
+    private Location getLastKnownLocation() {
+        LocationManager mLocationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            Location l = null;
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                l = mLocationManager.getLastKnownLocation(provider);
+            }
+
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
     }
 
 }

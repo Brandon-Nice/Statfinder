@@ -31,6 +31,8 @@ import android.widget.Toast;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
 import com.firebase.client.ValueEventListener;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,7 +75,6 @@ public class AddQuestionActivity extends AppCompatActivity {
 
         InputFilter[] answerFilters = new InputFilter[]{characterFilter, answerLength};
         InputFilter[] questionFilters = new InputFilter[]{characterFilter, questionLength};
-
 
 
         final EditText question = (EditText) findViewById(R.id.questionText);
@@ -183,23 +184,20 @@ public class AddQuestionActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (numAnswers == 2) {
-                    if (secondAnswer.getText().length() == 0)
-                    {
+                    if (secondAnswer.getText().length() == 0) {
                         Toast.makeText(getApplicationContext(), "Please enter a second answer before adding third", Toast.LENGTH_LONG).show();
                         return;
                     }
                     minusAnswer.setVisibility(View.VISIBLE);
                     thirdAnswer.setVisibility(View.VISIBLE);
                 } else if (numAnswers == 3) {
-                    if (thirdAnswer.getText().length() == 0)
-                    {
+                    if (thirdAnswer.getText().length() == 0) {
                         Toast.makeText(getApplicationContext(), "Please enter a third answer before adding fourth", Toast.LENGTH_LONG).show();
                         return;
                     }
                     fourthAnswer.setVisibility(View.VISIBLE);
                 } else if (numAnswers == 4) {
-                    if (fourthAnswer.getText().length() == 0)
-                    {
+                    if (fourthAnswer.getText().length() == 0) {
                         Toast.makeText(getApplicationContext(), "Please enter a fourth answer before adding fifth", Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -233,18 +231,15 @@ public class AddQuestionActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if (question.getText().toString().trim().length() == 0)
-                {
+                if (question.getText().toString().trim().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please enter a question.", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (firstAnswer.getText().toString().trim().length() == 0 || secondAnswer.getText().length() == 0)
-                {
+                if (firstAnswer.getText().toString().trim().length() == 0 || secondAnswer.getText().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please enter at least two answers.", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (firstAnswer.getText().toString().equals(secondAnswer.getText().toString()))
-                {
+                if (firstAnswer.getText().toString().equals(secondAnswer.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Please enter two different answers.", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -274,85 +269,68 @@ public class AddQuestionActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/");
-                if (question.getText().toString().trim().equals("Reset database")
-                        && firstAnswer.getText().toString().trim().equals("Do")
-                        && secondAnswer.getText().toString().trim().equals("It")
-                        && ((MyApplication) getApplication()).getUser().getModStatus())
-                {
-                    ref.child("Questions/").removeValue();
-                    ref.child("Questions/NumQuestions").setValue("0");
-                    addQuestions();
-                }
+
                 String questionName = question.getText().toString().trim();
                 final ArrayList<String> answers = new ArrayList();
                 answers.add(firstAnswer.getText().toString());
                 answers.add(secondAnswer.getText().toString());
-                if (thirdAnswer.getText().length() != 0 && thirdAnswer.getVisibility() == View.VISIBLE)
-                {
+                if (thirdAnswer.getText().length() != 0 && thirdAnswer.getVisibility() == View.VISIBLE) {
                     answers.add(thirdAnswer.getText().toString());
                 }
-                if (fourthAnswer.getText().length() != 0 && fourthAnswer.getVisibility() == View.VISIBLE)
-                {
+                if (fourthAnswer.getText().length() != 0 && fourthAnswer.getVisibility() == View.VISIBLE) {
                     answers.add(fourthAnswer.getText().toString());
                 }
-                if (fifthAnswer.getText().length() != 0 && fifthAnswer.getVisibility() == View.VISIBLE)
-                {
+                if (fifthAnswer.getText().length() != 0 && fifthAnswer.getVisibility() == View.VISIBLE) {
                     answers.add(fifthAnswer.getText().toString());
                 }
-                if (otherCheckBox.isChecked())
-                {
+                if (otherCheckBox.isChecked()) {
                     answers.add("Other");
                 }
-                addQuestions();
                 Boolean moderated = ((MyApplication) getApplication()).getUser().getModStatus();
                 final String category = categorySpinner.getSelectedItem().toString();
                 final HashMap questionInfo = createQuestion(questionName, moderated, answers);
                 final String finalCity = city.replaceAll(" ", "_");
                 final String finalCountry = country.replaceAll(" ", "_");
                 final String finalState = state.replaceAll(" ", "_");
-                ref.child("Questions/NumQuestions").addListenerForSingleValueEvent(new ValueEventListener() {
+                final Firebase numQuestionRef = ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/NumQuestions");
+                numQuestionRef.runTransaction(new Transaction.Handler() {
                     @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        int value = Integer.parseInt((String) snapshot.getValue(), 16);
-                        value++;
-                        String incHex = Integer.toHexString(value);
-                        ref.child("Questions/NumQuestions").setValue(incHex);
-                        Firebase questionRef = ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" + category + "/" + (String) snapshot.getValue());
-                        questionRef.setValue(questionInfo);
-                        questionRef.setPriority(0);
-                        for (int i = 0; i < answers.size(); i++)
-                        {
-                            Firebase answerRef = ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" + category + "/" + (String) snapshot.getValue() + "/Answers/" + answers.get(i));
-                            answerRef.setValue(0);
-                            answerRef.setPriority(i);
+                    public Transaction.Result doTransaction(MutableData mutableData) {
+                        long value = 0;
+                        if(mutableData.getValue() != null) {
+                            String numQuestions = (String) mutableData.getValue();
+                            value = Long.parseLong(numQuestions, 16);
                         }
-                        finish();
+                        value++;
+                        String incHex = Long.toHexString(value);
+                        mutableData.setValue(incHex);
+                        return Transaction.success(mutableData);
                     }
 
                     @Override
-                    public void onCancelled(FirebaseError firebaseError) {
+                    public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+                        System.out.println(dataSnapshot);
+                        String idNumber = Long.toHexString(Long.parseLong((String) dataSnapshot.getValue(), 16) - 1);
+                        Firebase questionRef = ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" + category + "/" + idNumber);
+                        questionRef.setValue(questionInfo);
+                        questionRef.setPriority(0);
+                        for (int i = 0; i < answers.size(); i++) {
+                            Firebase answerRef = questionRef.child("/Answers/" + answers.get(i));
+                            answerRef.setValue(0);
+                            answerRef.setPriority(i);
+                        }
+
+                        Firebase userRef = ref.child("Users/" + ((MyApplication) getApplication()).getUser().getId() + "/CreatedQuestions/" + idNumber);
+                        Long tsLong = System.currentTimeMillis() / 1000;
+                        userRef.setValue(tsLong);
+
+                        finish();
                     }
                 });
             }
         });
     }
 
-    private void addQuestions() {
-        Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/United_States/Indiana/West_Lafayette/General/");
-        ref.child("0").setValue(createQuestion("Which kind of milk do you prefer?", true, new ArrayList<String>() {{add("2%");add("Chocolate");add("Skim");add("Whole milk");add("Other");}}));
-        ref.child("1").setValue(createQuestion("Do you believe in love at first sight?", true, new ArrayList<String>() {{add("Yes");add("No");add("Love is Dead");}}));
-        ref.child("2").setValue(createQuestion("Which do you prefer:", true, new ArrayList<String>() {{add("Apples");add("Bananas");add("Oranges");}}));
-        ref.child("3").setValue(createQuestion("Have you ever stayed up all night?", true, new ArrayList<String>() {{add("Yes");add("No");add("Too high to remember");}}));
-        ref.child("4").setValue(createQuestion("What is the best day", true, new ArrayList<String>() {{add("Christmas");add("Halloween");add("Thanksgiving");add("Valentine's");add("Other");}}));
-        ref.child("5").setValue(createQuestion("How many puppies would you get if you had unlimited money?", true, new ArrayList<String>() {{add("1");add("5");add("Unlimited puppies!");}}));
-        ref.child("6").setValue(createQuestion("jhihihuv", true, new ArrayList<String>() {{add("hrxuif");add("If kcjx");}}));
-        ref.child("7").setValue(createQuestion("How can I get rich quick?", true, new ArrayList<String>() {{add("Ask your dad for a small loan of 1 million dollars");add("Die poor");add("Work at Ford for the rest of your life");}}));
-        ref.child("8").setValue(createQuestion("What time is it?", true, new ArrayList<String>() {{add("7:12pm");add("Adventure Time!");add("Mail Time");}}));
-        ref.child("9").setValue(createQuestion("What theory about the universe do you believe?", true, new ArrayList<String>() {{add("Multiverse theory");add("Reality is an illusion, the universe is a hologram, buy gold, buuuuuuuuuuyyyy!");}}));
-        ref.child("a").setValue(createQuestion("Fudge", true, new ArrayList<String>() {{add("buttzzzzz");add("do you");add("feel like");add("making some");}}));
-        ref.child("b").setValue(createQuestion("bing", true, new ArrayList<String>() {{add("bang");add("bong");add("kapow");}}));
-
-    }
 
     private HashMap createQuestion(String question, Boolean moderated, ArrayList<String> answers)
     {
@@ -360,8 +338,6 @@ public class AddQuestionActivity extends AppCompatActivity {
         questionMap.put("Flags", 0);
         questionMap.put("Name", question.trim().replaceAll(" ", "_"));
         questionMap.put("Moderated", moderated);
-        Long tsLong = System.currentTimeMillis()/1000;
-        questionMap.put("Time_Created", tsLong);
         questionMap.put("Total_Votes", 0);
         return questionMap;
     }

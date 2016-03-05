@@ -29,6 +29,15 @@ public class User {
     //The user's mod/user preference
     private Boolean modPreference;
 
+    //The user's current city
+    private String city;
+
+    //The user's current state
+    private String state;
+
+    // The user's current country
+    private String country;
+
     //An empty User
     public User()
     {
@@ -101,4 +110,27 @@ public class User {
     }
 
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 }
