@@ -358,9 +358,9 @@ public class MainActivity extends AppCompatActivity
                 currentUser.setState(state);
                 currentUser.setCountry(country);
 
-                final String finalCity = city;
-                final String finalCountry = country;
-                final String finalState = state;
+                final String finalCity = city.replaceAll(" ", "_");
+                final String finalCountry = country.replaceAll(" ", "_");
+                final String finalState = state.replaceAll(" ", "_");
 
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -405,17 +405,15 @@ public class MainActivity extends AppCompatActivity
 
                                                     }
                                                 });
-                                                Firebase numQuestionRef = ref.child("NumQuestions");
+                                                Firebase numQuestionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/NumQuestions");
                                                 numQuestionRef.runTransaction(new Transaction.Handler() {
                                                     @Override
                                                     public Transaction.Result doTransaction(MutableData mutableData) {
                                                         if (mutableData.getValue() == null) {
                                                             mutableData.setValue("1");
                                                         } else {
-                                                            int value = Integer.parseInt((String) mutableData.getValue(), 16);
-                                                            value++;
-                                                            String incHex = Integer.toHexString(value);
-                                                            mutableData.setValue(incHex);
+                                                            String value = MainActivity.this.incrementHex((String) mutableData.getValue());
+                                                            mutableData.setValue(value);
                                                         }
                                                         return Transaction.success(mutableData);
                                                     }
@@ -474,6 +472,88 @@ public class MainActivity extends AppCompatActivity
             }
         }
         return bestLocation;
+    }
+
+    public String incrementHex(String value)
+    {
+        char[] hexValue = value.toCharArray();
+        boolean carryOne = true;
+        for (int i = hexValue.length - 1; i >= 0 && carryOne == true; i--)
+        {
+            carryOne = false;
+            if (hexValue[i] == '0')
+            {
+                hexValue[i] = '1';
+            }
+            else if (hexValue[i] == '1')
+            {
+                hexValue[i] = '2';
+            }
+            else if (hexValue[i] == '2')
+            {
+                hexValue[i] = '3';
+            }
+            else if (hexValue[i] == '3')
+            {
+                hexValue[i] = '4';
+            }
+            else if (hexValue[i] == '4')
+            {
+                hexValue[i] = '5';
+            }
+            else if (hexValue[i] == '5')
+            {
+                hexValue[i] = '6';
+            }
+            else if (hexValue[i] == '6')
+            {
+                hexValue[i] = '7';
+            }
+            else if (hexValue[i] == '7')
+            {
+                hexValue[i] = '8';
+            }
+            else if (hexValue[i] == '8')
+            {
+                hexValue[i] = '9';
+            }
+            else if (hexValue[i] == '9')
+            {
+                hexValue[i] = 'a';
+            }
+            else if (hexValue[i] == 'a')
+            {
+                hexValue[i] = 'b';
+            }
+            else if (hexValue[i] == 'b')
+            {
+                hexValue[i] = 'c';
+            }
+            else if (hexValue[i] == 'c')
+            {
+                hexValue[i] = 'd';
+            }
+            else if (hexValue[i] == 'd')
+            {
+                hexValue[i] = 'e';
+            }
+            else if (hexValue[i] == 'e')
+            {
+                hexValue[i] = 'f';
+            }
+            else if (hexValue[i] == 'f')
+            {
+                hexValue[i] = '0';
+                carryOne = true;
+            }
+        }
+
+        if (carryOne == true)
+        {
+            String tempHexValue = "1" + new String(hexValue);
+            hexValue = tempHexValue.toCharArray();
+        }
+        return new String(hexValue);
     }
 
 }

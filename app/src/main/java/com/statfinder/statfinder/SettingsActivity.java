@@ -145,8 +145,7 @@ public class SettingsActivity extends AppCompatActivity {
                     ref.child("selectedCategory").setValue(selCat);
 
 
-                    Intent init = new Intent(SettingsActivity.this, MainActivity.class);
-                    startActivity(init);
+                    finish();
                 }
 
 
