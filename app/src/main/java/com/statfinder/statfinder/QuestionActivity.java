@@ -102,6 +102,7 @@ public class QuestionActivity extends FragmentActivity {
 
                     Bundle bundle = new Bundle();
                     bundle.putStringArray("answers", answers);
+                    bundle.putString("category", category);
                     AnswersFragment answerFragment = new AnswersFragment();
                     answerFragment.setArguments(bundle);
 

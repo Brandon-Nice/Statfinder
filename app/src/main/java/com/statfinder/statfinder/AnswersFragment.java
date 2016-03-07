@@ -27,6 +27,7 @@ public class AnswersFragment extends Fragment {
         llLayout.setOrientation(LinearLayout.VERTICAL);
 
         String[] answers = getArguments().getStringArray("answers");
+        String category = getArguments().getString("category");
 
         final MyViewPager viewpager = (MyViewPager) getActivity().findViewById(R.id.viewpager);
         final Button nextButton = (Button) getActivity().findViewById(R.id.skipButton);
@@ -42,6 +43,8 @@ public class AnswersFragment extends Fragment {
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Button b = (Button) v;
+
                     nextButton.setText("Next");
                     viewpager.setCurrentItem(1);
                     viewpager.setPagingEnabled(true);
