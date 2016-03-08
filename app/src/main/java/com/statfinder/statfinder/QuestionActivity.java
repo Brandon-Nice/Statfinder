@@ -1,6 +1,7 @@
 package com.statfinder.statfinder;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -23,15 +24,123 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import android.os.AsyncTask;
 
 public class QuestionActivity extends FragmentActivity {
+    User currentUser = null;// = ((MyApplication) getApplication()).getUser();
+
+    Firebase answeredRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/answeredQuestions/");
+    Firebase skippedRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/skippedQuestions/");
+    Firebase checkedRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/createdQuestions/");
+    boolean flag = false;
+    String id = null;
+    HashMap.Entry tempQuestion = null;
+
+
 
     MyPagerAdapter mPagerAdapter;
+    public boolean isInAnswered(final String id) {
+        answeredRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //S ystem.out.println("Flag:")
+                    if (dataSnapshot.getValue() == null) {
+                        ArrayList<String> tempList = new ArrayList();
+                        tempList.add(id);
+                        answeredRef.setValue(tempList);
+                        //flag.concat("true");
+                    flag = true;
+                    //lock.unlock();
+                } else {
+                    //flag.concat("false");
+                    flag = true;
+                    //lock.unlock();
+                }
+            }
 
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        /*while(flag.length() == 0) {     //Firebase has strange reading properties and thus needs to be controlled using an outside variable
+            System.out.println("ANSWERED WHILE");
+
+        }*/
+        System.out.println("########################## Answered Flag: " + flag);
+        return flag;
+    }
+
+    public boolean isInSkipped(final String id) {
+        //final String flag = "";
+
+        skippedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() == null) {
+                    ArrayList<String> tempList = new ArrayList();
+                    tempList.add(id);
+                    answeredRef.setValue(tempList);
+                    //flag.concat("true");
+                }
+                else{
+                    //flag.concat("false");
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+        //while(flag.length() == 0) {
+            //System.out.println("SKIPPED WHILE");
+
+       // }
+       // if(flag.equals("true")) {
+        //    return true;
+      //  }
+        return false;
+    }
+
+    public boolean isInChecked(final String id) {
+        //final String flag = "";
+
+        checkedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() == null) {
+                    //flag.concat("true");
+                }
+                else{
+                    //flag.concat("false");
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+       // while(flag.length() == 0) {
+            //System.out.println("CHECKED WHILE");
+        //}
+        //if(flag.equals("true")) {
+        //    return true;
+       // }
+        return false;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
+        currentUser = ((MyApplication) getApplication()).getUser();
+        answeredRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/answeredQuestions/");
+        skippedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/skippedQuestions/");
+        checkedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/createdQuestions/");
+
 
         Button home = (Button) findViewById(R.id.homeButton);
         home.setOnClickListener(new View.OnClickListener() {
@@ -40,7 +149,7 @@ public class QuestionActivity extends FragmentActivity {
             }
         });
 
-        newQuestion();
+        newQuestion(null);
         //listen for if the user presses the skip button
 //        Button skip = ((Button) findViewById(R.id.skipButton));
 //
@@ -56,96 +165,202 @@ public class QuestionActivity extends FragmentActivity {
 
     }
 
-    public void newQuestion() {
+    public void newQuestion(final String questionID) {
+
         Intent init = getIntent();
         final String cameFrom;
         cameFrom = init.getStringExtra("category");
         System.out.println("this is the category:" + cameFrom); //testing
+                Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
+                questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(DataSnapshot dataSnapshot) {
+                       HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
+                       System.out.println("Classic Print - questionsHashMap: " + questionsHashMap);
+                       Iterator it = questionsHashMap.entrySet().iterator();
+                       //Temporary entry for iterator that represents a question.
+                       tempQuestion = (HashMap.Entry) it.next();
+                       System.out.println("tempQuestion: " + tempQuestion);
 
-        Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
-        questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
+                       //while(!flag) {
+                          // System.out.println("####################While Loop#####################");
+                       //Currently evaluating first question in database
+                           if(questionID == null) {
+                               id = (String) tempQuestion.getKey();
+                           }
+                       else {
+                               //Implies recursive call happened, iterates to next question relative to current question
+                               HashMap.Entry hashmapBuffer = (HashMap.Entry)it.next();
+                               String bufferQuestionID = (String)hashmapBuffer.getKey();
+                              while(!bufferQuestionID.equals(questionID)){
+                                  hashmapBuffer = (HashMap.Entry)it.next();
+                                  bufferQuestionID = (String) hashmapBuffer.getKey();
+                              }
+                               hashmapBuffer = (HashMap.Entry)it.next();
+                               id = (String)hashmapBuffer.getKey();
+                           }
+                       System.out.println("Current question key: " + id);
+                           //Nested listeners to check the answered, skipped, and created questions
+                           checkedRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                               @Override
+                               public void onDataChange(final DataSnapshot checkedSnapshot) {
+                                   skippedRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                                       @Override
+                                       public void onDataChange(final DataSnapshot skippedSnapshot) {
+                                           answeredRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                                               @Override
+                                               public void onDataChange(DataSnapshot answeredSnapshot) {
+                                                   System.out.println("Answered snapshot: " + answeredSnapshot.getValue());
+                                                   System.out.println("skipped snapshot: " + skippedSnapshot.getValue());
+                                                   System.out.println("checked snapshot: " + checkedSnapshot.getValue());
 
-            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                   if (answeredSnapshot.getValue() == null && skippedSnapshot.getValue() == null && checkedSnapshot.getValue() == null) {
+                                                       //Question has yet to be seen in history
 
-                HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
-                Iterator it = questionsHashMap.entrySet().iterator();
+                                                       //Actual question with variables attached to it
+                                                       HashMap<String, Object> questionEntry = (HashMap) tempQuestion.getValue(); //stores each node in database
+                                                       System.out.println("questionEntry: " + questionEntry);
+                                                       //Get the category first
+                                                       String category = questionEntry.get("Category").toString();
 
-                HashMap.Entry temptry = (HashMap.Entry) it.next();
-                HashMap<String, Object> coolStuff = (HashMap) temptry.getValue(); //stores each node in database
+                                                       //if the category from the question matches what the user selects
+                                                       //if (category.equals(cameFrom)) {
 
-                //Get the category first
-                String category = coolStuff.get("Category").toString();
+                                                       //Get the Question name
+                                                       String questionName = questionEntry.get("Name").toString();
+                                                       System.out.println("Question: " + questionName);
+                                                       TextView tv = (TextView) findViewById(R.id.qText);
+                                                       tv.setText(questionName);
 
-                //if the category from the question matches what the user selects
-                if (category.equals(cameFrom)) {
+                                                       //gets the list of answers for each question
+                                                       HashMap<String, Object> answersList = (HashMap) questionEntry.get("Answers");
+                                                       System.out.println("Check");
+                                                       System.out.println("Current question's answer list: " + answersList);
 
-                    //Get the Question name
-                    String questionName = coolStuff.get("Name").toString();
-                    System.out.println("Question: " + questionName);
-                    TextView tv = (TextView) findViewById(R.id.qText);
-                    tv.setText(questionName.replace('_', ' '));
+                                                       //gets the question
+                                                       Object question = questionEntry.get("Name");
+                                                       System.out.println("Current question: " + question);
+
+                                                       //make the answers an array for easy access
+                                                       Object[] objectAnswers = answersList.keySet().toArray();
+                                                       String[] answers = Arrays.copyOf(objectAnswers, objectAnswers.length, String[].class);
+
+                                                       Bundle bundle = new Bundle();
+                                                       bundle.putStringArray("answers", answers);
+                                                       AnswersFragment answerFragment = new AnswersFragment();
+                                                       answerFragment.setArguments(bundle);
+
+                                                       ResultsFragment resultFragment = new ResultsFragment();
+
+                                                       //For each answer add a button
+                                                       ArrayList<Fragment> fragments = new ArrayList<Fragment>();
+                                                       fragments.add(answerFragment);
+                                                       fragments.add(resultFragment);
+                                                       mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragments);
+                                                       final MyViewPager pager = (MyViewPager) findViewById(R.id.viewpager);
+                                                       pager.setAdapter(mPagerAdapter);
+                                                       flag = true;
+
+                                                       //} else {
+                                                       //    System.out.println("Error");
+                                                       // }
+
+                                                   } else {
+                                                       //Question has already been seen, go to next question via recursion
+                                                       newQuestion(id);
+                                                   }
+                                               }
+
+                                               @Override
+                                               public void onCancelled(FirebaseError firebaseError) {
+
+                                               }
+                                           });
+                                       }
+
+                                       @Override
+                                       public void onCancelled(FirebaseError firebaseError) {
+
+                                       }
+                                   });
+                               }
+
+                               @Override
+                               public void onCancelled(FirebaseError checkedError) {
+
+                               }
+                           });
+                           //Snapshot of question category (currently General)
+                       /*HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
+                       System.out.println("Classic Print - questionsHashMap: " + questionsHashMap);
+                       Iterator it = questionsHashMap.entrySet().iterator();
+                       //Temporary entry for iterator that representes a quesiton.
+                       HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
+                       System.out.println("tempQuestion: " + tempQuestion);
+                       while((!isInAnswered((String)tempQuestion.getKey())) && !isInSkipped((String)tempQuestion.getKey()) && !isInChecked((String)tempQuestion.getKey())) {
+                           tempQuestion = (HashMap.Entry)it.next();
+                       }*/
+                           //Actual question with variables attached to it
+                           /*HashMap<String, Object> questionEntry = (HashMap) tempQuestion.getValue(); //stores each node in database
+                           System.out.println("questionEntry: " + questionEntry);
+                           //Get the category first
+                           String category = questionEntry.get("Category").toString();
+
+                           //if the category from the question matches what the user selects
+                           if (category.equals(cameFrom)) {
+
+                               //Get the Question name
+                               String questionName = questionEntry.get("Name").toString();
+                               System.out.println("Question: " + questionName);
+                               TextView tv = (TextView) findViewById(R.id.qText);
+                               tv.setText(questionName);
+
+                               //gets the list of answers for each question
+                               HashMap<String, Object> answersList = (HashMap) questionEntry.get("Answers");
+                               System.out.println("Check");
+                               System.out.println("Current question's answer list: " + answersList);
+
+                               //gets the question
+                               Object question = questionEntry.get("Name");
+                               System.out.println("Current question: " + question);
+
+                               //make the answers an array for easy access
+                               Object[] objectAnswers = answersList.keySet().toArray();
+                               String[] answers = Arrays.copyOf(objectAnswers, objectAnswers.length, String[].class);
+
+                               Bundle bundle = new Bundle();
+                               bundle.putStringArray("answers", answers);
+                               AnswersFragment answerFragment = new AnswersFragment();
+                               answerFragment.setArguments(bundle);
+
+                               ResultsFragment resultFragment = new ResultsFragment();
+
+                               //For each answer add a button
+                               ArrayList<Fragment> fragments = new ArrayList<Fragment>();
+                               fragments.add(answerFragment);
+                               fragments.add(resultFragment);
+                               mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragments);
+                               final MyViewPager pager = (MyViewPager) findViewById(R.id.viewpager);
+                               pager.setAdapter(mPagerAdapter);
 
 
-                    HashMap<String, Object> answersList = (HashMap) coolStuff.get("Answers"); //gets the list of answers for each question
-                    System.out.println("Check");
-                    System.out.println("Current question's answer list: " + answersList);
-                    Object question = coolStuff.get("Name"); //gets the question
-                    System.out.println("Current question: " + question);
-                    //System.out.println("Yooooo " + answersList.entrySet() + " : " +  answersList.keySet()); //testing
+                           } else {
+                               System.out.println("Error");
+                           }*/
+                       }
 
-                    Object[] objectAnswers = answersList.keySet().toArray(); //make the answers an array for easy access
-                    String[] answers = Arrays.copyOf(objectAnswers, objectAnswers.length, String[].class);
+                       //}
 
-                    //pass the size to the activity
-                    int mapsize = answersList.size();
 
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArray("answers", answers);
-                    bundle.putString("category", category);
-                    AnswersFragment answerFragment = new AnswersFragment();
-                    answerFragment.setArguments(bundle);
+                       @Override
+                       public void onCancelled(FirebaseError firebaseError) {
 
-                    ResultsFragment resultFragment = new ResultsFragment();
+                       }
+                   }
 
-                    //For each answer add a button
-                    ArrayList<Fragment> fragments = new ArrayList<Fragment>();
-                    fragments.add(answerFragment);
-                    fragments.add(resultFragment);
-                    mPagerAdapter  = new MyPagerAdapter(getSupportFragmentManager(), fragments);
-                    final MyViewPager pager = (MyViewPager) findViewById(R.id.viewpager);
-                    pager.setAdapter(mPagerAdapter);
-
-                    /*for (int i = 0; i < mapsize; i++) {
-                        LinearLayout ll = (LinearLayout) findViewById(R.id.buttonlayout);
-                        ll.setOrientation(LinearLayout.VERTICAL);
-                        Button btn = new Button(QuestionActivity.this);
-                        btn.setText(answers[i].toString()); //set each button with the corresponding text
-                        //btn.setId(i);
-                        LayoutParams lp = new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                        btn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        });
-                        ll.addView(btn, lp);
-                    }*/
-
-                } else {
-                    System.out.println("Error");
-                }
-
+                );
+//>>>>>>> Stashed changes
             }
-
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
     }
 
-}
 
