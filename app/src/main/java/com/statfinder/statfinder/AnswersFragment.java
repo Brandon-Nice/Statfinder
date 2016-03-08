@@ -44,7 +44,7 @@ public class AnswersFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Button b = (Button) v;
-
+                    //TODO: since you have button text, you know the answer the user has selected. User underscores to locate Firebase URL using category
                     nextButton.setText("Next");
                     viewpager.setCurrentItem(1);
                     viewpager.setPagingEnabled(true);

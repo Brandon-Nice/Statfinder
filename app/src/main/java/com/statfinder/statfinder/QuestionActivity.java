@@ -140,6 +140,8 @@ public class QuestionActivity extends FragmentActivity {
 
                                                      //Actual question with variables attached to it
                                                      HashMap<String, Object> questionEntry = (HashMap) finalBuffer.getValue(); //stores each node in database
+                                                     String questionID = (String)finalBuffer.getKey();
+                                                     System.out.println("QuestionID" + questionID);
                                                      //System.out.println("questionEntry: " + questionEntry);
                                                      //Get the category first
                                                      String category = questionEntry.get("Category").toString();
@@ -158,7 +160,7 @@ public class QuestionActivity extends FragmentActivity {
                                                      System.out.println("Check");
                                                      System.out.println("Current question's answer list: " + answersList);
 
-                                                     //gets the question
+                                                     //gets the question name
                                                      Object question = questionEntry.get("Name");
                                                      System.out.println("Current question: " + question);
 
@@ -168,10 +170,13 @@ public class QuestionActivity extends FragmentActivity {
 
                                                      Bundle bundle = new Bundle();
                                                      bundle.putStringArray("answers", answers);
+                                                     bundle.putString("id", questionID);
+                                                     bundle.putString("category", category);
                                                      AnswersFragment answerFragment = new AnswersFragment();
                                                      answerFragment.setArguments(bundle);
 
                                                      ResultsFragment resultFragment = new ResultsFragment();
+                                                     resultFragment.setArguments(bundle);
 
                                                      //For each answer add a button
                                                      ArrayList<Fragment> fragments = new ArrayList<Fragment>();

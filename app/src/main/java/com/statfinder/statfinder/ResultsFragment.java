@@ -73,10 +73,10 @@ public class ResultsFragment extends Fragment {
         /* Answers Array */
         ArrayList<String> answers = new ArrayList<>();
         /* Populate answers list */
-        answers.add("January");
-        answers.add("February");
-        answers.add("March");
-        answers.add("April");
+        String[] questionAnswers = getArguments().getStringArray("answers");
+        for(String a: questionAnswers) {
+            answers.add(a);
+        }
 
         /* creating labels */
         ArrayList<String> labels = new ArrayList<String>();
