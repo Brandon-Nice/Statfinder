@@ -10,4 +10,5 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_question">QuestionActivity</string>
     <string name="title_activity_dynamic_layout">DynamicLayoutActivity</string>
+    <string name="title_activity_question_filter">QuestionFilterActivity</string>
 </resources>
