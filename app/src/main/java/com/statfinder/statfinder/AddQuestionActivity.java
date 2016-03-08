@@ -47,6 +47,7 @@ public class AddQuestionActivity extends AppCompatActivity {
      */
 
     int numAnswers = 2;
+    final int SPACE = 32;
 
 
     @Override
@@ -60,7 +61,7 @@ public class AddQuestionActivity extends AppCompatActivity {
             public CharSequence filter(CharSequence source, int start, int end,
                                        Spanned dest, int dstart, int dend) {
                 for (int i = start; i < end; i++) {
-                    if (source.charAt(i) == '/' || source.charAt(i) == '.' || source.charAt(i) == '#' || source.charAt(i) == '$'
+                    if (!(source.charAt(i) >= SPACE && source.charAt(i) <= '~') || source.charAt(i) == '/' || source.charAt(i) == '.' || source.charAt(i) == '#' || source.charAt(i) == '$'
                             || source.charAt(i) == '[' || source.charAt(i) == ']' || source.charAt(i) == '_') {
                         return "";
                     }
