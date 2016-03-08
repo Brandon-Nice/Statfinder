@@ -243,31 +243,11 @@ public class AddQuestionActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please enter two different answers.", Toast.LENGTH_LONG).show();
                     return;
                 }
-                Location location = null;
-                double longitude;
-                double latitude;
-                if (ActivityCompat.checkSelfPermission(AddQuestionActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    location = getLastKnownLocation();
-                }
-                if (location == null) {
-                    Toast.makeText(getApplicationContext(), "Please enable location services so we could get your location", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                longitude = location.getLongitude();
-                latitude = location.getLatitude();
-                Geocoder geocoder = new Geocoder(AddQuestionActivity.this);
-                String city = null;
-                String state = null;
-                String country = null;
-                try {
-                    Address address = geocoder.getFromLocation(latitude, longitude, 1).get(0);
-                    city = address.getLocality();
-                    state = address.getAdminArea();
-                    country = address.getCountryName();
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                User currentUser = ((MyApplication) getApplication()).getUser();
+                String city = currentUser.getCity();
+                String state = currentUser.getState();
+                String country = currentUser.getCountry();
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/");
 
                 String questionName = question.getText().toString().trim();
@@ -338,27 +318,6 @@ public class AddQuestionActivity extends AppCompatActivity {
         questionMap.put("Moderated", moderated);
         questionMap.put("Total_Votes", 0);
         return questionMap;
-    }
-
-    private Location getLastKnownLocation() {
-        LocationManager mLocationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-        List<String> providers = mLocationManager.getProviders(true);
-        Location bestLocation = null;
-        for (String provider : providers) {
-            Location l = null;
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                l = mLocationManager.getLastKnownLocation(provider);
-            }
-
-            if (l == null) {
-                continue;
-            }
-            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-                // Found best last known location: %s", l);
-                bestLocation = l;
-            }
-        }
-        return bestLocation;
     }
 
     @Override

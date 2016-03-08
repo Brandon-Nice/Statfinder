@@ -329,38 +329,11 @@ public class MainActivity extends AppCompatActivity
 
                 }
 
-                Location location = null;
-                double longitude;
-                double latitude;
-                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    location = getLastKnownLocation();
-                }
-                if (location == null) {
-                    Toast.makeText(getApplicationContext(), "Please enable location services so we could get your location", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                longitude = location.getLongitude();
-                latitude = location.getLatitude();
-                Geocoder geocoder = new Geocoder(MainActivity.this);
-                String city = null;
-                String state = null;
-                String country = null;
-                try {
-                    Address address = geocoder.getFromLocation(latitude, longitude, 1).get(0);
-                    city = address.getLocality();
-                    state = address.getAdminArea();
-                    country = address.getCountryName();
+                MainActivity.this.setUserLocation();
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                currentUser.setCity(city);
-                currentUser.setState(state);
-                currentUser.setCountry(country);
-
-                final String finalCity = city.replaceAll(" ", "_");
-                final String finalCountry = country.replaceAll(" ", "_");
-                final String finalState = state.replaceAll(" ", "_");
+                final String finalCity = currentUser.getCity().replaceAll(" ", "_");
+                final String finalCountry = currentUser.getCountry().replaceAll(" ", "_");
+                final String finalState = currentUser.getState().replaceAll(" ", "_");
 
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -554,6 +527,46 @@ public class MainActivity extends AppCompatActivity
             hexValue = tempHexValue.toCharArray();
         }
         return new String(hexValue);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        setUserLocation();
+    }
+
+    public void setUserLocation() {
+        System.out.println("Set user location");
+        User currentUser = ((MyApplication) getApplication()).getUser();
+        Location location = null;
+        double longitude;
+        double latitude;
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            location = getLastKnownLocation();
+        }
+        if (location == null) {
+            Toast.makeText(getApplicationContext(), "Please enable location services so we could get your location", Toast.LENGTH_LONG).show();
+            return;
+        }
+        longitude = location.getLongitude();
+        latitude = location.getLatitude();
+        Geocoder geocoder = new Geocoder(MainActivity.this);
+        String city = null;
+        String state = null;
+        String country = null;
+        try {
+            Address address = geocoder.getFromLocation(latitude, longitude, 1).get(0);
+            city = address.getLocality();
+            state = address.getAdminArea();
+            country = address.getCountryName();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        currentUser.setCity(city);
+        currentUser.setState(state);
+        currentUser.setCountry(country);
     }
 
 }
