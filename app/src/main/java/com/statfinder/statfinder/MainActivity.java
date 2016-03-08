@@ -331,9 +331,9 @@ public class MainActivity extends AppCompatActivity
 
                 MainActivity.this.setUserLocation();
 
-                final String finalCity = currentUser.getCity().replaceAll(" ", "_");
-                final String finalCountry = currentUser.getCountry().replaceAll(" ", "_");
-                final String finalState = currentUser.getState().replaceAll(" ", "_");
+                final String finalCity = currentUser.getCity().replace(' ', '_');
+                final String finalCountry = currentUser.getCountry().replace(' ', '_');
+                final String finalState = currentUser.getState().replace(' ', '_');
 
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {

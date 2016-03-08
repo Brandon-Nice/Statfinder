@@ -37,7 +37,7 @@ public class AnswersFragment extends Fragment {
         for (int i = 0; i < answers.length; i++) {
             System.out.println(answers[i]);
             Button btn = new Button(getActivity());
-            btn.setText(answers[i]); //set each button with the corresponding text
+            btn.setText(answers[i].replace('_', ' ')); //set each button with the corresponding text
             //btn.setId(i);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             btn.setOnClickListener(new View.OnClickListener() {

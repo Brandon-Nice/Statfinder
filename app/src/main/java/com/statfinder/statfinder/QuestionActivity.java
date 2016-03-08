@@ -84,7 +84,7 @@ public class QuestionActivity extends FragmentActivity {
                     String questionName = coolStuff.get("Name").toString();
                     System.out.println("Question: " + questionName);
                     TextView tv = (TextView) findViewById(R.id.qText);
-                    tv.setText(questionName);
+                    tv.setText(questionName.replace('_', ' '));
 
 
                     HashMap<String, Object> answersList = (HashMap) coolStuff.get("Answers"); //gets the list of answers for each question

@@ -269,9 +269,9 @@ public class AddQuestionActivity extends AppCompatActivity {
                 Boolean moderated = ((MyApplication) getApplication()).getUser().getModStatus();
                 final String category = categorySpinner.getSelectedItem().toString();
                 final HashMap questionInfo = createQuestion(questionName, moderated, answers);
-                final String finalCity = city.replaceAll(" ", "_");
-                final String finalCountry = country.replaceAll(" ", "_");
-                final String finalState = state.replaceAll(" ", "_");
+                final String finalCity = city.replace(" ", "_");
+                final String finalCountry = country.replace(" ", "_");
+                final String finalState = state.replace(" ", "_");
                 final Firebase numQuestionRef = ref.child("Questions/NumQuestions");
                 numQuestionRef.runTransaction(new Transaction.Handler() {
                     @Override
@@ -314,7 +314,7 @@ public class AddQuestionActivity extends AppCompatActivity {
     {
         HashMap questionMap = new HashMap();
         questionMap.put("Flags", 0);
-        questionMap.put("Name", question.trim().replaceAll(" ", "_"));
+        questionMap.put("Name", question.trim().replace(" ", "_"));
         questionMap.put("Moderated", moderated);
         questionMap.put("Total_Votes", 0);
         return questionMap;
