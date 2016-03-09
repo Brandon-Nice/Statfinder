@@ -15,6 +15,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -121,6 +122,8 @@ public class LoginActivity extends AppCompatActivity {
         chart.animateXY(2000, 2000);
         chart.invalidate();
         chart.setTouchEnabled(false);
+        Legend legend = chart.getLegend();
+        legend.setEnabled(false);
 
     }
 
