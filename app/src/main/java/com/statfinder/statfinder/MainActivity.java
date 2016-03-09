@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity
                         ((MyApplication) getApplication()).getUser().setModStatus(true);
                     }
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -138,11 +137,6 @@ public class MainActivity extends AppCompatActivity
                 //startActivity(new Intent(MainActivity.this, QuestionActivity.class));
             }
         });
-
-        /* Use database to set text in buttons to any popular or random question */
-        /* Question will be added from the database when we have that working */
-        //popularQuestionButton.setText("Popular Questions\n" + "This is a popular question");
-        //randomQuestionButton.setText("Random Questions\n" + "This is a random question");
 
     }
     public boolean isLoggedIn() {
@@ -259,33 +253,35 @@ public class MainActivity extends AppCompatActivity
                 questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
-                        Iterator it = questionsHashMap.entrySet().iterator();
+                        if (dataSnapshot != null) {
+                            HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
+                            Iterator it = questionsHashMap.entrySet().iterator();
 
-                        Button popularQuestionButton = (Button)findViewById(R.id.popularButton);
-                        Button randomQuestionButton = (Button)findViewById(R.id.randomButton);
-                        String questionName;
+                            Button popularQuestionButton = (Button) findViewById(R.id.popularButton);
+                            Button randomQuestionButton = (Button) findViewById(R.id.randomButton);
+                            String questionName;
 
-                        //while(it.hasNext()) {
-                        HashMap.Entry temptry = (HashMap.Entry) it.next();
-                        HashMap<String, Object> entries = (HashMap)temptry.getValue();
-                        questionName = entries.get("Name").toString();
-                        int questionSize = questionName.length();
+                            //while(it.hasNext()) {
+                            HashMap.Entry temptry = (HashMap.Entry) it.next();
+                            HashMap<String, Object> entries = (HashMap) temptry.getValue();
+                            questionName = entries.get("Name").toString();
+                            int questionSize = questionName.length();
 
-                        String moddedQ = "";
-                        char c;
-                        for(int i = 0; i < questionSize; i++) {
-                            c = questionName.charAt(i);
-                            if (c == '_') {
-                                c = ' ';
-                                moddedQ += c;
+                            String moddedQ = "";
+                            char c;
+                            for (int i = 0; i < questionSize; i++) {
+                                c = questionName.charAt(i);
+                                if (c == '_') {
+                                    c = ' ';
+                                    moddedQ += c;
+                                } else {
+                                    moddedQ += c;
+                                }
                             }
-                            else {
-                                moddedQ += c;
-                            }
+
+                            randomQuestionButton.setText("Random Question:\n" + moddedQ);
+                            popularQuestionButton.setText("Popular Question:\n" + moddedQ);
                         }
-                        randomQuestionButton.setText("Random Question:\n" + moddedQ);
-                        popularQuestionButton.setText("Popular Question:\n" + moddedQ);
                     }
 
                     @Override

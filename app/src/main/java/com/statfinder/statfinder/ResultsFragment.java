@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class ResultsFragment extends Fragment {
 
@@ -40,13 +41,23 @@ public class ResultsFragment extends Fragment {
         /* Turn off pie chart spinning */
         pieChart.setTouchEnabled(false);
 
+        ArrayList<Integer> voteCount = getArguments().getIntegerArrayList("votes");
+        int voteSize = voteCount.size();
         /* creating data values */
         /* Use ValueFormatter to remove the decimals and add percentage % */
         ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(1, 0));
-        entries.add(new Entry(3, 1));
-        entries.add(new Entry(4, 2));
-        entries.add(new Entry(5, 3));
+
+        /* Populate entries with vote counts */
+        /* The arraylist called "entries" deals with the number of votes */
+        for (int k = 0; k < voteSize; k++) {
+            //entries.add(new Entry(voteCount.get(k), k));
+            entries.add(new Entry(3, k));
+        }
+        //entries.add(new Entry(1, 0));
+        //entries.add(new Entry(3, 1));
+        //entries.add(new Entry(4, 2));
+        //entries.add(new Entry(5, 3));
+        //entries.add(new Entry(2, 4));
 
         /* Parse the entries and remove the entry if value is 0.0 */
         /* Record index at which entry was removed */
@@ -66,8 +77,6 @@ public class ResultsFragment extends Fragment {
             }
         }
 
-        int newSize = newEntries.size();
-
         PieDataSet dataset = new PieDataSet(newEntries, "");
 
         /* Answers Array */
@@ -75,8 +84,12 @@ public class ResultsFragment extends Fragment {
         /* Populate answers list */
         String[] questionAnswers = getArguments().getStringArray("answers");
         for(String a: questionAnswers) {
-            answers.add(a);
+            String replaced = a.replaceAll("_", " ");
+            answers.add(replaced);
         }
+
+       // int answerSize = answers.size();
+        //System.out.println("answersSize = " + answerSize);
 
         /* creating labels */
         ArrayList<String> labels = new ArrayList<String>();
@@ -108,7 +121,7 @@ public class ResultsFragment extends Fragment {
         /* Set legend text color, size, and location */
         legend.setTextColor(Color.WHITE);
         legend.setTextSize(15);
-        legend.setPosition(LegendPosition.RIGHT_OF_CHART_CENTER);
+        legend.setPosition(LegendPosition.BELOW_CHART_CENTER);
 
         /* Remove pie chart description */
         pieChart.setDescription("");
@@ -120,10 +133,6 @@ public class ResultsFragment extends Fragment {
 
         /* Animate pie chart */
         //pieChart.animateXY(1500, 1000);
-
-
-
-
 
         /* Button code to go back to the home page (MainActivity) */
 

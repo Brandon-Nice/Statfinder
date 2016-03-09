@@ -17,7 +17,9 @@
         android:layout_height="wrap_content"
         android:text="&quot;Question goes here&quot;"
         android:id="@+id/qText"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#33ccff"
+        android:textSize="17dp" />
 
     <TextView
         android:layout_width="wrap_content"

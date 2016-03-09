@@ -155,9 +155,16 @@ public class QuestionActivity extends FragmentActivity {
                                                      TextView tv = (TextView) findViewById(R.id.qText);
                                                      tv.setText(questionName);
 
+                                                     /* Set category at top left */
+                                                     TextView cat = (TextView) findViewById(R.id.categoryLabel);
+                                                     cat.setText("Category: " + category);
+
                                                      //gets the list of answers for each question
                                                      HashMap<String, Object> answersList = (HashMap) questionEntry.get("Answers");
-                                                     System.out.println("Check");
+
+                                                     //ArrayList for storing vote counts for each answer
+                                                     ArrayList<Integer> answerCount = new ArrayList<Integer>();
+
                                                      System.out.println("Current question's answer list: " + answersList);
 
                                                      //gets the question name
@@ -168,7 +175,14 @@ public class QuestionActivity extends FragmentActivity {
                                                      Object[] objectAnswers = answersList.keySet().toArray();
                                                      String[] answers = Arrays.copyOf(objectAnswers, objectAnswers.length, String[].class);
 
+                                                     //Cast all answerCount strings into integers
+                                                     for (int j = 0; j < answersList.size(); j++) {
+                                                         answerCount.add(Integer.parseInt(answersList.get(answers[j]).toString()));
+                                                     }
+                                                     System.out.println("answerCount : " + answerCount);
+
                                                      Bundle bundle = new Bundle();
+                                                     bundle.putIntegerArrayList("votes", answerCount);
                                                      bundle.putStringArray("answers", answers);
                                                      bundle.putString("id", questionID);
                                                      bundle.putString("category", category);
