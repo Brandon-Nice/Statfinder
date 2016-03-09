@@ -12,6 +12,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
+
 /**
  * Created by michaelrollberg on 2/25/16.
  */
@@ -27,7 +33,8 @@ public class AnswersFragment extends Fragment {
         llLayout.setOrientation(LinearLayout.VERTICAL);
 
         String[] answers = getArguments().getStringArray("answers");
-        String category = getArguments().getString("category");
+        final String category = getArguments().getString("category");
+        final String questionID = getArguments().getString("id");
 
         final MyViewPager viewpager = (MyViewPager) getActivity().findViewById(R.id.viewpager);
         final Button nextButton = (Button) getActivity().findViewById(R.id.skipButton);
@@ -44,10 +51,33 @@ public class AnswersFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Button b = (Button) v;
-                    //TODO: since you have button text, you know the answer the user has selected. User underscores to locate Firebase URL using category
+                    String answeredText = (String) b.getText();
+                    String replacedATexted = answeredText.replaceAll(" ", "_");
                     nextButton.setText("Next");
-                    viewpager.setCurrentItem(1);
-                    viewpager.setPagingEnabled(true);
+                    //TODO: Specify between Moderator and User question in URL
+                    final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
+                            category + "/" + questionID + "/" + "Answers" + "/" + replacedATexted);
+                    System.out.println("Firebase URL: " + ref);
+                    ref.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData currentData) {
+                            if (currentData.getValue() == null) {
+                                currentData.setValue(1);
+                            } else {
+                                currentData.setValue((Long) currentData.getValue() + 1);
+                            }
+                            return Transaction.success(currentData);
+                        }
+
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+                            //transaction complete
+                            viewpager.setCurrentItem(1);
+                            //Commented this out, due to users being able to go back to question and answer again, over and over
+                            //viewpager.setPagingEnabled(true);
+                        }
+                    });
+
                 }
             });
             llLayout.addView(btn, lp);

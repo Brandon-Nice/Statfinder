@@ -6,7 +6,14 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
@@ -45,14 +52,43 @@ public class ResultsFragment extends Fragment {
         int voteSize = voteCount.size();
         /* creating data values */
         /* Use ValueFormatter to remove the decimals and add percentage % */
-        ArrayList<Entry> entries = new ArrayList<>();
+        final ArrayList<Entry> entries = new ArrayList<>();
+
+        final String category = getArguments().getString("category");
+        final String questionID = getArguments().getString("id");
+
+        //Gets a reference to Firebase, then goes through the answers of the question and adds them to the pieChart
+        Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
+                category + "/" + questionID + "/" + "Answers");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println(dataSnapshot);
+                HashMap<String,Object> answers = (HashMap) dataSnapshot.getValue();
+                System.out.println(answers);
+                //Loop through the HashMap and set the keys(answers) and values(number of answers) to the pieChart
+                Iterator it = answers.entrySet().iterator();
+                int i = 1;
+                while(it.hasNext()) {
+                    Map.Entry temp = (Map.Entry)it.next();
+                    entries.add(i++, (Entry) temp.getValue());
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
 
         /* Populate entries with vote counts */
         /* The arraylist called "entries" deals with the number of votes */
-        for (int k = 0; k < voteSize; k++) {
-            //entries.add(new Entry(voteCount.get(k), k));
-            entries.add(new Entry(3, k));
-        }
+//        for (int k = 0; k < voteSize; k++) {
+//            //TODO: Firebase for updates, have to update the number of the index of the answer that is being updated
+//            //entries.add(new Entry(voteCount.get(k), k));
+//            entries.add(new Entry(3, k));
+//        }
         //entries.add(new Entry(1, 0));
         //entries.add(new Entry(3, 1));
         //entries.add(new Entry(4, 2));
