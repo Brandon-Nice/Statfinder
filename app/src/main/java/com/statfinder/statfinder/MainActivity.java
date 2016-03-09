@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //this is a comment
         //Initialize Facebook SDK and Firebase
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         Firebase.setAndroidContext(this);
@@ -100,8 +100,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }).executeAsync();
-
-
 
         //setUser
         setUser();
