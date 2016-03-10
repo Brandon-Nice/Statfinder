@@ -59,10 +59,10 @@ public class AnswersFragment extends Fragment {
                     String replacedATexted = answeredText.replaceAll(" ", "_");
                     nextButton.setText("Next");
                     //TODO: Specify between Moderator and User question in URL
-                    final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
-                            category + "/" + questionID + "/" + "Answers" + "/" + replacedATexted);
-                    System.out.println("Firebase URL: " + ref);
-                    ref.runTransaction(new Transaction.Handler() {
+                    final Firebase moderatorRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
+                            category + "/" + questionID);
+                    final Firebase moderatorAnswerRef = moderatorRef.child("/Answers" + "/" + replacedATexted);
+                    moderatorAnswerRef.runTransaction(new Transaction.Handler() {
                         @Override
                         public Transaction.Result doTransaction(MutableData currentData) {
                             if (currentData.getValue() == null) {
@@ -84,10 +84,29 @@ public class AnswersFragment extends Fragment {
                             viewpager.setPagingEnabled(true);
                         }
                     });
-                    final Firebase voteRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
-                            category + "/" + questionID + "/" + "Total_Votes");
-                    System.out.println("Firebase URL: " + ref);
-                    voteRef.runTransaction(new Transaction.Handler() {
+                    final Firebase moderatorTotalRef = moderatorRef.child("/Total_Votes");
+                    moderatorTotalRef.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData currentData) {
+                            if (currentData.getValue() == null) {
+                                currentData.setValue(1);
+                            } else {
+                                currentData.setValue((Long) currentData.getValue() + 1);
+                            }
+                            return Transaction.success(currentData);
+                        }
+
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+                            moderatorRef.setPriority(dataSnapshot.getValue());
+                        }
+                    });
+
+                    User currentUser = ((MyApplication) factivity.getApplication()).getUser();
+                    final Firebase localRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry().replace(" ", "_") +
+                            "/" + currentUser.getState().replace(" ", "_") + "/" + currentUser.getCity().replace(" ", "_") + "/" + category + "/" + questionID);
+                    final Firebase localAnswerRef = localRef.child("/Answers" + replacedATexted);
+                    localAnswerRef.runTransaction(new Transaction.Handler() {
                         @Override
                         public Transaction.Result doTransaction(MutableData currentData) {
                             if (currentData.getValue() == null) {
@@ -103,7 +122,25 @@ public class AnswersFragment extends Fragment {
 
                         }
                     });
-                    System.out.println(questionID);
+
+                    final Firebase localTotalRef = moderatorRef.child("/Total_Votes");
+                    localTotalRef.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData currentData) {
+                            if (currentData.getValue() == null) {
+                                currentData.setValue(1);
+                            } else {
+                                currentData.setValue((Long) currentData.getValue() + 1);
+                            }
+                            return Transaction.success(currentData);
+                        }
+
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+                            localRef.setPriority(dataSnapshot.getValue());
+                        }
+                    });
+
                     Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/AnsweredQuestions/" + questionID);
                     Long tsLong = System.currentTimeMillis() / 1000;
                     userRef.setValue(tsLong);

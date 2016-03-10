@@ -57,14 +57,17 @@ public class QuestionActivity extends FragmentActivity {
             }
         });
 
-        Button skip = (Button) findViewById(R.id.skipButton);
+        final Button skip = (Button) findViewById(R.id.skipButton);
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) getApplication()).getUser().getId() + "/SkippedQuestions/" + id);
-                Long tsLong = System.currentTimeMillis() / 1000;
-                userRef.setValue(tsLong);
-                userRef.setPriority(tsLong);
+                if (skip.getText().equals("Skip"))
+                {
+                    Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) getApplication()).getUser().getId() + "/SkippedQuestions/" + id);
+                    Long tsLong = System.currentTimeMillis() / 1000;
+                    userRef.setValue(tsLong);
+                    userRef.setPriority(tsLong);
+                }
                 startActivity(new Intent(QuestionActivity.this, QuestionActivity.class));
                 finish();
             }
