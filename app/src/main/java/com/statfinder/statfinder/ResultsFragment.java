@@ -36,6 +36,7 @@ public class ResultsFragment extends Fragment {
 
     private RelativeLayout llLayout;
     private FragmentActivity faActivity;
+    private ArrayList<Entry> entries = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +53,6 @@ public class ResultsFragment extends Fragment {
         int voteSize = voteCount.size();
         /* creating data values */
         /* Use ValueFormatter to remove the decimals and add percentage % */
-        final ArrayList<Entry> entries = new ArrayList<>();
 
         final String category = getArguments().getString("category");
         final String questionID = getArguments().getString("id");
@@ -68,11 +68,17 @@ public class ResultsFragment extends Fragment {
                 System.out.println(answers);
                 //Loop through the HashMap and set the keys(answers) and values(number of answers) to the pieChart
                 Iterator it = answers.entrySet().iterator();
-//                int i = 1;
-//                while(it.hasNext()) {
-//                    Map.Entry temp = (Map.Entry)it.next();
-//                    entries.add(i++, (Entry) temp.getValue());
-//                }
+                int i = 0;
+                while(it.hasNext()) {
+                    HashMap.Entry temp = (HashMap.Entry)it.next();
+                    String s = " " + temp.getValue();
+                    Float f = Float.parseFloat(s);
+                    entries.add(new Entry(f, i++));
+                }
+                for (int m = 0; m < entries.size(); m++) {
+                    System.out.println("ENTRIES = " + entries.get(m).getVal());
+                }
+
             }
 
             @Override
@@ -81,14 +87,13 @@ public class ResultsFragment extends Fragment {
             }
         });
 
-
         /* Populate entries with vote counts */
         /* The arraylist called "entries" deals with the number of votes */
-        for (int k = 0; k < voteSize; k++) {
+//        for (int k = 0; k < voteSize; k++) {
             //TODO: Firebase for updates, have to update the number of the index of the answer that is being updated
             //entries.add(new Entry(voteCount.get(k), k));
-            entries.add(new Entry(3, k));
-        }
+//            entries.add(new Entry(3, k));
+//        }
         //entries.add(new Entry(1, 0));
         //entries.add(new Entry(3, 1));
         //entries.add(new Entry(4, 2));
