@@ -39,6 +39,8 @@ public class AnswersFragment extends Fragment {
         final MyViewPager viewpager = (MyViewPager) getActivity().findViewById(R.id.viewpager);
         final Button nextButton = (Button) getActivity().findViewById(R.id.skipButton);
 
+        final Button[] buttonList = new Button[answers.length];
+
         System.out.println(answers);
 
         for (int i = 0; i < answers.length; i++) {
@@ -73,8 +75,12 @@ public class AnswersFragment extends Fragment {
                         public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
                             //transaction complete
                             viewpager.setCurrentItem(1);
+                            for (int i = 0; i < buttonList.length; i++)
+                            {
+                                buttonList[i].setClickable(false);
+                            }
                             //Commented this out, due to users being able to go back to question and answer again, over and over
-                            //viewpager.setPagingEnabled(true);
+                            viewpager.setPagingEnabled(true);
                         }
                     });
                     final Firebase voteRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
@@ -101,6 +107,7 @@ public class AnswersFragment extends Fragment {
                 }
             });
             llLayout.addView(btn, lp);
+            buttonList[i] = btn;
         }
 
         return llLayout;
