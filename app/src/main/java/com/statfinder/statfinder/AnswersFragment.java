@@ -24,11 +24,13 @@ import com.firebase.client.Transaction;
 public class AnswersFragment extends Fragment {
 
     private LinearLayout llLayout;
+    private FragmentActivity factivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        factivity = getActivity();
         llLayout = (LinearLayout) inflater.inflate(R.layout.fragment_answers, container, false);
         llLayout.setOrientation(LinearLayout.VERTICAL);
 
@@ -75,8 +77,7 @@ public class AnswersFragment extends Fragment {
                         public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
                             //transaction complete
                             viewpager.setCurrentItem(1);
-                            for (int i = 0; i < buttonList.length; i++)
-                            {
+                            for (int i = 0; i < buttonList.length; i++) {
                                 buttonList[i].setClickable(false);
                             }
                             //Commented this out, due to users being able to go back to question and answer again, over and over
@@ -99,10 +100,14 @@ public class AnswersFragment extends Fragment {
 
                         @Override
                         public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
-                            //transaction complete
+
                         }
                     });
-
+                    System.out.println(questionID);
+                    Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/AnsweredQuestions/" + questionID);
+                    Long tsLong = System.currentTimeMillis() / 1000;
+                    userRef.setValue(tsLong);
+                    userRef.setPriority(tsLong);
 
                 }
             });
