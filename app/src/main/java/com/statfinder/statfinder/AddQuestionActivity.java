@@ -302,6 +302,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                         Firebase userRef = ref.child("Users/" + ((MyApplication) getApplication()).getUser().getId() + "/CreatedQuestions/" + idNumber);
                         Long tsLong = System.currentTimeMillis() / 1000;
                         userRef.setValue(tsLong);
+                        userRef.setPriority(tsLong);
 
                         finish();
                     }

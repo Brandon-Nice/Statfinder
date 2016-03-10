@@ -64,6 +64,7 @@ public class QuestionActivity extends FragmentActivity {
                 Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) getApplication()).getUser().getId() + "/SkippedQuestions/" + id);
                 Long tsLong = System.currentTimeMillis() / 1000;
                 userRef.setValue(tsLong);
+                userRef.setPriority(tsLong);
                 startActivity(new Intent(QuestionActivity.this, QuestionActivity.class));
                 finish();
             }
