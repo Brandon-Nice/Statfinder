@@ -103,7 +103,8 @@ public class AnswersFragment extends Fragment {
 
                         }
                     });
-                    Firebase userRef = ref.child("Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/AnsweredQuestions/" + questionID);
+                    System.out.println(questionID);
+                    Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/AnsweredQuestions/" + questionID);
                     Long tsLong = System.currentTimeMillis() / 1000;
                     userRef.setValue(tsLong);
                     userRef.setPriority(tsLong);
