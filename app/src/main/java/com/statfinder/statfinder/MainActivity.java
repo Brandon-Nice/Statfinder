@@ -230,8 +230,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             Intent init = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(init);
+
         } else if (id == R.id.nav_contact) {
             Intent init = new Intent(MainActivity.this, ContactActivity.class);
+            startActivity(init);
+
+        } else if (id == R.id.nav_questionhist) {
+            Intent init = new Intent(MainActivity.this, HistoryActivity.class);
             startActivity(init);
         }
 
@@ -255,33 +260,39 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot != null) {
-                            HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
-                            Iterator it = questionsHashMap.entrySet().iterator();
+                            //HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
+                            //Iterator it = questionsHashMap.entrySet().iterator();
 
                             Button popularQuestionButton = (Button) findViewById(R.id.popularButton);
                             Button randomQuestionButton = (Button) findViewById(R.id.randomButton);
                             String questionName;
 
                             //while(it.hasNext()) {
-                            HashMap.Entry temptry = (HashMap.Entry) it.next();
-                            HashMap<String, Object> entries = (HashMap) temptry.getValue();
-                            questionName = entries.get("Name").toString();
-                            int questionSize = questionName.length();
+//                            HashMap.Entry temptry = (HashMap.Entry) it.next();
+//                            HashMap<String, Object> entries = (HashMap) temptry.getValue();
+//                            questionName = entries.get("Name").toString();
+//                            int questionSize = questionName.length();
 
-                            String moddedQ = "";
-                            char c;
-                            for (int i = 0; i < questionSize; i++) {
-                                c = questionName.charAt(i);
-                                if (c == '_') {
-                                    c = ' ';
-                                    moddedQ += c;
-                                } else {
-                                    moddedQ += c;
-                                }
-                            }
+//                            String moddedQ = "";
+//                            char c;
+//                            for (int i = 0; i < questionSize; i++) {
+//                                c = questionName.charAt(i);
+//                                if (c == '_') {
+//                                    c = ' ';
+//                                    moddedQ += c;
+//                                } else {
+//                                    moddedQ += c;
+//                                }
+//                            }
+                            //QuestionFilterActivity qfa = new QuestionFilterActivity();
+                            Intent init = getIntent();
+                            ((MyApplication) getApplication()).filterPopular("Popular", null);
+                            String q = ((MyApplication)getApplication()).getID();
+                            //q = init.getStringExtra("qid");
+                            System.out.println("What is the qid: " + q);
 
-                            randomQuestionButton.setText("Random Question:\n" + moddedQ);
-                            popularQuestionButton.setText("Popular Question:\n" + moddedQ);
+                            randomQuestionButton.setText("Random Question:\n" + "blah");
+                            popularQuestionButton.setText("Popular Question:\n" + q);
                         }
                     }
 

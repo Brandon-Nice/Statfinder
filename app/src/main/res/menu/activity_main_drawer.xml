@@ -5,6 +5,11 @@
             android:id="@+id/nav_add"
             android:icon="@drawable/ic_add_black_24dp"
             android:title="Add Question" />
+
+        <item
+            android:id="@+id/nav_questionhist"
+            android:icon="@drawable/ic_book_black_24dp"
+            android:title="Question History" />
     </group>
 
     <item android:title="Categories">

@@ -37,7 +37,7 @@ public class ResultsFragment extends Fragment {
     private RelativeLayout llLayout;
     private FragmentActivity faActivity;
     private ArrayList<Entry> entries = new ArrayList<>();
-    private PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
+//    private PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +48,7 @@ public class ResultsFragment extends Fragment {
 
         //PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
         /* Turn off pie chart spinning */
-        pieChart.setTouchEnabled(false);
+        //pieChart.setTouchEnabled(false);
 
         ArrayList<Integer> voteCount = getArguments().getIntegerArrayList("votes");
         int voteSize = voteCount.size();
@@ -121,10 +121,10 @@ public class ResultsFragment extends Fragment {
                 }
 
                 PieData data = new PieData(labels, dataset); // initialize Pie data
-                pieChart.setData(data); //set data into chart
+                //pieChart.setData(data); //set data into chart
 
         /* Remove text in slices */
-                pieChart.setDrawSliceText(false);
+                //pieChart.setDrawSliceText(false);
 
         /* Pie chart section colors */
                 dataset.setColors(ColorTemplate.VORDIPLOM_COLORS); // set the color
@@ -133,20 +133,20 @@ public class ResultsFragment extends Fragment {
                 dataset.setValueTextSize(13);
 
         /* Changing size of hole in pie chart */
-                pieChart.setHoleRadius(0);
-                pieChart.setTransparentCircleRadius(0);
+                //pieChart.setHoleRadius(0);
+                //pieChart.setTransparentCircleRadius(0);
 
         /* Access chart legend */
-                Legend legend = pieChart.getLegend();
+                //Legend legend = pieChart.getLegend();
 
         /* Set legend text color, size, and location */
-                legend.setTextColor(Color.WHITE);
-                legend.setTextSize(15);
-                legend.setPosition(LegendPosition.BELOW_CHART_CENTER);
+                //legend.setTextColor(Color.WHITE);
+                //legend.setTextSize(15);
+                //legend.setPosition(LegendPosition.BELOW_CHART_CENTER);
 
         /* Remove pie chart description */
-                pieChart.setDescription("");
-                pieChart.setUsePercentValues(true);
+                //pieChart.setDescription("");
+                //pieChart.setUsePercentValues(true);
 
         /* Setting formatter */
                 dataset.setValueFormatter(new PercentFormatter());
