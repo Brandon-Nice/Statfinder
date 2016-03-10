@@ -53,6 +53,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //setUser
+        setUser();
 
         //Gets the name of the user
         new GraphRequest(AccessToken.getCurrentAccessToken(), "/me", null,
@@ -99,9 +103,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }).executeAsync();
-
-        //setUser
-        setUser();
 
         /* Create button object for making a question */
         Button makeQuestionButton = (Button)findViewById(R.id.makequestionButton);
@@ -242,7 +243,7 @@ public class MainActivity extends AppCompatActivity
 
     private void setUser() {
         Firebase.setAndroidContext(this);
-        final User currentUser = ((MyApplication) getApplication()).getUser();
+        currentUser = ((MyApplication) getApplication()).getUser();
         //Firebase
         final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {

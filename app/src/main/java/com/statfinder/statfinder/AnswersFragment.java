@@ -77,6 +77,26 @@ public class AnswersFragment extends Fragment {
                             //viewpager.setPagingEnabled(true);
                         }
                     });
+                    final Firebase voteRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
+                            category + "/" + questionID + "/" + "Total_Votes");
+                    System.out.println("Firebase URL: " + ref);
+                    voteRef.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData currentData) {
+                            if (currentData.getValue() == null) {
+                                currentData.setValue(1);
+                            } else {
+                                currentData.setValue((Long) currentData.getValue() + 1);
+                            }
+                            return Transaction.success(currentData);
+                        }
+
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+                            //transaction complete
+                        }
+                    });
+
 
                 }
             });

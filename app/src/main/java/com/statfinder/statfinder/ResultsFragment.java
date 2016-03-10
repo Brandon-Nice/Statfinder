@@ -68,11 +68,11 @@ public class ResultsFragment extends Fragment {
                 System.out.println(answers);
                 //Loop through the HashMap and set the keys(answers) and values(number of answers) to the pieChart
                 Iterator it = answers.entrySet().iterator();
-                int i = 1;
-                while(it.hasNext()) {
-                    Map.Entry temp = (Map.Entry)it.next();
-                    entries.add(i++, (Entry) temp.getValue());
-                }
+//                int i = 1;
+//                while(it.hasNext()) {
+//                    Map.Entry temp = (Map.Entry)it.next();
+//                    entries.add(i++, (Entry) temp.getValue());
+//                }
             }
 
             @Override
@@ -84,11 +84,11 @@ public class ResultsFragment extends Fragment {
 
         /* Populate entries with vote counts */
         /* The arraylist called "entries" deals with the number of votes */
-//        for (int k = 0; k < voteSize; k++) {
-//            //TODO: Firebase for updates, have to update the number of the index of the answer that is being updated
-//            //entries.add(new Entry(voteCount.get(k), k));
-//            entries.add(new Entry(3, k));
-//        }
+        for (int k = 0; k < voteSize; k++) {
+            //TODO: Firebase for updates, have to update the number of the index of the answer that is being updated
+            //entries.add(new Entry(voteCount.get(k), k));
+            entries.add(new Entry(3, k));
+        }
         //entries.add(new Entry(1, 0));
         //entries.add(new Entry(3, 1));
         //entries.add(new Entry(4, 2));

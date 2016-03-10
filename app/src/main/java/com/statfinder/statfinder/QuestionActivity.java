@@ -30,7 +30,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import android.os.AsyncTask;
 
 public class QuestionActivity extends FragmentActivity {
-    User currentUser = null;// = ((MyApplication) getApplication()).getUser();
+    User currentUser;//  = ((MyApplication) getApplication()).getUser();
 
     Firebase answeredRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/answeredQuestions/");
     Firebase skippedRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/skippedQuestions/");
