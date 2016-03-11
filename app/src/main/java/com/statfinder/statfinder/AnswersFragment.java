@@ -18,6 +18,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.MutableData;
 import com.firebase.client.Transaction;
 
+import java.util.HashMap;
+
 /**
  * Created by michaelrollberg on 2/25/16.
  */
@@ -144,9 +146,15 @@ public class AnswersFragment extends Fragment {
                     });
 
                     Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/AnsweredQuestions/" + questionID);
+                    HashMap historyMap = new HashMap();
                     Long tsLong = System.currentTimeMillis() / 1000;
-                    userRef.setValue(tsLong);
-                    userRef.setPriority(tsLong);
+                    historyMap.put("TimeCreated", tsLong);
+                    historyMap.put("City", currentUser.getCity());
+                    historyMap.put("State", currentUser.getState());
+                    historyMap.put("Country", currentUser.getCountry());
+                    historyMap.put("Category", category);
+                    userRef.setValue(historyMap);
+                    userRef.setPriority(0 - tsLong);
 
                 }
             });

@@ -68,9 +68,15 @@ public class QuestionActivity extends FragmentActivity {
                 if (skip.getText().equals("Skip"))
                 {
                     Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) getApplication()).getUser().getId() + "/SkippedQuestions/" + id);
+                    HashMap historyMap = new HashMap();
                     Long tsLong = System.currentTimeMillis() / 1000;
-                    userRef.setValue(tsLong);
-                    userRef.setPriority(tsLong);
+                    historyMap.put("TimeCreated", tsLong);
+                    historyMap.put("City", currentUser.getCity());
+                    historyMap.put("State", currentUser.getState());
+                    historyMap.put("Country", currentUser.getCountry());
+                    historyMap.put("Category", globalCategory);
+                    userRef.setValue(historyMap);
+                    userRef.setPriority(0 - tsLong);
                 }
 
                 //startActivity(new Intent(QuestionActivity.this, QuestionActivity.class));

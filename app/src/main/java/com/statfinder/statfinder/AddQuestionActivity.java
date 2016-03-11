@@ -245,7 +245,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                     return;
                 }
 
-                User currentUser = ((MyApplication) getApplication()).getUser();
+                final User currentUser = ((MyApplication) getApplication()).getUser();
                 String city = currentUser.getCity();
                 String state = currentUser.getState();
                 String country = currentUser.getCountry();
@@ -300,9 +300,15 @@ public class AddQuestionActivity extends AppCompatActivity {
                         }
 
                         Firebase userRef = ref.child("Users/" + ((MyApplication) getApplication()).getUser().getId() + "/CreatedQuestions/" + idNumber);
+                        HashMap historyMap = new HashMap();
                         Long tsLong = System.currentTimeMillis() / 1000;
-                        userRef.setValue(tsLong);
-                        userRef.setPriority(tsLong);
+                        historyMap.put("TimeCreated", tsLong);
+                        historyMap.put("City", currentUser.getCity());
+                        historyMap.put("State", currentUser.getState());
+                        historyMap.put("Country", currentUser.getCountry());
+                        historyMap.put("Category", category);
+                        userRef.setValue(historyMap);
+                        userRef.setPriority(0 - tsLong);
 
                         finish();
                     }
