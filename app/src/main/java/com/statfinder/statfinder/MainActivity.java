@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private void setUser() {
-        System.out.println("Set user has been called");
+        //System.out.println("Set user has been called");
         Firebase.setAndroidContext(this);
         final User currentUser = ((MyApplication) getApplication()).getUser();
         //Firebase
@@ -323,23 +323,23 @@ public class MainActivity extends AppCompatActivity
                 final String finalCity = currentUser.getCity().replace(' ', '_');
                 final String finalCountry = currentUser.getCountry().replace(' ', '_');
                 final String finalState = currentUser.getState().replace(' ', '_');
-                System.out.println("Set user is still here...");
+                //System.out.println("Set user is still here...");
                 System.out.printf("City, country, state: %s, %s, %s\n", finalCity, finalCountry, finalState);
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        System.out.println("Set use is being listened");
+                       // System.out.println("Set use is being listened");
                         System.out.println(dataSnapshot);
                         if (dataSnapshot.getValue() == null) {
                             ArrayList<String> categories = ((MyApplication) getApplication()).defCat;
                             for (int i = 0; i < categories.size(); i++) {
-                                System.out.println("some kinda something: " + categories.get(i));
+                                //System.out.println("some kinda something: " + categories.get(i));
                                 final Firebase moderatedRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" + categories.get(i));
                                 moderatedRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot snapshot) {
-                                        System.out.println("Set user is being annoying...");
+                                        //System.out.println("Set user is being annoying...");
                                         if (snapshot.getValue() != null) {
                                             HashMap<String, Object> questions = (HashMap) snapshot.getValue();
                                             final String category = snapshot.getKey();
@@ -459,7 +459,7 @@ public class MainActivity extends AppCompatActivity
                                                                 while (answeredHistory.containsKey(id) || skippedHistory.containsKey(id) || createdHistory.containsKey(id)) {
                                                                     if (it.hasNext()) {
                                                                         HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
-                                                                        System.out.println("Current tempQuestion: " + tempQuestion);
+                                                                        //System.out.println("Current tempQuestion: " + tempQuestion);
                                                                         id = (String) tempQuestion.getKey();
                                                                     } else {
                                                                         //Handle when category is out of questions
@@ -490,7 +490,7 @@ public class MainActivity extends AppCompatActivity
                                                                     moddedQ += c;
                                                                 }
                                                             }
-                                                            System.out.println("#### Current Question text: " + moddedQ);
+                                                            //System.out.println("#### Current Question text: " + moddedQ);
                                                             randomQuestionButton.setText("Random Question:\n" + moddedQ);
                                                             popularQuestionButton.setText("Popular Question:\n" + moddedQ);
                                                         }
@@ -653,7 +653,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void setUserLocation() {
-        System.out.println("Set user location");
+        //System.out.println("Set user location");
         User currentUser = ((MyApplication) getApplication()).getUser();
         Location location = null;
         double longitude;
