@@ -258,7 +258,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_contact) {
             Intent init = new Intent(MainActivity.this, ContactActivity.class);
             startActivity(init);
-        }
+        } else if (id == R.id.nav_questionhist) {
+            Intent init = new Intent(MainActivity.this, HistoryActivity.class);
+            startActivity(init);
+    }
 
 //        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 //        drawer.closeDrawer(GravityCompat.START);

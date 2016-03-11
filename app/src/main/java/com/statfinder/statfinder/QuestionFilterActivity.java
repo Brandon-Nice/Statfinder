@@ -147,8 +147,8 @@ public class QuestionFilterActivity extends AppCompatActivity {
                                                     //Get the Question name
                                                     String questionName = questionEntry.get("Name").toString().replace('_', ' ');
                                                     //System.out.println("Question: " + questionName);
-                                                    TextView tv = (TextView) findViewById(R.id.qText);
-                                                    tv.setText(questionName);
+                                                    //TextView tv = (TextView) findViewById(R.id.qText);
+                                                    //tv.setText(questionName);
 
                                                     //gets the list of answers for each question
                                                     HashMap<String, Object> answersList = (HashMap) questionEntry.get("Answers");
