@@ -41,6 +41,7 @@ public class QuestionActivity extends FragmentActivity {
     HashMap.Entry tempQuestion = null;
     MyPagerAdapter mPagerAdapter;
     String globalCategory;
+    String globalName;
 
 
     @Override
@@ -75,6 +76,7 @@ public class QuestionActivity extends FragmentActivity {
                     historyMap.put("State", currentUser.getState());
                     historyMap.put("Country", currentUser.getCountry());
                     historyMap.put("Category", globalCategory);
+                    historyMap.put("Name", globalName);
                     userRef.setValue(historyMap);
                     userRef.setPriority(0 - tsLong);
                 }
@@ -241,6 +243,7 @@ public class QuestionActivity extends FragmentActivity {
 
                                                      //Get the Question name
                                                      String questionName = questionEntry.get("Name").toString().replace('_', ' ');
+                                                 globalName = questionName;
                                                      System.out.println("Question: " + questionName);
                                                      TextView tv = (TextView) findViewById(R.id.qText);
                                                      tv.setText(questionName);

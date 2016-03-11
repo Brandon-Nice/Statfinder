@@ -251,7 +251,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                 String country = currentUser.getCountry();
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/");
 
-                String questionName = question.getText().toString().trim();
+                final String questionName = question.getText().toString().trim();
                 final ArrayList<String> answers = new ArrayList();
                 answers.add(firstAnswer.getText().toString());
                 answers.add(secondAnswer.getText().toString());
@@ -307,6 +307,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                         historyMap.put("State", currentUser.getState());
                         historyMap.put("Country", currentUser.getCountry());
                         historyMap.put("Category", category);
+                        historyMap.put("Name", questionName);
                         userRef.setValue(historyMap);
                         userRef.setPriority(0 - tsLong);
 

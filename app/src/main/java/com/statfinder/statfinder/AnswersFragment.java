@@ -17,6 +17,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.MutableData;
 import com.firebase.client.Transaction;
+import com.firebase.client.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -106,7 +107,7 @@ public class AnswersFragment extends Fragment {
                         }
                     });
 
-                    User currentUser = ((MyApplication) factivity.getApplication()).getUser();
+                    final User currentUser = ((MyApplication) factivity.getApplication()).getUser();
                     final Firebase localRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry().replace(" ", "_") +
                             "/" + currentUser.getState().replace(" ", "_") + "/" + currentUser.getCity().replace(" ", "_") + "/" + category + "/" + questionID);
                     final Firebase localAnswerRef = localRef.child("/Answers/" + replacedATexted);
@@ -144,17 +145,40 @@ public class AnswersFragment extends Fragment {
                             localRef.setPriority(0 - (Long) dataSnapshot.getValue());
                         }
                     });
+                    localRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/AnsweredQuestions/" + questionID);
-                    HashMap historyMap = new HashMap();
-                    Long tsLong = System.currentTimeMillis() / 1000;
-                    historyMap.put("TimeCreated", tsLong);
-                    historyMap.put("City", currentUser.getCity());
-                    historyMap.put("State", currentUser.getState());
-                    historyMap.put("Country", currentUser.getCountry());
-                    historyMap.put("Category", category);
-                    userRef.setValue(historyMap);
-                    userRef.setPriority(0 - tsLong);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                    localRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            HashMap questionInfo = (HashMap) dataSnapshot.getValue();
+                            Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/AnsweredQuestions/" + questionID);
+                            HashMap historyMap = new HashMap();
+                            Long tsLong = System.currentTimeMillis() / 1000;
+                            historyMap.put("TimeCreated", tsLong);
+                            historyMap.put("City", currentUser.getCity());
+                            historyMap.put("State", currentUser.getState());
+                            historyMap.put("Country", currentUser.getCountry());
+                            historyMap.put("Category", category);
+                            historyMap.put("Name", questionInfo.get("Name"));
+                            userRef.setValue(historyMap);
+                            userRef.setPriority(0 - tsLong);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+
 
                 }
             });
