@@ -37,7 +37,7 @@ public class ResultsFragment extends Fragment {
     private RelativeLayout llLayout;
     private FragmentActivity faActivity;
     private ArrayList<Entry> entries = new ArrayList<>();
-//    private PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
+    int ran = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,14 +46,12 @@ public class ResultsFragment extends Fragment {
         faActivity  = (FragmentActivity)    super.getActivity();
         llLayout    = (RelativeLayout)    inflater.inflate(R.layout.fragment_results, container, false);
 
-        //PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
+        final PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
         /* Turn off pie chart spinning */
-        //pieChart.setTouchEnabled(false);
+        pieChart.setTouchEnabled(false);
 
         ArrayList<Integer> voteCount = getArguments().getIntegerArrayList("votes");
         int voteSize = voteCount.size();
-        /* creating data values */
-        /* Use ValueFormatter to remove the decimals and add percentage % */
 
         final String category = getArguments().getString("category");
         final String questionID = getArguments().getString("id");
@@ -64,6 +62,11 @@ public class ResultsFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (ran == 1) {
+                    return;
+                }
+
                 System.out.println(dataSnapshot);
                 HashMap<String,Object> initAnswers = (HashMap) dataSnapshot.getValue();
                 System.out.println(initAnswers);
@@ -74,11 +77,15 @@ public class ResultsFragment extends Fragment {
                     HashMap.Entry temp = (HashMap.Entry)it.next();
                     String s = " " + temp.getValue();
                     Float f = Float.parseFloat(s);
-                    entries.add(new Entry(f, i++));
+                    entries.add(new Entry(f, i));
+                    i++;
                 }
-                for (int m = 0; m < entries.size(); m++) {
-                    System.out.println("ENTRIES = " + entries.get(m).getVal());
-                }
+
+                /* DEBUGGING */
+                //for (int m = 0; m < entries.size(); m++) {
+                //    System.out.println("ENTRIES = " + entries.get(m).getVal());
+                //    System.out.println("INDEX = " + m);
+                //}
 
                 /* Parse the entries and remove the entry if value is 0.0 */
         /* Record index at which entry was removed */
@@ -89,6 +96,7 @@ public class ResultsFragment extends Fragment {
 
                 for (z = 0; z < entrySize; z++) {
                     float val = entries.get(z).getVal();
+                    System.out.println("ENTRY VALUE = " + val);
                     if (val == 0.0) {
                         //entries.remove(i);
                         removedList[z] = 1;
@@ -98,7 +106,18 @@ public class ResultsFragment extends Fragment {
                     }
                 }
 
+                /* DEBUGGING */
+                //for (int g = 0; g < removedList.length; g++) {
+                //    System.out.println("REMOVED LIST = " + removedList[g]);
+                //}
+
                 PieDataSet dataset = new PieDataSet(newEntries, "");
+
+                /* DEBUGGING */
+                for (int r = 0; r < newEntries.size(); r++) {
+                    System.out.println("NEWENTRIES = " + newEntries.get(r).getVal());
+                    System.out.println("INDEX = " + r);
+                }
 
         /* Answers Array */
                 ArrayList<String> answers = new ArrayList<>();
@@ -109,22 +128,31 @@ public class ResultsFragment extends Fragment {
                     answers.add(replaced);
                 }
 
-                // int answerSize = answers.size();
-                //System.out.println("answersSize = " + answerSize);
+                 /* DEBUGGING */
+                for (int q = 0; q < answers.size(); q++) {
+                    System.out.println("ANSWERS = " + answers.get(q));
+                    System.out.println("INDEX = " + q);
+                }
+
+                 int answerSize = answers.size();
+                 System.out.println("answersSize = " + answerSize);
 
         /* creating labels */
                 ArrayList<String> labels = new ArrayList<String>();
-                for (int n = 0; n < entrySize; n++) {
+                for (int n = 0; n < removedList.length; n++) {
                     if (removedList[n] != 1) {
                         labels.add(answers.get(n));
                     }
                 }
+                for (int n = 0; n < answers.size(); n++) {
+                    labels.add(answers.get(n));
+                }
 
                 PieData data = new PieData(labels, dataset); // initialize Pie data
-                //pieChart.setData(data); //set data into chart
+                pieChart.setData(data); //set data into chart
 
         /* Remove text in slices */
-                //pieChart.setDrawSliceText(false);
+                pieChart.setDrawSliceText(false);
 
         /* Pie chart section colors */
                 dataset.setColors(ColorTemplate.VORDIPLOM_COLORS); // set the color
@@ -133,23 +161,27 @@ public class ResultsFragment extends Fragment {
                 dataset.setValueTextSize(13);
 
         /* Changing size of hole in pie chart */
-                //pieChart.setHoleRadius(0);
-                //pieChart.setTransparentCircleRadius(0);
+                pieChart.setHoleRadius(0);
+                pieChart.setTransparentCircleRadius(0);
 
         /* Access chart legend */
-                //Legend legend = pieChart.getLegend();
+                Legend legend = pieChart.getLegend();
 
         /* Set legend text color, size, and location */
-                //legend.setTextColor(Color.WHITE);
-                //legend.setTextSize(15);
-                //legend.setPosition(LegendPosition.BELOW_CHART_CENTER);
+                legend.setTextColor(Color.WHITE);
+                legend.setTextSize(10);
+                legend.setPosition(LegendPosition.BELOW_CHART_CENTER);
 
         /* Remove pie chart description */
-                //pieChart.setDescription("");
-                //pieChart.setUsePercentValues(true);
+                pieChart.setDescription("");
+                pieChart.setUsePercentValues(true);
 
         /* Setting formatter */
                 dataset.setValueFormatter(new PercentFormatter());
+                pieChart.notifyDataSetChanged();
+                pieChart.invalidate();
+                ran = 1;
+
 
             }
 
@@ -158,6 +190,11 @@ public class ResultsFragment extends Fragment {
 
             }
         });
+
+
+        /* ALL CODE BELOW SHOULD NOT BE USED AT THIS TIME */
+
+
 
         /* Populate entries with vote counts */
         /* The arraylist called "entries" deals with the number of votes */
@@ -248,7 +285,6 @@ public class ResultsFragment extends Fragment {
         //pieChart.animateXY(1500, 1000);
 
         /* Button code to go back to the home page (MainActivity) */
-
 
         return llLayout;
 
