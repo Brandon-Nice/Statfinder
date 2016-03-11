@@ -21,16 +21,31 @@
         android:textColor="#33ccff"
         android:textSize="17dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Category: "
-        android:id="@+id/categoryLabel"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textColor="#51fa03" />
+        android:layout_width="fill_parent"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Category: "
+            android:id="@+id/categoryLabel"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textColor="#51fa03"
+            android:layout_weight="9.9" >
+        </TextView>
+        <Button
+            android:id="@+id/flagButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:background="@drawable/ic_flag_black_24dp">
+        </Button>
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
