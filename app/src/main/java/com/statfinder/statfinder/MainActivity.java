@@ -53,8 +53,11 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    User currentUser;
-
+    Firebase answeredRef = null;
+    Firebase skippedRef = null;
+    Firebase checkedRef = null;
+    /* String id to store question ID in setUser*/
+    String id = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +78,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        //setUser
-        setUser();
 
         //Gets the name of the user
         new GraphRequest(AccessToken.getCurrentAccessToken(), "/me", null,
@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity
             }
         }).executeAsync();
 
+        //setUser
+        setUser();
+
         /* Create button object for making a question */
         Button makeQuestionButton = (Button)findViewById(R.id.makequestionButton);
         /* Send user to the add question page on button press */
@@ -122,6 +125,10 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent init = new Intent(MainActivity.this, QuestionActivity.class);
                 init.putExtra("category", "Popular");
+
+                //Tells questionActivity what to pull from database
+                init.putExtra("questionID", id);
+
                 startActivity(init);
                 //startActivity(new Intent(MainActivity.this, QuestionActivity.class));
 
@@ -133,7 +140,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent init = new Intent(MainActivity.this, QuestionActivity.class);
-                init.putExtra("category", "Random");
+                //init.putExtra("category", "Random");
+                init.putExtra("category", "General");
+
+                //Tells questionActivity what to pull from database
+                init.putExtra("questionID", id);
+
                 startActivity(init);
                 //startActivity(new Intent(MainActivity.this, QuestionActivity.class));
             }
@@ -195,48 +207,56 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_sports) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "Sports");
+            init.putExtra("questionID", "null");
             startActivity(init);
 
         } else if (id == R.id.nav_entertainment) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "Entertainment");
+            init.putExtra("questionID", "null");
+
             startActivity(init);
 
         } else if (id == R.id.nav_games) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "Games");
+            init.putExtra("questionID", "null");
+
             startActivity(init);
 
         } else if (id == R.id.nav_art) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "Art");
+            init.putExtra("questionID", "null");
+
             startActivity(init);
 
         } else if (id == R.id.nav_history) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "History");
+            init.putExtra("questionID", "null");
+
             startActivity(init);
 
         } else if (id == R.id.nav_scitech) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "Science & Tech");
+            init.putExtra("questionID", "null");
+
             startActivity(init);
 
         } else if (id == R.id.nav_general) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "General");
+            init.putExtra("questionID", "null");
+
             startActivity(init);
 
         } else if (id == R.id.nav_about) {
             Intent init = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(init);
-
         } else if (id == R.id.nav_contact) {
             Intent init = new Intent(MainActivity.this, ContactActivity.class);
-            startActivity(init);
-
-        } else if (id == R.id.nav_questionhist) {
-            Intent init = new Intent(MainActivity.this, HistoryActivity.class);
             startActivity(init);
         }
 
@@ -247,60 +267,16 @@ public class MainActivity extends AppCompatActivity
 
 
     private void setUser() {
+        System.out.println("Set user has been called");
         Firebase.setAndroidContext(this);
-        currentUser = ((MyApplication) getApplication()).getUser();
+        final User currentUser = ((MyApplication) getApplication()).getUser();
         //Firebase
         final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //Kenny's playground
-                Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
-                questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot != null) {
-                            //HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
-                            //Iterator it = questionsHashMap.entrySet().iterator();
 
-                            Button popularQuestionButton = (Button) findViewById(R.id.popularButton);
-                            Button randomQuestionButton = (Button) findViewById(R.id.randomButton);
-                            String questionName;
-
-                            //while(it.hasNext()) {
-//                            HashMap.Entry temptry = (HashMap.Entry) it.next();
-//                            HashMap<String, Object> entries = (HashMap) temptry.getValue();
-//                            questionName = entries.get("Name").toString();
-//                            int questionSize = questionName.length();
-
-//                            String moddedQ = "";
-//                            char c;
-//                            for (int i = 0; i < questionSize; i++) {
-//                                c = questionName.charAt(i);
-//                                if (c == '_') {
-//                                    c = ' ';
-//                                    moddedQ += c;
-//                                } else {
-//                                    moddedQ += c;
-//                                }
-//                            }
-                            //QuestionFilterActivity qfa = new QuestionFilterActivity();
-                            Intent init = getIntent();
-                            ((MyApplication) getApplication()).filterPopular("Popular", null);
-                            String q = ((MyApplication)getApplication()).getID();
-                            //q = init.getStringExtra("qid");
-                            System.out.println("What is the qid: " + q);
-
-                            randomQuestionButton.setText("Random Question:\n" + "blah");
-                            popularQuestionButton.setText("Popular Question:\n" + q);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-
-                    }
-                });
 
                 //Kenny's domain ends here
 
@@ -316,12 +292,17 @@ public class MainActivity extends AppCompatActivity
 
                     //modPreference
                     ref.child("modPreference").setValue(currentUser.getModPreference());
+
+                    //ref.child("skippedQuestions").setValue(currentUser.getSkippedQuestions());
+
+                    //ref.child("answeredQuestions").setValue(currentUser.getAnsweredQuestions());
                 }
                 else {
                     //User has information stored on Firebase, retrieve it
                     Boolean dbModStatus = (Boolean) val.get("modStatus");
                     Boolean dbModPreference = (Boolean) val.get("modPreference");
                     ArrayList<String> dbSelCat = (ArrayList<String>) val.get("selectedCategory");
+                   // ArrayList<String> dbskippedQuestion = (ArrayList<String>) val.get
 
                     if (dbModStatus != null) {
                         currentUser.setModStatus(dbModStatus);
@@ -333,6 +314,8 @@ public class MainActivity extends AppCompatActivity
                         currentUser.setModPreference(dbModPreference);
                     }
 
+                    //)
+
                 }
 
                 MainActivity.this.setUserLocation();
@@ -340,19 +323,23 @@ public class MainActivity extends AppCompatActivity
                 final String finalCity = currentUser.getCity().replace(' ', '_');
                 final String finalCountry = currentUser.getCountry().replace(' ', '_');
                 final String finalState = currentUser.getState().replace(' ', '_');
-
+                System.out.println("Set user is still here...");
+                System.out.printf("City, country, state: %s, %s, %s\n", finalCity, finalCountry, finalState);
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        System.out.println("Set use is being listened");
                         System.out.println(dataSnapshot);
-                        if (dataSnapshot.getValue() == null) {
+                        if (dataSnapshot.getValue() != null) {
                             ArrayList<String> categories = ((MyApplication) getApplication()).defCat;
                             for (int i = 0; i < categories.size(); i++) {
+                                System.out.println("some kinda something: " + categories.get(i));
                                 final Firebase moderatedRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" + categories.get(i));
                                 moderatedRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot snapshot) {
+                                        System.out.println("Set user is being annoying...");
                                         if (snapshot.getValue() != null) {
                                             HashMap<String, Object> questions = (HashMap) snapshot.getValue();
                                             final String category = snapshot.getKey();
@@ -403,6 +390,128 @@ public class MainActivity extends AppCompatActivity
                                                     }
                                                 });
                                             }
+
+                                            /* Start of nested listeners to obtain question for preview */
+                                            Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
+                                            answeredRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/AnsweredQuestions/");
+                                            skippedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/SkippedQuestions/");
+                                            checkedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/CreatedQuestions/");
+
+                                            questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    final DataSnapshot savedSnapshot = dataSnapshot;
+
+                                                    /* Obtain first question from current category to serve as starting point for iteraton */
+                                                    final HashMap<String, Object> questionsHashMap = (HashMap) savedSnapshot.getValue();
+                                                    Iterator it = questionsHashMap.entrySet().iterator();
+                                                    HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
+                                                    id = (String) tempQuestion.getKey();
+
+                                                    /* Nested listeners to obtain all of the user's question history */
+                                                    if (dataSnapshot != null) {
+                                                        checkedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(final DataSnapshot createdSnapshot) {
+                                                                skippedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(final DataSnapshot skippedSnapshot) {
+                                                                        answeredRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                            @Override
+                                                                            public void onDataChange(DataSnapshot answeredSnapshot) {
+                                                                                //HashMap<String, Object> questionsHashMap = (HashMap) savedSnapshot.getValue();
+                                                                                //Iterator it = questionsHashMap.entrySet().iterator();
+                                                                                HashMap<String, String> answeredHistory = (HashMap<String, String>) answeredSnapshot.getValue();
+                                                                                HashMap<String, String> skippedHistory = (HashMap<String, String>) skippedSnapshot.getValue();
+                                                                                HashMap<String, String> createdHistory = (HashMap<String, String>) createdSnapshot.getValue();
+                                                                                Iterator it = questionsHashMap.entrySet().iterator();
+
+                                                                                /* Will hold popular and random string previews */
+                                                                                String popularPreview;
+                                                                                String randomPreview;
+
+                                                                                /* Initializes user's history if it does not exist */
+                                                                                if(answeredSnapshot.getValue() == null || skippedSnapshot.getValue() == null || createdSnapshot.getValue() == null ) {
+                                                                                    if (answeredSnapshot.getValue() == null) {
+                                                                                        answeredRef.child("-1").setValue("-1");
+                                                                                    }
+                                                                                    if (skippedSnapshot.getValue() == null) {
+                                                                                        skippedRef.child("-1").setValue("-1");
+                                                                                    }
+                                                                                    if (createdSnapshot.getValue() == null) {
+                                                                                        checkedRef.child("-1").setValue("-1");
+                                                                                    }
+
+                                                                                }
+                                                                                /* Checks for a question user has not seen yet in category */
+                                                                                else {
+                                                                                    while (answeredHistory.containsKey(id) || skippedHistory.containsKey(id) || createdHistory.containsKey(id)) {
+                                                                                        if (it.hasNext()) {
+                                                                                            HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
+                                                                                            System.out.println("Current tempQuestion: " + tempQuestion);
+                                                                                            id = (String) tempQuestion.getKey();
+                                                                                        } else {
+                                                                                            //Handle when category is out of questions
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                                Button popularQuestionButton = (Button) findViewById(R.id.popularButton);
+                                                                                Button randomQuestionButton = (Button) findViewById(R.id.randomButton);
+                                                                                String questionName;
+
+                                                                                //HashMap.Entry temptry = (HashMap.Entry) it.next();
+                                                                                //HashMap<String, Object> entries = (HashMap) temptry.getValue();
+
+                                                                                /* Question gets pulled from it's place in the Hashmap */
+                                                                                HashMap<String, Object> newQuestion = (HashMap) questionsHashMap.get(id);
+
+                                                                                questionName = newQuestion.get("Name").toString();
+                                                                                int questionSize = questionName.length();
+
+                                                                                String moddedQ = "";
+                                                                                char c;
+                                                                                for (int i = 0; i < questionSize; i++) {
+                                                                                    c = questionName.charAt(i);
+                                                                                    if (c == '_') {
+                                                                                        c = ' ';
+                                                                                        moddedQ += c;
+                                                                                    } else {
+                                                                                        moddedQ += c;
+                                                                                    }
+                                                                                }
+                                                                                System.out.println("#### Current Question text: " + moddedQ);
+                                                                                randomQuestionButton.setText("Random Question:\n" + moddedQ);
+                                                                                popularQuestionButton.setText("Popular Question:\n" + moddedQ);
+                                                                            }
+
+
+                                                                            @Override
+                                                                            public void onCancelled(FirebaseError firebaseError) {
+
+                                                                            }
+                                                                        });
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(FirebaseError checkedError) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(FirebaseError firebaseError) {
+
+                                                }
+                                            });
                                         }
                                     }
 
@@ -413,6 +522,9 @@ public class MainActivity extends AppCompatActivity
                                 });
                             }
                         }
+                        else {
+                            //Current datasnapshot is null
+                        }
                     }
 
                     @Override
@@ -420,7 +532,6 @@ public class MainActivity extends AppCompatActivity
 
                     }
                 });
-
             }
 
             @Override

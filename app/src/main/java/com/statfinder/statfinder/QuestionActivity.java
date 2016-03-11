@@ -31,7 +31,6 @@ import android.os.AsyncTask;
 
 public class QuestionActivity extends FragmentActivity {
     User currentUser;//  = ((MyApplication) getApplication()).getUser();
-
     Firebase answeredRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/answeredQuestions/");
     Firebase skippedRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/skippedQuestions/");
     Firebase checkedRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/createdQuestions/");
@@ -39,6 +38,7 @@ public class QuestionActivity extends FragmentActivity {
     String id = null;
     HashMap.Entry tempQuestion = null;
     MyPagerAdapter mPagerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,18 +68,24 @@ public class QuestionActivity extends FragmentActivity {
                     userRef.setValue(tsLong);
                     userRef.setPriority(tsLong);
                 }
-                startActivity(new Intent(QuestionActivity.this, QuestionActivity.class));
+
+                //startActivity(new Intent(QuestionActivity.this, QuestionActivity.class));
+                Intent newInit = new Intent(QuestionActivity.this, QuestionActivity.class);
+                newInit.putExtra("category", getIntent().getStringExtra("category"));
+                //Tells questionActivity what to pull from database
+                newInit.putExtra("questionID", getIntent().getStringExtra("questionID"));
+
+                startActivity(newInit);
                 finish();
             }
         });
 
-        newQuestion(null);
+        newQuestion();
 
     }
 
-    public void newQuestion(final String questionID) {
-
-        Intent init = getIntent();
+    public void newQuestion() {
+        final Intent init = getIntent();
         final String cameFrom;
         cameFrom = init.getStringExtra("category");
         //System.out.println("this is the category:" + cameFrom); //testing
@@ -88,63 +94,66 @@ public class QuestionActivity extends FragmentActivity {
                 questionRef.orderByPriority().addListenerForSingleValueEvent(new ValueEventListener() {
                      @Override
                      public void onDataChange(DataSnapshot dataSnapshot) {
-                         HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
-                         //System.out.println(dataSnapshot);
-                         //System.out.println("Classic Print - questionsHashMap: " + questionsHashMap);
+                         final HashMap<String, Object> questionsHashMap = (HashMap) dataSnapshot.getValue();
                          Iterator it = questionsHashMap.entrySet().iterator();
-                         //Temporary entry for iterator that represents a question.
-                         tempQuestion = (HashMap.Entry) it.next();
-                         //System.out.println("tempQuestion: " + tempQuestion);
+                         HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
+                         id = (String) tempQuestion.getKey();
 
-                         HashMap.Entry hashmapBuffer = tempQuestion;
-                         //while(!flag) {
-                         // System.out.println("####################While Loop#####################");
-                         //Currently evaluating first question in database
-                         if (questionID == null) {
-                             id = (String) tempQuestion.getKey();
-                         } else {
-                             //Implies recursive call happened, iterates to next question relative to current question
-                             String bufferQuestionID = (String) hashmapBuffer.getKey();
-                             while (!bufferQuestionID.equals(questionID) && it.hasNext()) {
-                                 hashmapBuffer = (HashMap.Entry) it.next();
-                                 bufferQuestionID = (String) hashmapBuffer.getKey();
-                                 //System.out.println(hashmapBuffer.getKey());
-                             }
-                             //System.out.println("HashMapBuffer: " + hashmapBuffer);
-                             if (it.hasNext()) {
-                                 hashmapBuffer = (HashMap.Entry) it.next();
-
-                             }
-                             else
-                             {
-                                 finish();
-                                 return;
-
-                             }
-
-                             id = (String) hashmapBuffer.getKey();
-                         }
-
-                         final HashMap.Entry finalBuffer = hashmapBuffer;
-
-                         //System.out.println("Current question key: " + id);
-                         //Nested listeners to check the answered, skipped, and created questions
-                         checkedRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                         checkedRef.addListenerForSingleValueEvent(new ValueEventListener() {
                              @Override
-                             public void onDataChange(final DataSnapshot checkedSnapshot) {
-                                 skippedRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                             public void onDataChange(final DataSnapshot createdSnapshot) {
+                                 //skippedRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                                 skippedRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                      @Override
                                      public void onDataChange(final DataSnapshot skippedSnapshot) {
-                                         answeredRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                                         //answeredRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                                         answeredRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
                                              @Override
                                              public void onDataChange(DataSnapshot answeredSnapshot) {
+                                                    if(!cameFrom.equals("Popular") || !cameFrom.equals("Random")) {
+                                                        //if (answeredSnapshot.getValue() == null && skippedSnapshot.getValue() == null && checkedSnapshot.getValue() == null) {
+                                                        //Question has yet to be seen in history
 
-                                                 if (answeredSnapshot.getValue() == null && skippedSnapshot.getValue() == null && checkedSnapshot.getValue() == null) {
-                                                     //Question has yet to be seen in history
+                                                        //Actual question with variables attached to it
+                                                        HashMap<String, String> answeredHistory = (HashMap<String, String>) answeredSnapshot.getValue();
+                                                        HashMap<String, String> skippedHistory = (HashMap<String, String>) skippedSnapshot.getValue();
+                                                        HashMap<String, String> createdHistory = (HashMap<String, String>) createdSnapshot.getValue();
+                                                        Iterator it = questionsHashMap.entrySet().iterator();
 
-                                                     //Actual question with variables attached to it
-                                                     HashMap<String, Object> questionEntry = (HashMap) finalBuffer.getValue(); //stores each node in database
-                                                     String questionID = (String)finalBuffer.getKey();
+                                                 /* Initializes user's history if it does not exist */
+                                                        if (answeredSnapshot.getValue() == null || skippedSnapshot.getValue() == null || createdSnapshot.getValue() == null) {
+                                                            if (answeredSnapshot.getValue() == null) {
+                                                                answeredRef.child("-1").setValue("-1");
+                                                            }
+                                                            if (skippedSnapshot.getValue() == null) {
+                                                                skippedRef.child("-1").setValue("-1");
+                                                            }
+                                                            if (createdSnapshot.getValue() == null) {
+                                                                checkedRef.child("-1").setValue("-1");
+                                                            }
+
+                                                        }
+                                                 /* Checks for a question user has not seen yet in category */
+                                                        else {
+                                                            while (answeredHistory.containsKey(id) || skippedHistory.containsKey(id) || createdHistory.containsKey(id)) {
+                                                                if (it.hasNext()) {
+                                                                    HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
+                                                                    System.out.println("Current tempQuestion: " + tempQuestion);
+                                                                    id = (String) tempQuestion.getKey();
+                                                                } else {
+                                                                    //Handle when category is out of questions
+                                                                }
+                                                            }
+                                                        }
+                                                    } else {
+                                                        //Question has already been seen, go to next question via recursion
+                                                        //newQuestion(id);
+                                                        id = init.getStringExtra("questionID");
+                                                    }
+                                                     HashMap<String, Object> questionEntry = (HashMap) questionsHashMap.get(id); //(HashMap) finalBuffer.getValue(); //stores each node in database
+                                                    String questionID = id; //(String)finalBuffer.getKey();
+
                                                      System.out.println("QuestionID" + questionID);
                                                      //System.out.println("questionEntry: " + questionEntry);
                                                      //Get the category first
@@ -209,10 +218,7 @@ public class QuestionActivity extends FragmentActivity {
                                                      //    System.out.println("Error");
                                                      // }
 
-                                                 } else {
-                                                     //Question has already been seen, go to next question via recursion
-                                                     newQuestion(id);
-                                                 }
+                                                //}
                                              }
 
                                              @Override
