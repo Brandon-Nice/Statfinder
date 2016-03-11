@@ -8,6 +8,7 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import com.firebase.client.DataSnapshot;
@@ -25,6 +26,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 //import com.github.mikephil.charting.utils.PercentFormatter;
 
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,7 +157,17 @@ public class ResultsFragment extends Fragment {
                 pieChart.setDrawSliceText(false);
 
         /* Pie chart section colors */
-                dataset.setColors(ColorTemplate.VORDIPLOM_COLORS); // set the color
+                int[] colors = new int[6];
+                colors[0] = Color.parseColor("#3366AA");
+                colors[1] = Color.parseColor("#992288");
+                colors[2] = Color.parseColor("#66aa55");
+                colors[3] = Color.parseColor("#11aa99");
+                colors[4] = Color.parseColor("#f25f0a");
+                colors[5] = Color.parseColor("#a9a9a9");
+
+                dataset.setColors(colors);
+        /* Text color in pie chart slices */
+                dataset.setValueTextColor(Color.WHITE);
 
         /* Text size in pie chart */
                 dataset.setValueTextSize(13);
@@ -169,8 +181,12 @@ public class ResultsFragment extends Fragment {
 
         /* Set legend text color, size, and location */
                 legend.setTextColor(Color.WHITE);
-                legend.setTextSize(10);
+                legend.setTextSize(11);
                 legend.setPosition(LegendPosition.BELOW_CHART_CENTER);
+                legend.setForm(Legend.LegendForm.CIRCLE);
+
+        /* Format the legend text */
+                legend.setWordWrapEnabled(true);
 
         /* Remove pie chart description */
                 pieChart.setDescription("");

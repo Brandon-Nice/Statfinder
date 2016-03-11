@@ -208,7 +208,7 @@ public class QuestionActivity extends FragmentActivity {
                                                             while (answeredHistory.containsKey(id) || skippedHistory.containsKey(id) || createdHistory.containsKey(id)) {
                                                                 if (it.hasNext()) {
                                                                     HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
-                                                                    System.out.println("Current tempQuestion: " + tempQuestion);
+                                                                    //System.out.println("Current tempQuestion: " + tempQuestion);
                                                                     id = (String) tempQuestion.getKey();
                                                                 } else {
                                                                     //Handle when category is out of questions
