@@ -61,7 +61,7 @@ public class AnswersFragment extends Fragment {
                     //TODO: Specify between Moderator and User question in URL
                     final Firebase moderatorRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
                             category + "/" + questionID);
-                    final Firebase moderatorAnswerRef = moderatorRef.child("/Answers" + "/" + replacedATexted);
+                    final Firebase moderatorAnswerRef = moderatorRef.child("/Answers/" + replacedATexted);
                     moderatorAnswerRef.runTransaction(new Transaction.Handler() {
                         @Override
                         public Transaction.Result doTransaction(MutableData currentData) {
@@ -98,14 +98,14 @@ public class AnswersFragment extends Fragment {
 
                         @Override
                         public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
-                            moderatorRef.setPriority(dataSnapshot.getValue());
+                            moderatorRef.setPriority(0 - (Long) dataSnapshot.getValue());
                         }
                     });
 
                     User currentUser = ((MyApplication) factivity.getApplication()).getUser();
                     final Firebase localRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry().replace(" ", "_") +
                             "/" + currentUser.getState().replace(" ", "_") + "/" + currentUser.getCity().replace(" ", "_") + "/" + category + "/" + questionID);
-                    final Firebase localAnswerRef = localRef.child("/Answers" + replacedATexted);
+                    final Firebase localAnswerRef = localRef.child("/Answers/" + replacedATexted);
                     localAnswerRef.runTransaction(new Transaction.Handler() {
                         @Override
                         public Transaction.Result doTransaction(MutableData currentData) {
@@ -123,7 +123,7 @@ public class AnswersFragment extends Fragment {
                         }
                     });
 
-                    final Firebase localTotalRef = moderatorRef.child("/Total_Votes");
+                    final Firebase localTotalRef = localRef.child("/Total_Votes/");
                     localTotalRef.runTransaction(new Transaction.Handler() {
                         @Override
                         public Transaction.Result doTransaction(MutableData currentData) {
@@ -137,7 +137,7 @@ public class AnswersFragment extends Fragment {
 
                         @Override
                         public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
-                            localRef.setPriority(dataSnapshot.getValue());
+                            localRef.setPriority(0 - (Long) dataSnapshot.getValue());
                         }
                     });
 

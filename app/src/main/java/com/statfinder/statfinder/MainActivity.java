@@ -331,7 +331,7 @@ public class MainActivity extends AppCompatActivity
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         System.out.println("Set use is being listened");
                         System.out.println(dataSnapshot);
-                        if (dataSnapshot.getValue() != null) {
+                        if (dataSnapshot.getValue() == null) {
                             ArrayList<String> categories = ((MyApplication) getApplication()).defCat;
                             for (int i = 0; i < categories.size(); i++) {
                                 System.out.println("some kinda something: " + categories.get(i));
@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity
                                                 questionInfo.put("Flags", moderatedQuestion.get("Flags"));
                                                 questionInfo.put("Moderated", moderatedQuestion.get("Moderated"));
                                                 questionInfo.put("Name", moderatedQuestion.get("Name"));
-                                                questionInfo.put("Total_Votes", moderatedQuestion.get("Total_Votes"));
+                                                questionInfo.put("Total_Votes", 0);
                                                 final Firebase questionRef = ref.child(category + "/" + question.getKey() + "/");
                                                 questionRef.setValue(questionInfo);
                                                 questionRef.setPriority(0);
@@ -391,127 +391,7 @@ public class MainActivity extends AppCompatActivity
                                                 });
                                             }
 
-                                            /* Start of nested listeners to obtain question for preview */
-                                            Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
-                                            answeredRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/AnsweredQuestions/");
-                                            skippedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/SkippedQuestions/");
-                                            checkedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/CreatedQuestions/");
 
-                                            questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                    final DataSnapshot savedSnapshot = dataSnapshot;
-
-                                                    /* Obtain first question from current category to serve as starting point for iteraton */
-                                                    final HashMap<String, Object> questionsHashMap = (HashMap) savedSnapshot.getValue();
-                                                    Iterator it = questionsHashMap.entrySet().iterator();
-                                                    HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
-                                                    id = (String) tempQuestion.getKey();
-
-                                                    /* Nested listeners to obtain all of the user's question history */
-                                                    if (dataSnapshot != null) {
-                                                        checkedRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(final DataSnapshot createdSnapshot) {
-                                                                skippedRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                    @Override
-                                                                    public void onDataChange(final DataSnapshot skippedSnapshot) {
-                                                                        answeredRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                            @Override
-                                                                            public void onDataChange(DataSnapshot answeredSnapshot) {
-                                                                                //HashMap<String, Object> questionsHashMap = (HashMap) savedSnapshot.getValue();
-                                                                                //Iterator it = questionsHashMap.entrySet().iterator();
-                                                                                HashMap<String, String> answeredHistory = (HashMap<String, String>) answeredSnapshot.getValue();
-                                                                                HashMap<String, String> skippedHistory = (HashMap<String, String>) skippedSnapshot.getValue();
-                                                                                HashMap<String, String> createdHistory = (HashMap<String, String>) createdSnapshot.getValue();
-                                                                                Iterator it = questionsHashMap.entrySet().iterator();
-
-                                                                                /* Will hold popular and random string previews */
-                                                                                String popularPreview;
-                                                                                String randomPreview;
-
-                                                                                /* Initializes user's history if it does not exist */
-                                                                                if(answeredSnapshot.getValue() == null || skippedSnapshot.getValue() == null || createdSnapshot.getValue() == null ) {
-                                                                                    if (answeredSnapshot.getValue() == null) {
-                                                                                        answeredRef.child("-1").setValue("-1");
-                                                                                    }
-                                                                                    if (skippedSnapshot.getValue() == null) {
-                                                                                        skippedRef.child("-1").setValue("-1");
-                                                                                    }
-                                                                                    if (createdSnapshot.getValue() == null) {
-                                                                                        checkedRef.child("-1").setValue("-1");
-                                                                                    }
-
-                                                                                }
-                                                                                /* Checks for a question user has not seen yet in category */
-                                                                                else {
-                                                                                    while (answeredHistory.containsKey(id) || skippedHistory.containsKey(id) || createdHistory.containsKey(id)) {
-                                                                                        if (it.hasNext()) {
-                                                                                            HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
-                                                                                            System.out.println("Current tempQuestion: " + tempQuestion);
-                                                                                            id = (String) tempQuestion.getKey();
-                                                                                        } else {
-                                                                                            //Handle when category is out of questions
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                Button popularQuestionButton = (Button) findViewById(R.id.popularButton);
-                                                                                Button randomQuestionButton = (Button) findViewById(R.id.randomButton);
-                                                                                String questionName;
-
-                                                                                //HashMap.Entry temptry = (HashMap.Entry) it.next();
-                                                                                //HashMap<String, Object> entries = (HashMap) temptry.getValue();
-
-                                                                                /* Question gets pulled from it's place in the Hashmap */
-                                                                                HashMap<String, Object> newQuestion = (HashMap) questionsHashMap.get(id);
-
-                                                                                questionName = newQuestion.get("Name").toString();
-                                                                                int questionSize = questionName.length();
-
-                                                                                String moddedQ = "";
-                                                                                char c;
-                                                                                for (int i = 0; i < questionSize; i++) {
-                                                                                    c = questionName.charAt(i);
-                                                                                    if (c == '_') {
-                                                                                        c = ' ';
-                                                                                        moddedQ += c;
-                                                                                    } else {
-                                                                                        moddedQ += c;
-                                                                                    }
-                                                                                }
-                                                                                System.out.println("#### Current Question text: " + moddedQ);
-                                                                                randomQuestionButton.setText("Random Question:\n" + moddedQ);
-                                                                                popularQuestionButton.setText("Popular Question:\n" + moddedQ);
-                                                                            }
-
-
-                                                                            @Override
-                                                                            public void onCancelled(FirebaseError firebaseError) {
-
-                                                                            }
-                                                                        });
-                                                                    }
-
-                                                                    @Override
-                                                                    public void onCancelled(FirebaseError firebaseError) {
-
-                                                                    }
-                                                                });
-                                                            }
-
-                                                            @Override
-                                                            public void onCancelled(FirebaseError checkedError) {
-
-                                                            }
-                                                        });
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onCancelled(FirebaseError firebaseError) {
-
-                                                }
-                                            });
                                         }
                                     }
 
@@ -522,9 +402,128 @@ public class MainActivity extends AppCompatActivity
                                 });
                             }
                         }
-                        else {
-                            //Current datasnapshot is null
-                        }
+                        /* Start of nested listeners to obtain question for preview */
+                        Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
+                        answeredRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/AnsweredQuestions/");
+                        skippedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/SkippedQuestions/");
+                        checkedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/CreatedQuestions/");
+
+                        questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                final DataSnapshot savedSnapshot = dataSnapshot;
+
+                                                    /* Obtain first question from current category to serve as starting point for iteraton */
+                                final HashMap<String, Object> questionsHashMap = (HashMap) savedSnapshot.getValue();
+                                Iterator it = questionsHashMap.entrySet().iterator();
+                                HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
+                                id = (String) tempQuestion.getKey();
+
+                                                    /* Nested listeners to obtain all of the user's question history */
+                                if (dataSnapshot != null) {
+                                    checkedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(final DataSnapshot createdSnapshot) {
+                                            skippedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(final DataSnapshot skippedSnapshot) {
+                                                    answeredRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot answeredSnapshot) {
+                                                            //HashMap<String, Object> questionsHashMap = (HashMap) savedSnapshot.getValue();
+                                                            //Iterator it = questionsHashMap.entrySet().iterator();
+                                                            HashMap<String, String> answeredHistory = (HashMap<String, String>) answeredSnapshot.getValue();
+                                                            HashMap<String, String> skippedHistory = (HashMap<String, String>) skippedSnapshot.getValue();
+                                                            HashMap<String, String> createdHistory = (HashMap<String, String>) createdSnapshot.getValue();
+                                                            Iterator it = questionsHashMap.entrySet().iterator();
+
+                                                                                /* Will hold popular and random string previews */
+                                                            String popularPreview;
+                                                            String randomPreview;
+
+                                                                                /* Initializes user's history if it does not exist */
+                                                            if(answeredSnapshot.getValue() == null || skippedSnapshot.getValue() == null || createdSnapshot.getValue() == null ) {
+                                                                if (answeredSnapshot.getValue() == null) {
+                                                                    answeredRef.child("-1").setValue("-1");
+                                                                }
+                                                                if (skippedSnapshot.getValue() == null) {
+                                                                    skippedRef.child("-1").setValue("-1");
+                                                                }
+                                                                if (createdSnapshot.getValue() == null) {
+                                                                    checkedRef.child("-1").setValue("-1");
+                                                                }
+
+                                                            }
+                                                                                /* Checks for a question user has not seen yet in category */
+                                                            else {
+                                                                while (answeredHistory.containsKey(id) || skippedHistory.containsKey(id) || createdHistory.containsKey(id)) {
+                                                                    if (it.hasNext()) {
+                                                                        HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
+                                                                        System.out.println("Current tempQuestion: " + tempQuestion);
+                                                                        id = (String) tempQuestion.getKey();
+                                                                    } else {
+                                                                        //Handle when category is out of questions
+                                                                    }
+                                                                }
+                                                            }
+                                                            Button popularQuestionButton = (Button) findViewById(R.id.popularButton);
+                                                            Button randomQuestionButton = (Button) findViewById(R.id.randomButton);
+                                                            String questionName;
+
+                                                            //HashMap.Entry temptry = (HashMap.Entry) it.next();
+                                                            //HashMap<String, Object> entries = (HashMap) temptry.getValue();
+
+                                                                                /* Question gets pulled from it's place in the Hashmap */
+                                                            HashMap<String, Object> newQuestion = (HashMap) questionsHashMap.get(id);
+
+                                                            questionName = newQuestion.get("Name").toString();
+                                                            int questionSize = questionName.length();
+
+                                                            String moddedQ = "";
+                                                            char c;
+                                                            for (int i = 0; i < questionSize; i++) {
+                                                                c = questionName.charAt(i);
+                                                                if (c == '_') {
+                                                                    c = ' ';
+                                                                    moddedQ += c;
+                                                                } else {
+                                                                    moddedQ += c;
+                                                                }
+                                                            }
+                                                            System.out.println("#### Current Question text: " + moddedQ);
+                                                            randomQuestionButton.setText("Random Question:\n" + moddedQ);
+                                                            popularQuestionButton.setText("Popular Question:\n" + moddedQ);
+                                                        }
+
+
+                                                        @Override
+                                                        public void onCancelled(FirebaseError firebaseError) {
+
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onCancelled(FirebaseError firebaseError) {
+
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onCancelled(FirebaseError checkedError) {
+
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+
                     }
 
                     @Override
