@@ -40,6 +40,7 @@ public class AnswersFragment extends Fragment {
 
         final MyViewPager viewpager = (MyViewPager) getActivity().findViewById(R.id.viewpager);
         final Button nextButton = (Button) getActivity().findViewById(R.id.skipButton);
+        final Button flagButton = (Button) getActivity().findViewById(R.id.flagButton);
 
         final Button[] buttonList = new Button[answers.length];
 
@@ -58,6 +59,7 @@ public class AnswersFragment extends Fragment {
                     String answeredText = (String) b.getText();
                     String replacedATexted = answeredText.replaceAll(" ", "_");
                     nextButton.setText("Next");
+                    flagButton.setVisibility(View.INVISIBLE);
                     //TODO: Specify between Moderator and User question in URL
                     final Firebase moderatorRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
                             category + "/" + questionID);
