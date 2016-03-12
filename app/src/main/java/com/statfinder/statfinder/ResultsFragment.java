@@ -40,6 +40,7 @@ public class ResultsFragment extends Fragment {
     private FragmentActivity faActivity;
     private ArrayList<Entry> entries = new ArrayList<>();
     int ran = 0;
+    User currentUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +48,7 @@ public class ResultsFragment extends Fragment {
 
         faActivity  = (FragmentActivity)    super.getActivity();
         llLayout    = (RelativeLayout)    inflater.inflate(R.layout.fragment_results, container, false);
-
+        currentUser = ((MyApplication)faActivity.getApplication()).getUser();
         final PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
         /* Turn off pie chart spinning */
         pieChart.setTouchEnabled(false);
@@ -59,8 +60,19 @@ public class ResultsFragment extends Fragment {
         final String questionID = getArguments().getString("id");
 
         //Gets a reference to Firebase, then goes through the answers of the question and adds them to the pieChart
-        Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
+        final String finalCity = currentUser.getCity().replace(' ', '_');
+        final String finalCountry = currentUser.getCountry().replace(' ', '_');
+        final String finalState = currentUser.getState().replace(' ', '_');
+        if(true) {
+
+        }
+        Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" +
                 category + "/" + questionID + "/" + "Answers");
+        System.out.println("Category: " + category);
+        System.out.println("questionID: " + questionID);
+        /* Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
+                category + "/" + questionID + "/" + "Answers"); */
+        System.out.println(ref);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -70,6 +82,8 @@ public class ResultsFragment extends Fragment {
                 }
 
                 System.out.println(dataSnapshot);
+
+                System.out.println("Evil Snapshot: " + dataSnapshot);
                 HashMap<String,Object> initAnswers = (HashMap) dataSnapshot.getValue();
                 System.out.println(initAnswers);
                 //Loop through the HashMap and set the keys(answers) and values(number of answers) to the pieChart

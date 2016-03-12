@@ -57,7 +57,17 @@ public class MainActivity extends AppCompatActivity
     Firebase skippedRef = null;
     Firebase checkedRef = null;
     /* String id to store question ID in setUser*/
-    String id = null;
+    String id;
+    String idPopular = null;
+    String namePopular = null;
+    String categoryPopular = null;
+    String idRandom = null;
+    String nameRandom = null;
+    String categoryRandom = null;
+    boolean modStatusPopular = false;
+    boolean modStatusRandom = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,9 +102,9 @@ public class MainActivity extends AppCompatActivity
                     user_name.setText(name);
                     String firstName = name.substring(0, name.indexOf(" "));
                     String lastName = name.substring(name.indexOf(" ") + 1);
-                    if((firstName.equals("Brandon")&& lastName.equals("Nice")) || (firstName.equals("Michael")&& lastName.equals("Rollberg"))
-                            || (firstName.equals("Milia")&& lastName.equals("Enane")) || (firstName.equals("Jake")&& lastName.equals("Losin"))
-                            || (firstName.equals("Kenny")&& lastName.equals("Tam"))) {
+                    if ((firstName.equals("Brandon") && lastName.equals("Nice")) || (firstName.equals("Michael") && lastName.equals("Rollberg"))
+                            || (firstName.equals("Milia") && lastName.equals("Enane")) || (firstName.equals("Jake") && lastName.equals("Losin"))
+                            || (firstName.equals("Kenny") && lastName.equals("Tam"))) {
                         ((MyApplication) getApplication()).getUser().setModStatus(true);
                     }
 
@@ -108,7 +118,7 @@ public class MainActivity extends AppCompatActivity
         setUser();
 
         /* Create button object for making a question */
-        Button makeQuestionButton = (Button)findViewById(R.id.makequestionButton);
+        Button makeQuestionButton = (Button) findViewById(R.id.makequestionButton);
         /* Send user to the add question page on button press */
         makeQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,33 +128,36 @@ public class MainActivity extends AppCompatActivity
         });
 
         /* Create button object for making a question */
-        Button popularQuestionButton = (Button)findViewById(R.id.popularButton);
+        Button popularQuestionButton = (Button) findViewById(R.id.popularButton);
         /* Send user to the add question page on button press */
         popularQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent init = new Intent(MainActivity.this, QuestionActivity.class);
                 init.putExtra("category", "Popular");
-
+                init.putExtra("Name", namePopular);
                 //Tells questionActivity what to pull from database
-                init.putExtra("questionID", id);
+                init.putExtra("questionID", idPopular);
+                init.putExtra("categoryOrigin", categoryPopular);
 
                 startActivity(init);
                 //startActivity(new Intent(MainActivity.this, QuestionActivity.class));
 
             }
         });
-        final Button randomQuestionButton = (Button)findViewById(R.id.randomButton);
+        final Button randomQuestionButton = (Button) findViewById(R.id.randomButton);
         /* Send user to the add question page on button press */
         randomQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent init = new Intent(MainActivity.this, QuestionActivity.class);
                 //init.putExtra("category", "Random");
-                init.putExtra("category", "General");
+                init.putExtra("category", "Random");
+                init.putExtra("Name", nameRandom);
 
                 //Tells questionActivity what to pull from database
-                init.putExtra("questionID", id);
+                init.putExtra("questionID", idRandom);
+                init.putExtra("categoryOrigin", categoryRandom);
 
                 startActivity(init);
                 //startActivity(new Intent(MainActivity.this, QuestionActivity.class));
@@ -152,6 +165,7 @@ public class MainActivity extends AppCompatActivity
         });
 
     }
+
     public boolean isLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         return accessToken != null;
@@ -186,8 +200,7 @@ public class MainActivity extends AppCompatActivity
             Intent init = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(init);
             return true;
-        }
-        else if (id == R.id.search_button) {
+        } else if (id == R.id.search_button) {
             Intent init = new Intent(MainActivity.this, SearchActivity.class);
             startActivity(init);
         }
@@ -208,12 +221,19 @@ public class MainActivity extends AppCompatActivity
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "Sports");
             init.putExtra("questionID", "null");
+            init.putExtra("categoryOrigin", "null");
+            init.putExtra("Name", "null");
+
+
             startActivity(init);
 
         } else if (id == R.id.nav_entertainment) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "Entertainment");
             init.putExtra("questionID", "null");
+            init.putExtra("categoryOrigin", "null");
+            init.putExtra("Name", "null");
+
 
             startActivity(init);
 
@@ -221,6 +241,8 @@ public class MainActivity extends AppCompatActivity
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "Games");
             init.putExtra("questionID", "null");
+            init.putExtra("categoryOrigin", "null");
+            init.putExtra("Name", "null");
 
             startActivity(init);
 
@@ -228,6 +250,8 @@ public class MainActivity extends AppCompatActivity
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "Art");
             init.putExtra("questionID", "null");
+            init.putExtra("categoryOrigin", "null");
+            init.putExtra("Name", "null");
 
             startActivity(init);
 
@@ -235,6 +259,8 @@ public class MainActivity extends AppCompatActivity
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "History");
             init.putExtra("questionID", "null");
+            init.putExtra("categoryOrigin", "null");
+            init.putExtra("Name", "null");
 
             startActivity(init);
 
@@ -242,6 +268,8 @@ public class MainActivity extends AppCompatActivity
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "Science & Tech");
             init.putExtra("questionID", "null");
+            init.putExtra("categoryOrigin", "null");
+            init.putExtra("Name", "null");
 
             startActivity(init);
 
@@ -249,6 +277,8 @@ public class MainActivity extends AppCompatActivity
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "General");
             init.putExtra("questionID", "null");
+            init.putExtra("categoryOrigin", "null");
+            init.putExtra("Name", "null");
 
             startActivity(init);
 
@@ -258,10 +288,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_contact) {
             Intent init = new Intent(MainActivity.this, ContactActivity.class);
             startActivity(init);
-        } else if (id == R.id.nav_questionhist) {
-            Intent init = new Intent(MainActivity.this, HistoryActivity.class);
-            startActivity(init);
-    }
+        }
 
 //        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 //        drawer.closeDrawer(GravityCompat.START);
@@ -270,18 +297,12 @@ public class MainActivity extends AppCompatActivity
 
 
     private void setUser() {
-        //System.out.println("Set user has been called");
         Firebase.setAndroidContext(this);
         final User currentUser = ((MyApplication) getApplication()).getUser();
-        //Firebase
         final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                //Kenny's playground
-
-
-                //Kenny's domain ends here
 
                 HashMap<String, Object> val = (HashMap) snapshot.getValue();
                 //User does not have any information stored on Firebase, set defaults
@@ -299,13 +320,12 @@ public class MainActivity extends AppCompatActivity
                     //ref.child("skippedQuestions").setValue(currentUser.getSkippedQuestions());
 
                     //ref.child("answeredQuestions").setValue(currentUser.getAnsweredQuestions());
-                }
-                else {
+                } else {
                     //User has information stored on Firebase, retrieve it
                     Boolean dbModStatus = (Boolean) val.get("modStatus");
                     Boolean dbModPreference = (Boolean) val.get("modPreference");
                     ArrayList<String> dbSelCat = (ArrayList<String>) val.get("selectedCategory");
-                   // ArrayList<String> dbskippedQuestion = (ArrayList<String>) val.get
+                    // ArrayList<String> dbskippedQuestion = (ArrayList<String>) val.get
 
                     if (dbModStatus != null) {
                         currentUser.setModStatus(dbModStatus);
@@ -326,23 +346,18 @@ public class MainActivity extends AppCompatActivity
                 final String finalCity = currentUser.getCity().replace(' ', '_');
                 final String finalCountry = currentUser.getCountry().replace(' ', '_');
                 final String finalState = currentUser.getState().replace(' ', '_');
-                //System.out.println("Set user is still here...");
-                System.out.printf("City, country, state: %s, %s, %s\n", finalCity, finalCountry, finalState);
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                       // System.out.println("Set use is being listened");
                         System.out.println(dataSnapshot);
                         if (dataSnapshot.getValue() == null) {
                             ArrayList<String> categories = ((MyApplication) getApplication()).defCat;
                             for (int i = 0; i < categories.size(); i++) {
-                                //System.out.println("some kinda something: " + categories.get(i));
                                 final Firebase moderatedRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" + categories.get(i));
                                 moderatedRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot snapshot) {
-                                        //System.out.println("Set user is being annoying...");
                                         if (snapshot.getValue() != null) {
                                             HashMap<String, Object> questions = (HashMap) snapshot.getValue();
                                             final String category = snapshot.getKey();
@@ -399,14 +414,14 @@ public class MainActivity extends AppCompatActivity
                                     }
 
                                     @Override
-                                    public void onCancelled (FirebaseError firebaseError){
+                                    public void onCancelled(FirebaseError firebaseError) {
 
                                     }
                                 });
                             }
                         }
                         /* Start of nested listeners to obtain question for preview */
-                        Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
+                        Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/");
                         answeredRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/AnsweredQuestions/");
                         skippedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/SkippedQuestions/");
                         checkedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/CreatedQuestions/");
@@ -414,16 +429,8 @@ public class MainActivity extends AppCompatActivity
                         questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                final DataSnapshot savedSnapshot = dataSnapshot;
-
-                                                    /* Obtain first question from current category to serve as starting point for iteraton */
-                                final HashMap<String, Object> questionsHashMap = (HashMap) savedSnapshot.getValue();
-                                Iterator it = questionsHashMap.entrySet().iterator();
-                                HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
-                                id = (String) tempQuestion.getKey();
-
-                                                    /* Nested listeners to obtain all of the user's question history */
-                                if (dataSnapshot != null) {
+                                if (dataSnapshot.getValue() != null) {
+                                    final DataSnapshot savedSnapshot = dataSnapshot;
                                     checkedRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(final DataSnapshot createdSnapshot) {
@@ -433,19 +440,16 @@ public class MainActivity extends AppCompatActivity
                                                     answeredRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(DataSnapshot answeredSnapshot) {
-                                                            //HashMap<String, Object> questionsHashMap = (HashMap) savedSnapshot.getValue();
-                                                            //Iterator it = questionsHashMap.entrySet().iterator();
                                                             HashMap<String, String> answeredHistory = (HashMap<String, String>) answeredSnapshot.getValue();
                                                             HashMap<String, String> skippedHistory = (HashMap<String, String>) skippedSnapshot.getValue();
                                                             HashMap<String, String> createdHistory = (HashMap<String, String>) createdSnapshot.getValue();
-                                                            Iterator it = questionsHashMap.entrySet().iterator();
+                                                            String bestID = "";
+                                                            HashMap<String, Object> bestQuestion = null;
+                                                            boolean firstCheck = false;
+                                                            boolean bestCheck = false;
 
-                                                                                /* Will hold popular and random string previews */
-                                                            String popularPreview;
-                                                            String randomPreview;
-
-                                                                                /* Initializes user's history if it does not exist */
-                                                            if(answeredSnapshot.getValue() == null || skippedSnapshot.getValue() == null || createdSnapshot.getValue() == null ) {
+                                                            /* Initializes user's history if it does not exist */
+                                                            if (answeredSnapshot.getValue() == null || skippedSnapshot.getValue() == null || createdSnapshot.getValue() == null) {
                                                                 if (answeredSnapshot.getValue() == null) {
                                                                     answeredRef.child("-1").setValue("-1");
                                                                 }
@@ -455,47 +459,135 @@ public class MainActivity extends AppCompatActivity
                                                                 if (createdSnapshot.getValue() == null) {
                                                                     checkedRef.child("-1").setValue("-1");
                                                                 }
+                                                                for (DataSnapshot child : savedSnapshot.getChildren()) {
+                                                                    /* Checks for a question user has not seen yet in category */
+                                                                    for (DataSnapshot currentCategory : child.getChildren()) {
+                                                                        bestQuestion = (HashMap<String, Object>) currentCategory.getValue();
+                                                                        bestID = (String) currentCategory.getKey();
+                                                                        //firstCheck = true;
+                                                                        categoryPopular = child.getKey();
+                                                                        break;
 
-                                                            }
-                                                                                /* Checks for a question user has not seen yet in category */
-                                                            else {
-                                                                while (answeredHistory.containsKey(id) || skippedHistory.containsKey(id) || createdHistory.containsKey(id)) {
-                                                                    if (it.hasNext()) {
-                                                                        HashMap.Entry tempQuestion = (HashMap.Entry) it.next();
-                                                                        //System.out.println("Current tempQuestion: " + tempQuestion);
-                                                                        id = (String) tempQuestion.getKey();
-                                                                    } else {
-                                                                        //Handle when category is out of questions
+                                                                    }
+                                                                    break;
+                                                                }
+                                                                //if (firstCheck == false) {
+                                                                    //No questions left
+                                                                //}
+                                                                for (DataSnapshot child : savedSnapshot.getChildren()) {
+                                                                    for (DataSnapshot currentCategory : child.getChildren()) {
+                                                                        HashMap<String, Object> currentQuestion = (HashMap<String, Object>) currentCategory.getValue();
+                                                                            /* Checks first unseen question in the current category which should also be the most popular
+                                                                            given that our database is sorted by most popular first */
+                                                                            if ((long) bestQuestion.get("Total_Votes") < (long) currentQuestion.get("Total_Votes")) {
+                                                                                bestID = (String) currentCategory.getKey();
+                                                                                bestQuestion = currentQuestion;
+                                                                                categoryPopular = child.getKey();
+                                                                                bestCheck = true;
+                                                                            }
+                                                                        //}
+                                                                        if (bestCheck) {
+                                                                            break;
+                                                                        }
                                                                     }
                                                                 }
+                                                                if(bestCheck == false) {
+                                                                    //Somehow ran out of questions despite this being their first time loading
+                                                                }
+                                                                idPopular = bestID;
+                                                                namePopular = (String) bestQuestion.get("Name");
+
+
+                                                            } else {
+                                                                /* Finds category with best question by comparing first found with all categories' best */
+                                                                for (DataSnapshot child : savedSnapshot.getChildren()) {
+                                                                    /* Checks for a question user has not seen yet in category */
+                                                                    for (DataSnapshot currentCategory : child.getChildren()) {
+                                                                        String firstID = (String) currentCategory.getKey();
+                                                                        if (!answeredHistory.containsKey(firstID) && !skippedHistory.containsKey(firstID) && !createdHistory.containsKey(firstID)) {
+                                                                            bestQuestion = (HashMap<String, Object>) currentCategory.getValue();
+                                                                            bestID = (String) currentCategory.getKey();
+                                                                            firstCheck = true;
+                                                                            categoryPopular = child.getKey();
+
+                                                                            break;
+                                                                        }
+                                                                        if (firstCheck) {
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                    if (firstCheck) {
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                if (firstCheck == false) {
+                                                                    //No questions left
+                                                                }
+                                                                for (DataSnapshot child : savedSnapshot.getChildren()) {
+                                                                    for (DataSnapshot currentCategory : child.getChildren()) {
+                                                                        HashMap<String, Object> currentQuestion = (HashMap<String, Object>) currentCategory.getValue();
+                                                                        if (!answeredHistory.containsKey(currentCategory.getKey()) && !skippedHistory.containsKey(currentCategory.getKey())
+                                                                                && !createdHistory.containsKey(currentCategory.getKey())) {
+                                                                            /* Checks first unseen question in the current category which should also be the most popular
+                                                                            given that our database is sorted by most popular first */
+                                                                            if ((long) bestQuestion.get("Total_Votes") < (long) currentQuestion.get("Total_Votes")) {
+                                                                                bestID = (String) currentCategory.getKey();
+                                                                                bestQuestion = currentQuestion;
+                                                                                bestCheck = true;
+                                                                                categoryPopular = child.getKey();
+                                                                            } else {
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                        if (bestCheck) {
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                }
+                                                                idPopular = bestID;
+                                                                namePopular = (String) bestQuestion.get("Name");
+
                                                             }
+                                                            /* Generate a random question */
+                                                            boolean randomCheck = false;
+                                                            HashMap<String, Object> allCategories = (HashMap<String, Object>) savedSnapshot.getValue();
+                                                            int numberOfCategories = allCategories.size();
+                                                            int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
+                                                            int currentIndex = 0;
+                                                            for (DataSnapshot randomCategory : savedSnapshot.getChildren()) {
+                                                                if (currentIndex == randomCategoryIndex) {
+                                                                    HashMap<String, Object> categoryQuestions = (HashMap<String, Object>) randomCategory.getValue();
+                                                                    int randomQuestionIndex = (int) (Math.random() * categoryQuestions.size());
+                                                                    Iterator it = categoryQuestions.entrySet().iterator();
+                                                                    for (int j = 0; j < categoryQuestions.size(); j++) {
+                                                                        if (j == randomQuestionIndex) {
+                                                                            HashMap.Entry chosenRandomQuestion = (HashMap.Entry) it.next();
+                                                                            HashMap<String, Object> chosenValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
+                                                                            idRandom = (String) chosenRandomQuestion.getKey();
+                                                                            nameRandom = (String) chosenValue.get("Name");
+                                                                            categoryRandom = randomCategory.getKey();
+                                                                            randomCheck = true;
+                                                                            break;
+                                                                        } else {
+                                                                            it.next();
+                                                                        }
+                                                                    }
+                                                                    if (randomCheck) {
+                                                                        break;
+                                                                    }
+                                                                } else {
+                                                                    currentIndex++;
+                                                                }
+
+                                                            }
+
                                                             Button popularQuestionButton = (Button) findViewById(R.id.popularButton);
                                                             Button randomQuestionButton = (Button) findViewById(R.id.randomButton);
-                                                            String questionName;
 
-                                                            //HashMap.Entry temptry = (HashMap.Entry) it.next();
-                                                            //HashMap<String, Object> entries = (HashMap) temptry.getValue();
-
-                                                                                /* Question gets pulled from it's place in the Hashmap */
-                                                            HashMap<String, Object> newQuestion = (HashMap) questionsHashMap.get(id);
-
-                                                            questionName = newQuestion.get("Name").toString();
-                                                            int questionSize = questionName.length();
-
-                                                            String moddedQ = "";
-                                                            char c;
-                                                            for (int i = 0; i < questionSize; i++) {
-                                                                c = questionName.charAt(i);
-                                                                if (c == '_') {
-                                                                    c = ' ';
-                                                                    moddedQ += c;
-                                                                } else {
-                                                                    moddedQ += c;
-                                                                }
-                                                            }
-                                                            //System.out.println("#### Current Question text: " + moddedQ);
-                                                            randomQuestionButton.setText("Random Question:\n" + moddedQ);
-                                                            popularQuestionButton.setText("Popular Question:\n" + moddedQ);
+                                                            String popularPreview = namePopular.replaceAll("_", " ");
+                                                            String randomPreview = nameRandom.replaceAll("_", " ");
+                                                            popularQuestionButton.setText("Popular Question:\n" + popularPreview);
+                                                            randomQuestionButton.setText("Random Question:\n" + randomPreview);
                                                         }
 
 
@@ -518,7 +610,9 @@ public class MainActivity extends AppCompatActivity
 
                                         }
                                     });
+
                                 }
+
                             }
 
                             @Override
@@ -526,6 +620,7 @@ public class MainActivity extends AppCompatActivity
 
                             }
                         });
+
 
                     }
 
@@ -566,82 +661,48 @@ public class MainActivity extends AppCompatActivity
         return bestLocation;
     }
 
-    public String incrementHex(String value)
-    {
+    public String incrementHex(String value) {
         char[] hexValue = value.toCharArray();
         boolean carryOne = true;
-        for (int i = hexValue.length - 1; i >= 0 && carryOne == true; i--)
-        {
+        for (int i = hexValue.length - 1; i >= 0 && carryOne == true; i--) {
             carryOne = false;
-            if (hexValue[i] == '0')
-            {
+            if (hexValue[i] == '0') {
                 hexValue[i] = '1';
-            }
-            else if (hexValue[i] == '1')
-            {
+            } else if (hexValue[i] == '1') {
                 hexValue[i] = '2';
-            }
-            else if (hexValue[i] == '2')
-            {
+            } else if (hexValue[i] == '2') {
                 hexValue[i] = '3';
-            }
-            else if (hexValue[i] == '3')
-            {
+            } else if (hexValue[i] == '3') {
                 hexValue[i] = '4';
-            }
-            else if (hexValue[i] == '4')
-            {
+            } else if (hexValue[i] == '4') {
                 hexValue[i] = '5';
-            }
-            else if (hexValue[i] == '5')
-            {
+            } else if (hexValue[i] == '5') {
                 hexValue[i] = '6';
-            }
-            else if (hexValue[i] == '6')
-            {
+            } else if (hexValue[i] == '6') {
                 hexValue[i] = '7';
-            }
-            else if (hexValue[i] == '7')
-            {
+            } else if (hexValue[i] == '7') {
                 hexValue[i] = '8';
-            }
-            else if (hexValue[i] == '8')
-            {
+            } else if (hexValue[i] == '8') {
                 hexValue[i] = '9';
-            }
-            else if (hexValue[i] == '9')
-            {
+            } else if (hexValue[i] == '9') {
                 hexValue[i] = 'a';
-            }
-            else if (hexValue[i] == 'a')
-            {
+            } else if (hexValue[i] == 'a') {
                 hexValue[i] = 'b';
-            }
-            else if (hexValue[i] == 'b')
-            {
+            } else if (hexValue[i] == 'b') {
                 hexValue[i] = 'c';
-            }
-            else if (hexValue[i] == 'c')
-            {
+            } else if (hexValue[i] == 'c') {
                 hexValue[i] = 'd';
-            }
-            else if (hexValue[i] == 'd')
-            {
+            } else if (hexValue[i] == 'd') {
                 hexValue[i] = 'e';
-            }
-            else if (hexValue[i] == 'e')
-            {
+            } else if (hexValue[i] == 'e') {
                 hexValue[i] = 'f';
-            }
-            else if (hexValue[i] == 'f')
-            {
+            } else if (hexValue[i] == 'f') {
                 hexValue[i] = '0';
                 carryOne = true;
             }
         }
 
-        if (carryOne == true)
-        {
+        if (carryOne == true) {
             String tempHexValue = "1" + new String(hexValue);
             hexValue = tempHexValue.toCharArray();
         }
@@ -649,14 +710,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         setUserLocation();
     }
 
     public void setUserLocation() {
-        //System.out.println("Set user location");
+        System.out.println("Set user location");
         User currentUser = ((MyApplication) getApplication()).getUser();
         Location location = null;
         double longitude;
