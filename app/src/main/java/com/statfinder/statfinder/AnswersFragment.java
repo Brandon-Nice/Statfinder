@@ -53,12 +53,12 @@ public class AnswersFragment extends Fragment {
             System.out.println(answers[i]);
             Button btn = new Button(getActivity());
             btn.setText(answers[i].replace('_', ' ')); //set each button with the corresponding text
-            //btn.setId(i);
+            btn.setId(i);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Button b = (Button) v;
+                    final Button b = (Button) v;
                     String answeredText = (String) b.getText();
                     String replacedATexted = answeredText.replaceAll(" ", "_");
                     nextButton.setText("Next");
@@ -74,6 +74,8 @@ public class AnswersFragment extends Fragment {
                                 currentData.setValue(1);
                             } else {
                                 currentData.setValue((Long) currentData.getValue() + 1);
+                                // Add in once answers are ordered by priority
+                                //currentData.setPriority(b.getId());
                             }
                             return Transaction.success(currentData);
                         }
@@ -118,6 +120,9 @@ public class AnswersFragment extends Fragment {
                                 currentData.setValue(1);
                             } else {
                                 currentData.setValue((Long) currentData.getValue() + 1);
+                                // Add in once answers are ordered by priority
+                                //currentData.setPriority(b.getId());
+
                             }
                             return Transaction.success(currentData);
                         }
@@ -143,17 +148,6 @@ public class AnswersFragment extends Fragment {
                         @Override
                         public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
                             localRef.setPriority(0 - (Long) dataSnapshot.getValue());
-                        }
-                    });
-                    localRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
                         }
                     });
                     localRef.addListenerForSingleValueEvent(new ValueEventListener() {

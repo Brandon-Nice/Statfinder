@@ -4,12 +4,12 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#1df805</color>
 
-    <color name="color1">#3366aa</color>
-    <color name="color2">#992288</color>
-    <color name="color3">#66aa55</color>
-    <color name="color4">#11aa99</color>
-    <color name="color5">#f25f0a</color>
-    <color name="color6">#a9a9a9</color>
+    <color name="darkBlue">#3366aa</color>
+    <color name="darkMagenta">#992288</color>
+    <color name="darkModerateLimeGreen">#66aa55</color>
+    <color name="darkCyan">#11aa99</color>
+    <color name="vividOrange">#f25f0a</color>
+    <color name="gray">#a9a9a9</color>
 
 
 </resources>

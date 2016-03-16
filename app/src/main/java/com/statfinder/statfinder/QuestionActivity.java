@@ -409,7 +409,6 @@ public class QuestionActivity extends FragmentActivity {
                                                  }
 
                                                  Bundle bundle = new Bundle();
-                                                 bundle.putIntegerArrayList("votes", answerCount);
                                                  bundle.putStringArray("answers", answers);
                                                  bundle.putString("id", questionID);
                                                  bundle.putString("category", category);
