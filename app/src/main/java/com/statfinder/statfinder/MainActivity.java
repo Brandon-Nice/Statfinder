@@ -217,7 +217,13 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_add) {
             Intent init = new Intent(MainActivity.this, AddQuestionActivity.class);
             startActivity(init);
-        } else if (id == R.id.nav_sports) {
+        }
+        else if (id == R.id.nav_questionhist)
+        {
+            Intent init = new Intent(MainActivity.this, HistoryActivity.class);
+            startActivity(init);
+        }
+        else if (id == R.id.nav_sports) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
             init.putExtra("category", "Sports");
             init.putExtra("questionID", "null");
@@ -343,9 +349,9 @@ public class MainActivity extends AppCompatActivity
 
                 MainActivity.this.setUserLocation();
 
-                final String finalCity = currentUser.getCity().replace(' ', '_');
-                final String finalCountry = currentUser.getCountry().replace(' ', '_');
-                final String finalState = currentUser.getState().replace(' ', '_');
+                final String finalCity = currentUser.getCity();
+                final String finalCountry = currentUser.getCountry();
+                final String finalState = currentUser.getState();
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -743,9 +749,9 @@ public class MainActivity extends AppCompatActivity
         } catch (IOException e) {
             e.printStackTrace();
         }
-        currentUser.setCity(city);
-        currentUser.setState(state);
-        currentUser.setCountry(country);
+        currentUser.setCity(city.replace(' ', '_'));
+        currentUser.setState(state.replace(' ', '_'));
+        currentUser.setCountry(country.replace(' ', '_'));
     }
 
 }

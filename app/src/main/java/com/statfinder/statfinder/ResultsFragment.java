@@ -73,9 +73,9 @@ public class ResultsFragment extends Fragment {
         final String questionID = getArguments().getString("id");
 
         //Gets a reference to Firebase, then goes through the answers of the question and adds them to the pieChart
-        final String finalCity = currentUser.getCity().replace(' ', '_');
-        final String finalCountry = currentUser.getCountry().replace(' ', '_');
-        final String finalState = currentUser.getState().replace(' ', '_');
+        final String finalCity = currentUser.getCity();
+        final String finalCountry = currentUser.getCountry();
+        final String finalState = currentUser.getState();
 
         Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" +
                 category + "/" + questionID + "/" + "Answers");

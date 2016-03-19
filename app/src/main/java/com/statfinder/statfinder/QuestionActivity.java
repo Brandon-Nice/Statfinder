@@ -113,8 +113,8 @@ public class QuestionActivity extends FragmentActivity {
             public void onClick(View v) {
                 String category = globalCategory;
                 String questionID = getIntent().getStringExtra("questionID");
-                final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry().replace(' ', '_') + "/"
-                + currentUser.getState().replace(' ', '_') + "/" + currentUser.getCity().replace(' ', '_') + "/" + category + "/" + questionID);
+                final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry() + "/"
+                + currentUser.getState() + "/" + currentUser.getCity() + "/" + category + "/" + questionID);
                 final Firebase flagRef = ref.child("/Flags");
                 final Firebase totalRef = ref.child("/Total_Votes");
                 flagRef.runTransaction(new Transaction.Handler() {
@@ -178,9 +178,9 @@ public class QuestionActivity extends FragmentActivity {
         }
 
 
-        final String finalCity = currentUser.getCity().replace(' ', '_');
-        final String finalCountry = currentUser.getCountry().replace(' ', '_');
-        final String finalState = currentUser.getState().replace(' ', '_');
+        final String finalCity = currentUser.getCity();
+        final String finalCountry = currentUser.getCountry();
+        final String finalState = currentUser.getState();
 
         Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" + cameFrom);
 

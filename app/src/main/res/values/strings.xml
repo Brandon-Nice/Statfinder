@@ -11,5 +11,5 @@
     <string name="title_activity_question">QuestionActivity</string>
     <string name="title_activity_dynamic_layout">DynamicLayoutActivity</string>
     <string name="title_activity_question_filter">QuestionFilterActivity</string>
-    <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_activity_history">Question History</string>
 </resources>
