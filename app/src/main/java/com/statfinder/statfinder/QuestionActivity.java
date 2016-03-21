@@ -241,6 +241,7 @@ public class QuestionActivity extends FragmentActivity {
 
                                                              }
                                                          }
+                                                         /* For when random question cannot find anymore questions */
                                                          if(randomCheck == false) {
                                                              finish();
                                                              //When out of questions, returns to home page but home page still shows last questions seen instead of default message
@@ -315,40 +316,23 @@ public class QuestionActivity extends FragmentActivity {
                                                  else { /* Regular category Check */
                                                      if (init.getStringExtra("category").equals("Popular") || init.getStringExtra("category").equals("Random")) {
                                                          id = init.getStringExtra("questionID");
+                                                         if(id.equals("Out of questions!")){
+                                                             finish();
+                                                             return;
+                                                         }
                                                      }
 
                                                      else {
                                                          boolean bestCheck = false;
                                                          for (DataSnapshot currentCategory : dataSnapshot.getChildren()) {
-                                                             String firstID = (String) currentCategory.getKey();
+                                                             String firstID = currentCategory.getKey();
                                                              if (!answeredHistory.containsKey(firstID) && !skippedHistory.containsKey(firstID) && !createdHistory.containsKey(firstID)) {
-                                                                 bestQuestion = (HashMap<String, Object>) currentCategory.getValue();
-                                                                 bestID = (String) currentCategory.getKey();
+                                                                 bestID = currentCategory.getKey();
                                                                  bestCheck = true;
                                                              }
                                                          }
-
-
-                                                  /* Finds category with best question by comparing first found with all categories' best */
-                                                         /*for (DataSnapshot currentCategory : dataSnapshot.getChildren()) {
-                                                             HashMap<String, Object> currentQuestion = (HashMap<String, Object>) currentCategory.getValue();
-                                                             if (!answeredHistory.containsKey(currentCategory.getKey()) && !skippedHistory.containsKey(currentCategory.getKey())
-                                                                     && !createdHistory.containsKey(currentCategory.getKey())) {
-                                                         /* Checks first unseen question in the current category which should also be the most popular
-                                                         given that our database is sorted by most popular first */
-                                                         /*        if ((long) bestQuestion.get("Total_Votes") < (long) currentQuestion.get("Total_Votes")) {
-                                                                     bestID = (String) currentCategory.getKey();
-                                                                     bestQuestion = currentQuestion;
-                                                                 } else {
-                                                                     break;
-                                                                 }
-                                                             }
-                                                             if (bestCheck) {
-                                                                 break;
-                                                             }
-                                                         }*/
+                                                         /* No more questions left in category, redirect user to home page */
                                                          if (bestCheck == false) {
-                                                     /* No more questions left in category, redirect user to home page */
                                                              finish();
                                                              return;
                                                          }
@@ -357,6 +341,7 @@ public class QuestionActivity extends FragmentActivity {
                                                      }
 
                                                  }
+
                                                  HashMap<String, Object> questionEntry;// = null;
                                                  /* Initialize Popular and Random questions Hashmaps' differently */
                                                  if(init.getStringExtra("category").equals("Popular") || init.getStringExtra("category").equals("Random")  ) {
