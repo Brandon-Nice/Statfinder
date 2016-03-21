@@ -218,6 +218,7 @@ public class QuestionActivity extends FragmentActivity {
                                                   needs to be generated similar to the MainActivity */
                                                  if(cameFrom.equals("")) {
                                                      if(init.getStringExtra("category").equals("Random")) {
+                                                         /* Generate a random question */
                                                          boolean randomCheck = false;
                                                          HashMap<String, Object> allCategories = (HashMap<String, Object>) dataSnapshot.getValue();
                                                          int numCategories = allCategories.size();
@@ -225,7 +226,7 @@ public class QuestionActivity extends FragmentActivity {
                                                          ArrayList<String> randomCategory = new ArrayList<String>(numCategories);
                                                          int index = 0;
                                                          for(DataSnapshot child : dataSnapshot.getChildren()) {
-                                                                    /* Loop through each category available, add first question from each to HashMap */
+                                                             /* Loop through each category available, add first question from each to HashMap */
                                                              HashMap<String, Object> categoryQuestions = (HashMap<String, Object>)child.getValue();
                                                              Iterator it = categoryQuestions.entrySet().iterator();
                                                              while(it.hasNext()) {
@@ -243,9 +244,9 @@ public class QuestionActivity extends FragmentActivity {
                                                          }
                                                          /* For when random question cannot find anymore questions */
                                                          if(randomCheck == false) {
-                                                             finish();
                                                              //When out of questions, returns to home page but home page still shows last questions seen instead of default message
-                                                             //FIX
+                                                             //TODO dialogueBox 1
+                                                             finish();
                                                              return;
                                                          }
                                                          int numberOfCategories = randomQuestions.size();
@@ -279,6 +280,8 @@ public class QuestionActivity extends FragmentActivity {
                                                          }
                                                          if (firstCheck == false) {
                                                              //No questions left in category or in general, redirect user to home page
+                                                             //TODO dialogueBox 2
+
                                                              finish();
                                                              return;
                                                          }
@@ -292,6 +295,7 @@ public class QuestionActivity extends FragmentActivity {
                                                                  if (!answeredHistory.containsKey(currentCategory.getKey()) && !skippedHistory.containsKey(currentCategory.getKey())
                                                                          && !createdHistory.containsKey(currentCategory.getKey())) {
                                                                      if ((long) bestQuestion.get("Total_Votes") < (long) currentQuestion.get("Total_Votes")) {
+
                                                                          bestID = currentCategory.getKey();
                                                                          bestQuestion = currentQuestion;
                                                                          bestCheck = true;
@@ -308,8 +312,6 @@ public class QuestionActivity extends FragmentActivity {
                                                          id = bestID;
                                                          uniqueQuestionEntry = bestQuestion;
 
-                                                                /* Generate a random question */
-
                                                      }
                                                  }  /* End of Popular and Random Question initialization */
 
@@ -317,6 +319,8 @@ public class QuestionActivity extends FragmentActivity {
                                                      if (init.getStringExtra("category").equals("Popular") || init.getStringExtra("category").equals("Random")) {
                                                          id = init.getStringExtra("questionID");
                                                          if(id.equals("Out of questions!")){
+                                                             //TODO dialogueBox 3
+
                                                              finish();
                                                              return;
                                                          }
@@ -333,6 +337,8 @@ public class QuestionActivity extends FragmentActivity {
                                                          }
                                                          /* No more questions left in category, redirect user to home page */
                                                          if (bestCheck == false) {
+                                                             //TODO dialogueBox 4
+
                                                              finish();
                                                              return;
                                                          }
@@ -359,15 +365,17 @@ public class QuestionActivity extends FragmentActivity {
                                                      }
                                                      catch(NullPointerException e) {
                                                          /* User selected a category that has no questions */
+                                                         //TODO dialogueBox 5
+
                                                          finish();
                                                          return;
                                                      }
 
                                                  }
 
-                                                 String questionID = id; //(String)finalBuffer.getKey();
+                                                 String questionID = id;
 
-                                                     //Get the category first
+                                                 //Get the category first
                                                  String category;
                                                  String questionName;
                                                  if(init.getStringExtra("category").equals("Popular") || init.getStringExtra("category").equals("Random")) {
@@ -407,6 +415,7 @@ public class QuestionActivity extends FragmentActivity {
                                                                  ;
                                                          AlertDialog dialog = builder.create();
                                                          //dialog.create(); */
+                                                         //TODO dialogueBox 6
 
                                                          finish();
                                                          return;
