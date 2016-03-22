@@ -125,7 +125,7 @@ public class QuestionActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 String category = globalCategory;
-                String questionID = getIntent().getStringExtra("questionID");
+                String questionID = id;
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry() + "/"
                 + currentUser.getState() + "/" + currentUser.getCity() + "/" + category + "/" + questionID);
                 final Firebase flagRef = ref.child("/Flags");
