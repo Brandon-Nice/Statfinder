@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.DialogPreference;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -34,7 +36,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import android.os.Handler;
+import java.util.logging.LogRecord;
+
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 public class QuestionActivity extends FragmentActivity {
     User currentUser;//  = ((MyApplication) getApplication()).getUser();
@@ -246,7 +252,19 @@ public class QuestionActivity extends FragmentActivity {
                                                          if(randomCheck == false) {
                                                              //When out of questions, returns to home page but home page still shows last questions seen instead of default message
                                                              //TODO dialogueBox 1
-                                                             finish();
+                                                             //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
+                                                             final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
+                                                             alertDialog.setTitle("Alert");
+                                                             alertDialog.setMessage("Sorry there are no available Random questions at the moment.");
+                                                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                                     new DialogInterface.OnClickListener() {
+                                                                         public void onClick(DialogInterface dialog, int which) {
+                                                                             dialog.dismiss();
+                                                                             finish();
+                                                                         }
+                                                                     });
+                                                             alertDialog.show();
+
                                                              return;
                                                          }
                                                          int numberOfCategories = randomQuestions.size();
@@ -281,8 +299,19 @@ public class QuestionActivity extends FragmentActivity {
                                                          if (firstCheck == false) {
                                                              //No questions left in category or in general, redirect user to home page
                                                              //TODO dialogueBox 2
+                                                             //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
+                                                             final AlertDialog alertDialog2 = new AlertDialog.Builder(QuestionActivity.this).create();
+                                                             alertDialog2.setTitle("Alert");
+                                                             alertDialog2.setMessage("Sorry there are no available questions for this category at the moment.");
+                                                             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                                     new DialogInterface.OnClickListener() {
+                                                                         public void onClick(DialogInterface dialog, int which) {
+                                                                             dialog.dismiss();
+                                                                             finish();
+                                                                         }
+                                                                     });
+                                                             alertDialog2.show();
 
-                                                             finish();
                                                              return;
                                                          }
                                                          boolean bestCheck = false;
@@ -320,8 +349,19 @@ public class QuestionActivity extends FragmentActivity {
                                                          id = init.getStringExtra("questionID");
                                                          if(id.equals("Out of questions!")){
                                                              //TODO dialogueBox 3
+                                                             //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
+                                                             final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
+                                                             alertDialog.setTitle("Alert");
+                                                             alertDialog.setMessage("Sorry there are no available questions at the moment.");
+                                                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                                     new DialogInterface.OnClickListener() {
+                                                                         public void onClick(DialogInterface dialog, int which) {
+                                                                             dialog.dismiss();
+                                                                             finish();
+                                                                         }
+                                                                     });
+                                                             alertDialog.show();
 
-                                                             finish();
                                                              return;
                                                          }
                                                      }
@@ -338,8 +378,19 @@ public class QuestionActivity extends FragmentActivity {
                                                          /* No more questions left in category, redirect user to home page */
                                                          if (bestCheck == false) {
                                                              //TODO dialogueBox 4
+                                                             //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
+                                                             final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
+                                                             alertDialog.setTitle("Alert");
+                                                             alertDialog.setMessage("Sorry there are no available questions for this category at the moment.");
+                                                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                                     new DialogInterface.OnClickListener() {
+                                                                         public void onClick(DialogInterface dialog, int which) {
+                                                                             dialog.dismiss();
+                                                                             finish();
+                                                                         }
+                                                                     });
+                                                             alertDialog.show();
 
-                                                             finish();
                                                              return;
                                                          }
 
@@ -366,8 +417,18 @@ public class QuestionActivity extends FragmentActivity {
                                                      catch(NullPointerException e) {
                                                          /* User selected a category that has no questions */
                                                          //TODO dialogueBox 5
+                                                         //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
+                                                         final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
+                                                         alertDialog.setTitle("Alert");
+                                                         alertDialog.setMessage("Sorry there are no available questions for this category at the moment.");
+                                                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                                 new DialogInterface.OnClickListener() {
+                                                                     public void onClick(DialogInterface dialog, int which) {
+                                                                         dialog.dismiss();
+                                                                         finish();
+                                                                     }
+                                                                 });
 
-                                                         finish();
                                                          return;
                                                      }
 
@@ -416,8 +477,19 @@ public class QuestionActivity extends FragmentActivity {
                                                          AlertDialog dialog = builder.create();
                                                          //dialog.create(); */
                                                          //TODO dialogueBox 6
+                                                         //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
+                                                         final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
+                                                         alertDialog.setTitle("Alert");
+                                                         alertDialog.setMessage("Sorry there are no available questions at the moment.");
+                                                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                                 new DialogInterface.OnClickListener() {
+                                                                     public void onClick(DialogInterface dialog, int which) {
+                                                                         dialog.dismiss();
+                                                                         finish();
+                                                                     }
+                                                                 });
+                                                         alertDialog.show();
 
-                                                         finish();
                                                          return;
 
                                                      }
