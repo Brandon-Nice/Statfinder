@@ -245,10 +245,10 @@ public class AddQuestionActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please enter at least two answers.", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (firstAnswer.getText().toString().equals(secondAnswer.getText().toString())) {
+                /*if (firstAnswer.getText().toString().equals(secondAnswer.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Please enter two different answers.", Toast.LENGTH_LONG).show();
                     return;
-                }
+                }*/
 
                 final User currentUser = ((MyApplication) getApplication()).getUser();
                 String city = currentUser.getCity();
@@ -258,16 +258,16 @@ public class AddQuestionActivity extends AppCompatActivity {
 
                 final String questionName = question.getText().toString().trim();
                 final ArrayList<String> answers = new ArrayList();
-                answers.add(firstAnswer.getText().toString());
-                answers.add(secondAnswer.getText().toString());
+                answers.add(firstAnswer.getText().toString().trim());
+                answers.add(secondAnswer.getText().toString().trim());
                 if (thirdAnswer.getText().length() != 0 && thirdAnswer.getVisibility() == View.VISIBLE) {
-                    answers.add(thirdAnswer.getText().toString());
+                    answers.add(thirdAnswer.getText().toString().trim());
                 }
                 if (fourthAnswer.getText().length() != 0 && fourthAnswer.getVisibility() == View.VISIBLE) {
-                    answers.add(fourthAnswer.getText().toString());
+                    answers.add(fourthAnswer.getText().toString().trim());
                 }
                 if (fifthAnswer.getText().length() != 0 && fifthAnswer.getVisibility() == View.VISIBLE) {
-                    answers.add(fifthAnswer.getText().toString());
+                    answers.add(fifthAnswer.getText().toString().trim());
                 }
                 if (otherCheckBox.isChecked()) {
                     answers.add("Other");

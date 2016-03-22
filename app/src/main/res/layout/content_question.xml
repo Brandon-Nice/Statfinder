@@ -52,7 +52,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
-                    android:background="@drawable/ic_flag_black_24dp">
+                    android:background="@drawable/ic_flag_black_24dp"
+                    android:visibility="invisible">
+
                 </Button>
             </LinearLayout>
 
@@ -88,14 +90,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Home">
+                    android:text="Home"
+                    android:visibility="invisible">
+
                 </Button>
                 <Button
                     android:id="@+id/skipButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Skip">
+                    android:text="Skip"
+                    android:visibility="invisible">
+
                 </Button>
             </LinearLayout>
         </LinearLayout>

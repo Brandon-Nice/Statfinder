@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.preference.DialogPreference;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,7 +14,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -36,18 +34,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import android.os.Handler;
-import java.util.logging.LogRecord;
-
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 public class QuestionActivity extends FragmentActivity {
     User currentUser;//  = ((MyApplication) getApplication()).getUser();
     Firebase answeredRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/answeredQuestions/");
     Firebase skippedRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/skippedQuestions/");
     Firebase checkedRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/createdQuestions/");
-    boolean flag = false;
+    //boolean flag = false;
     String id = null;
     HashMap.Entry tempQuestion = null;
     MyPagerAdapter mPagerAdapter;
@@ -56,6 +50,9 @@ public class QuestionActivity extends FragmentActivity {
     HashMap<String, Object> uniqueQuestionEntry;
     String uniqueCategory;
     String uniqueName;
+    boolean modStatus = false;
+    Button flag;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +97,8 @@ public class QuestionActivity extends FragmentActivity {
                     newInit.putExtra("questionID", "null");
                     newInit.putExtra("Name", "null");
                     newInit.putExtra("categoryOrigin", "");
+                    newInit.putExtra("modStatus", false);
+
 
                 }
                 else {
@@ -108,17 +107,20 @@ public class QuestionActivity extends FragmentActivity {
                     newInit.putExtra("questionID", getIntent().getStringExtra("questionID"));
                     newInit.putExtra("Name", getIntent().getStringExtra("Name"));
                     newInit.putExtra("categoryOrigin", getIntent().getStringExtra("categoryOrigin"));
+                    newInit.putExtra("modStatus", false);
+
                 }
 
                 startActivity(newInit);
                 finish();
             }
         });
-        final Button flag = (Button) findViewById(R.id.flagButton);
-        if (moderatorQuestionStatus)
+        //final Button flag = (Button) findViewById(R.id.flagButton);
+        flag = (Button) findViewById(R.id.flagButton);
+        /*if (modStatus)
         {
             flag.setVisibility(View.INVISIBLE);
-        }
+        }*/
         flag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,19 +254,7 @@ public class QuestionActivity extends FragmentActivity {
                                                          if(randomCheck == false) {
                                                              //When out of questions, returns to home page but home page still shows last questions seen instead of default message
                                                              //TODO dialogueBox 1
-                                                             //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
-                                                             final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
-                                                             alertDialog.setTitle("Alert");
-                                                             alertDialog.setMessage("Sorry there are no available Random questions at the moment.");
-                                                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                                                     new DialogInterface.OnClickListener() {
-                                                                         public void onClick(DialogInterface dialog, int which) {
-                                                                             dialog.dismiss();
-                                                                             finish();
-                                                                         }
-                                                                     });
-                                                             alertDialog.show();
-
+                                                             finish();
                                                              return;
                                                          }
                                                          int numberOfCategories = randomQuestions.size();
@@ -274,6 +264,7 @@ public class QuestionActivity extends FragmentActivity {
                                                          id = (String) chosenRandomQuestion.getKey();
                                                          uniqueQuestionEntry = chosenRandomValue;
                                                          uniqueCategory= randomCategory.get(randomCategoryIndex);
+                                                         modStatus = (boolean)chosenRandomValue.get("Moderated");
                                                      }
                                                      else {
                                                          for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -285,6 +276,7 @@ public class QuestionActivity extends FragmentActivity {
                                                                      bestID = (String) currentCategory.getKey();
                                                                      firstCheck = true;
                                                                      uniqueCategory = child.getKey();
+                                                                     modStatus = (boolean)bestQuestion.get("Moderated");
 
                                                                      break;
                                                                  }
@@ -299,19 +291,8 @@ public class QuestionActivity extends FragmentActivity {
                                                          if (firstCheck == false) {
                                                              //No questions left in category or in general, redirect user to home page
                                                              //TODO dialogueBox 2
-                                                             //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
-                                                             final AlertDialog alertDialog2 = new AlertDialog.Builder(QuestionActivity.this).create();
-                                                             alertDialog2.setTitle("Alert");
-                                                             alertDialog2.setMessage("Sorry there are no available questions for this category at the moment.");
-                                                             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                                                     new DialogInterface.OnClickListener() {
-                                                                         public void onClick(DialogInterface dialog, int which) {
-                                                                             dialog.dismiss();
-                                                                             finish();
-                                                                         }
-                                                                     });
-                                                             alertDialog2.show();
 
+                                                             finish();
                                                              return;
                                                          }
                                                          boolean bestCheck = false;
@@ -329,6 +310,8 @@ public class QuestionActivity extends FragmentActivity {
                                                                          bestQuestion = currentQuestion;
                                                                          bestCheck = true;
                                                                          uniqueCategory = child.getKey();
+                                                                         modStatus = (boolean)currentQuestion.get("Moderated");
+
                                                                      } else {
                                                                          break;
                                                                      }
@@ -347,21 +330,12 @@ public class QuestionActivity extends FragmentActivity {
                                                  else { /* Regular category Check */
                                                      if (init.getStringExtra("category").equals("Popular") || init.getStringExtra("category").equals("Random")) {
                                                          id = init.getStringExtra("questionID");
+                                                         modStatus = init.getBooleanExtra("modStatus", false);
+
                                                          if(id.equals("Out of questions!")){
                                                              //TODO dialogueBox 3
-                                                             //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
-                                                             final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
-                                                             alertDialog.setTitle("Alert");
-                                                             alertDialog.setMessage("Sorry there are no available questions at the moment.");
-                                                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                                                     new DialogInterface.OnClickListener() {
-                                                                         public void onClick(DialogInterface dialog, int which) {
-                                                                             dialog.dismiss();
-                                                                             finish();
-                                                                         }
-                                                                     });
-                                                             alertDialog.show();
 
+                                                             finish();
                                                              return;
                                                          }
                                                      }
@@ -371,26 +345,18 @@ public class QuestionActivity extends FragmentActivity {
                                                          for (DataSnapshot currentCategory : dataSnapshot.getChildren()) {
                                                              String firstID = currentCategory.getKey();
                                                              if (!answeredHistory.containsKey(firstID) && !skippedHistory.containsKey(firstID) && !createdHistory.containsKey(firstID)) {
+                                                                 HashMap<String, Object> currentQuestion = (HashMap<String, Object>) currentCategory.getValue();
                                                                  bestID = currentCategory.getKey();
                                                                  bestCheck = true;
+                                                                 modStatus = (boolean)currentQuestion.get("Moderated");
+
                                                              }
                                                          }
                                                          /* No more questions left in category, redirect user to home page */
                                                          if (bestCheck == false) {
                                                              //TODO dialogueBox 4
-                                                             //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
-                                                             final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
-                                                             alertDialog.setTitle("Alert");
-                                                             alertDialog.setMessage("Sorry there are no available questions for this category at the moment.");
-                                                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                                                     new DialogInterface.OnClickListener() {
-                                                                         public void onClick(DialogInterface dialog, int which) {
-                                                                             dialog.dismiss();
-                                                                             finish();
-                                                                         }
-                                                                     });
-                                                             alertDialog.show();
 
+                                                             finish();
                                                              return;
                                                          }
 
@@ -417,18 +383,8 @@ public class QuestionActivity extends FragmentActivity {
                                                      catch(NullPointerException e) {
                                                          /* User selected a category that has no questions */
                                                          //TODO dialogueBox 5
-                                                         //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
-                                                         final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
-                                                         alertDialog.setTitle("Alert");
-                                                         alertDialog.setMessage("Sorry there are no available questions for this category at the moment.");
-                                                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                                                 new DialogInterface.OnClickListener() {
-                                                                     public void onClick(DialogInterface dialog, int which) {
-                                                                         dialog.dismiss();
-                                                                         finish();
-                                                                     }
-                                                                 });
 
+                                                         finish();
                                                          return;
                                                      }
 
@@ -476,21 +432,9 @@ public class QuestionActivity extends FragmentActivity {
                                                                  ;
                                                          AlertDialog dialog = builder.create();
                                                          //dialog.create(); */
-
                                                          //TODO dialogueBox 6
-                                                         //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
-                                                         final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
-                                                         alertDialog.setTitle("Alert");
-                                                         alertDialog.setMessage("Sorry there are no available questions at the moment.");
-                                                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                                                 new DialogInterface.OnClickListener() {
-                                                                     public void onClick(DialogInterface dialog, int which) {
-                                                                         dialog.dismiss();
-                                                                         finish();
-                                                                     }
-                                                                 });
-                                                         alertDialog.show();
 
+                                                         finish();
                                                          return;
 
                                                      }
@@ -504,6 +448,12 @@ public class QuestionActivity extends FragmentActivity {
                                                      //Get the Question name
 
                                                  globalName = questionName;
+
+                                                 if (!modStatus)
+                                                 {
+                                                     flag.setVisibility(View.VISIBLE);
+                                                 }
+
                                                  TextView tv = (TextView) findViewById(R.id.qText);
                                                  tv.setText(questionName);
 
@@ -541,19 +491,27 @@ public class QuestionActivity extends FragmentActivity {
                                                  ResultsFragment resultFragment = new ResultsFragment();
                                                  resultFragment.setArguments(bundle);
 
-                                                 GlobalResultsFragment globalFragment = new GlobalResultsFragment();
-                                                 globalFragment.setArguments(bundle);
+
+                                                 /* Is this right?? */
+                                                // GlobalResultsFragment globalFragment = new GlobalResultsFragment();
+                                                // globalFragment.setArguments(bundle);
 
                                                  //For each answer add a button
                                                  ArrayList<Fragment> fragments = new ArrayList<Fragment>();
                                                  fragments.add(answerFragment);
                                                  fragments.add(resultFragment);
-                                                 fragments.add(globalFragment);
+                                                 /* Is this right? */
+                                                 //fragments.add(globalFragment);
+                                                 if(modStatus) {
+                                                     GlobalResultsFragment moderatorGlobalFragment = new GlobalResultsFragment();
+                                                     moderatorGlobalFragment.setArguments(bundle);
+                                                     fragments.add(moderatorGlobalFragment);
+                                                 }
 
                                                  mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragments);
                                                  final MyViewPager pager = (MyViewPager) findViewById(R.id.viewpager);
                                                  pager.setAdapter(mPagerAdapter);
-                                                 flag = true;
+                                                 //flag = true;
 
                                                      //} else {
                                                      //    System.out.println("Error");

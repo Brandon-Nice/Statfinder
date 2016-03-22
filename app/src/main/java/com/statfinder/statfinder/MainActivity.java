@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity
     boolean modStatusPopular = false;
     boolean modStatusRandom = false;
     boolean outOfQuestions = false;
+
     String globalName = "";
 
     @Override
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity
                 //Tells questionActivity what to pull from database
                 init.putExtra("questionID", idPopular);
                 init.putExtra("categoryOrigin", categoryPopular);
-
+                init.putExtra("modStatus", modStatusPopular);
                 startActivity(init);
                 //startActivity(new Intent(MainActivity.this, QuestionActivity.class));
 
@@ -166,6 +167,7 @@ public class MainActivity extends AppCompatActivity
                 //Tells questionActivity what to pull from database
                 init.putExtra("questionID", idRandom);
                 init.putExtra("categoryOrigin", categoryRandom);
+                init.putExtra("modStatus", modStatusRandom);
 
                 startActivity(init);
                 //startActivity(new Intent(MainActivity.this, QuestionActivity.class));
@@ -484,6 +486,8 @@ public class MainActivity extends AppCompatActivity
                                                                         bestID = (String) currentCategory.getKey();
                                                                         //firstCheck = true;
                                                                         categoryPopular = child.getKey();
+                                                                        modStatusPopular = (boolean)bestQuestion.get("Moderated");
+                                                                        System.out.println("Current popular modStatus: " + modStatusPopular);
                                                                         break;
 
                                                                     }
@@ -498,6 +502,9 @@ public class MainActivity extends AppCompatActivity
                                                                                 bestID = (String) currentCategory.getKey();
                                                                                 bestQuestion = currentQuestion;
                                                                                 categoryPopular = child.getKey();
+                                                                                modStatusPopular = (boolean)bestQuestion.get("Moderated");
+                                                                                System.out.println("Current popular modStatus: " + modStatusPopular);
+
                                                                                 bestCheck = true;
                                                                             }
                                                                         //}
@@ -530,17 +537,15 @@ public class MainActivity extends AppCompatActivity
                                                                 }
                                                                 int numberOfCategories = randomQuestions.size();
                                                                 int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
-                                                                /*HashMap<String, Object> chosenValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
-                                                                                    idRandom = (String) chosenRandomQuestion.getKey();
-                                                                                    nameRandom = (String) chosenValue.get("Name");
-                                                                                    categoryRandom = randomCategory.getKey();
-                                                                                    randomCheck = true;
-                                                                                    break;*/
                                                                 HashMap.Entry chosenRandomQuestion = randomQuestions.get(randomCategoryIndex);
                                                                 HashMap<String, Object> chosenRandomValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
                                                                 idRandom = (String) chosenRandomQuestion.getKey();
                                                                 nameRandom = (String) chosenRandomValue.get("Name");
                                                                 categoryRandom = randomCategory.get(randomCategoryIndex);
+                                                                modStatusRandom = (boolean)chosenRandomValue.get("Moderated");
+                                                                System.out.println("Current popular modStatus: " + modStatusRandom);
+
+
 
 
                                                             } else {
@@ -554,6 +559,9 @@ public class MainActivity extends AppCompatActivity
                                                                             bestID = (String) currentCategory.getKey();
                                                                             firstCheck = true;
                                                                             categoryPopular = child.getKey();
+                                                                            modStatusPopular = (boolean)bestQuestion.get("Moderated");
+                                                                            System.out.println("Current popular modStatus: " + modStatusPopular);
+
 
                                                                             break;
                                                                         }
@@ -584,6 +592,9 @@ public class MainActivity extends AppCompatActivity
                                                                                     bestQuestion = currentQuestion;
                                                                                     bestCheck = true;
                                                                                     categoryPopular = child.getKey();
+                                                                                    modStatusPopular = (boolean)bestQuestion.get("Moderated");
+                                                                                    System.out.println("Current popular modStatus: " + modStatusPopular);
+
                                                                                 } else {
                                                                                     break;
                                                                                 }
@@ -597,15 +608,6 @@ public class MainActivity extends AppCompatActivity
                                                                     namePopular = (String) bestQuestion.get("Name");
                                                                 }
 
-
-
-                                                            /* Generate a random question */
-                                                             /*HashMap<String, Object> chosenValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
-                                                                                    idRandom = (String) chosenRandomQuestion.getKey();
-                                                                                    nameRandom = (String) chosenValue.get("Name");
-                                                                                    categoryRandom = randomCategory.getKey();
-                                                                                    randomCheck = true;
-                                                                                    break;*/
                                                                 if (!outOfQuestions) {
                                                                     HashMap<String, Object> allCategories = (HashMap<String, Object>) savedSnapshot.getValue();
                                                                     int numCategories = allCategories.size();
@@ -635,6 +637,7 @@ public class MainActivity extends AppCompatActivity
                                                                     idRandom = (String) chosenRandomQuestion.getKey();
                                                                     nameRandom = (String) chosenRandomValue.get("Name");
                                                                     categoryRandom = randomCategory.get(randomCategoryIndex);
+                                                                    modStatusRandom = (boolean)chosenRandomValue.get("Moderated");
                                                                 } else {
                                                                     idRandom = "Out of questions!";
                                                                     nameRandom = "Out of questions!";
