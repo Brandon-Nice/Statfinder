@@ -66,7 +66,7 @@
                 android:title="Contact Us" />
             <item
                 android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_widgets_black_24dp"
+                android:icon="@mipmap/ic_account_box_black_24dp"
                 android:title="Logout" />
         </menu>
     </item>
