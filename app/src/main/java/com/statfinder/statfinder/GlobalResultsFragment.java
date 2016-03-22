@@ -34,7 +34,12 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ResultsFragment extends Fragment {
+import org.w3c.dom.Text;
+
+/**
+ * Created by Jake on 3/21/2016.
+ */
+public class GlobalResultsFragment extends Fragment {
 
     private RelativeLayout llLayout;
     private FragmentActivity faActivity;
@@ -46,6 +51,8 @@ public class ResultsFragment extends Fragment {
 
         faActivity  = (FragmentActivity)    super.getActivity();
         llLayout    = (RelativeLayout)    inflater.inflate(R.layout.fragment_results, container, false);
+        TextView chartTitle = (TextView)llLayout.findViewById(R.id.textView3);
+        chartTitle.setText("Global Results");
         User currentUser = ((MyApplication) faActivity.getApplication()).getUser();
         final PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
         /* Turn off pie chart spinning */
@@ -77,7 +84,7 @@ public class ResultsFragment extends Fragment {
         final String finalCountry = currentUser.getCountry();
         final String finalState = currentUser.getState();
 
-        Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" +
+        Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
                 category + "/" + questionID + "/" + "Answers");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -128,3 +135,5 @@ public class ResultsFragment extends Fragment {
     }
 
 }
+
+
