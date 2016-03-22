@@ -52,6 +52,8 @@ public class QuestionActivity extends FragmentActivity {
     String uniqueName;
     boolean modStatus = false;
     Button flag;
+    Button home;
+    Button skip;
 
 
     @Override
@@ -63,16 +65,14 @@ public class QuestionActivity extends FragmentActivity {
         skippedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/SkippedQuestions/");
         checkedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/CreatedQuestions/");
 
-        final boolean moderatorQuestionStatus = true;
-
-        Button home = (Button) findViewById(R.id.homeButton);
+        home = (Button) findViewById(R.id.homeButton);
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(QuestionActivity.this, MainActivity.class));
             }
         });
 
-        final Button skip = (Button) findViewById(R.id.skipButton);
+        skip = (Button) findViewById(R.id.skipButton);
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -254,7 +254,17 @@ public class QuestionActivity extends FragmentActivity {
                                                          if(randomCheck == false) {
                                                              //When out of questions, returns to home page but home page still shows last questions seen instead of default message
                                                              //TODO dialogueBox 1
-                                                             finish();
+                                                             final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
+                                                             alertDialog.setTitle("Alert");
+                                                             alertDialog.setMessage("Sorry there are no available Random questions at the moment.");
+                                                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                                     new DialogInterface.OnClickListener() {
+                                                                         public void onClick(DialogInterface dialog, int which) {
+                                                                             dialog.dismiss();
+                                                                             finish();
+                                                                         }
+                                                                     });
+                                                             alertDialog.show();
                                                              return;
                                                          }
                                                          int numberOfCategories = randomQuestions.size();
@@ -291,8 +301,17 @@ public class QuestionActivity extends FragmentActivity {
                                                          if (firstCheck == false) {
                                                              //No questions left in category or in general, redirect user to home page
                                                              //TODO dialogueBox 2
-
-                                                             finish();
+                                                             final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
+                                                             alertDialog.setTitle("Alert");
+                                                             alertDialog.setMessage("Sorry there are no available questions in this category at the moment.");
+                                                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                                     new DialogInterface.OnClickListener() {
+                                                                         public void onClick(DialogInterface dialog, int which) {
+                                                                             dialog.dismiss();
+                                                                             finish();
+                                                                         }
+                                                                     });
+                                                             alertDialog.show();
                                                              return;
                                                          }
                                                          boolean bestCheck = false;
@@ -334,8 +353,17 @@ public class QuestionActivity extends FragmentActivity {
 
                                                          if(id.equals("Out of questions!")){
                                                              //TODO dialogueBox 3
-
-                                                             finish();
+                                                             final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
+                                                             alertDialog.setTitle("Alert");
+                                                             alertDialog.setMessage("Sorry there are no more questions available at the moment.");
+                                                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                                     new DialogInterface.OnClickListener() {
+                                                                         public void onClick(DialogInterface dialog, int which) {
+                                                                             dialog.dismiss();
+                                                                             finish();
+                                                                         }
+                                                                     });
+                                                             alertDialog.show();
                                                              return;
                                                          }
                                                      }
@@ -355,8 +383,17 @@ public class QuestionActivity extends FragmentActivity {
                                                          /* No more questions left in category, redirect user to home page */
                                                          if (bestCheck == false) {
                                                              //TODO dialogueBox 4
-
-                                                             finish();
+                                                             final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
+                                                             alertDialog.setTitle("Alert");
+                                                             alertDialog.setMessage("Sorry there are no available questions in this category at the moment.");
+                                                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                                     new DialogInterface.OnClickListener() {
+                                                                         public void onClick(DialogInterface dialog, int which) {
+                                                                             dialog.dismiss();
+                                                                             finish();
+                                                                         }
+                                                                     });
+                                                             alertDialog.show();
                                                              return;
                                                          }
 
@@ -383,8 +420,17 @@ public class QuestionActivity extends FragmentActivity {
                                                      catch(NullPointerException e) {
                                                          /* User selected a category that has no questions */
                                                          //TODO dialogueBox 5
-
-                                                         finish();
+                                                         final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
+                                                         alertDialog.setTitle("Alert");
+                                                         alertDialog.setMessage("Sorry there are no available questions in this category at the moment.");
+                                                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                                 new DialogInterface.OnClickListener() {
+                                                                     public void onClick(DialogInterface dialog, int which) {
+                                                                         dialog.dismiss();
+                                                                         finish();
+                                                                     }
+                                                                 });
+                                                         alertDialog.show();
                                                          return;
                                                      }
 
@@ -416,25 +462,19 @@ public class QuestionActivity extends FragmentActivity {
                                                          questionName = null;
                                                      }
                                                      if(questionName == null) {
-                                                         /*Category selected is out of questions */
-                                                         //do dialogue box
-                                                         /*AlertDialog.Builder builder = new AlertDialog.Builder(QuestionActivity.this);
-                                                         builder .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                                                             public void onClick(DialogInterface dialog, int id) {
-                                                                 // User clicked OK button
-                                                                 finish();
-                                                                 return;
-
-                                                             }
-                                                         });
-                                                         builder.setMessage("Out of questions for this category")
-                                                                 .setTitle("Whoops")
-                                                                 ;
-                                                         AlertDialog dialog = builder.create();
-                                                         //dialog.create(); */
                                                          //TODO dialogueBox 6
+                                                         final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
+                                                         alertDialog.setTitle("Alert");
+                                                         alertDialog.setMessage("Sorry there are no available questions in this category at the moment.");
+                                                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                                 new DialogInterface.OnClickListener() {
+                                                                     public void onClick(DialogInterface dialog, int which) {
+                                                                         dialog.dismiss();
+                                                                         finish();
+                                                                     }
+                                                                 });
+                                                         alertDialog.show();
 
-                                                         finish();
                                                          return;
 
                                                      }
@@ -453,6 +493,8 @@ public class QuestionActivity extends FragmentActivity {
                                                  {
                                                      flag.setVisibility(View.VISIBLE);
                                                  }
+                                                 skip.setVisibility(View.VISIBLE);
+                                                 home.setVisibility(View.VISIBLE);
 
                                                  TextView tv = (TextView) findViewById(R.id.qText);
                                                  tv.setText(questionName);
