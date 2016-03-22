@@ -540,7 +540,6 @@ public class QuestionActivity extends FragmentActivity {
                                                  ResultsFragment resultFragment = new ResultsFragment();
                                                  resultFragment.setArguments(bundle);
 
-                                                 /* Is this right?? */
                                                  GlobalResultsFragment globalFragment = new GlobalResultsFragment();
                                                  globalFragment.setArguments(bundle);
 
@@ -548,7 +547,6 @@ public class QuestionActivity extends FragmentActivity {
                                                  ArrayList<Fragment> fragments = new ArrayList<Fragment>();
                                                  fragments.add(answerFragment);
                                                  fragments.add(resultFragment);
-                                                 /* Is this right? */
                                                  fragments.add(globalFragment);
 
                                                  mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragments);

@@ -22,6 +22,10 @@ import android.view.MenuItem;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+
+/* Added for logout */
+import com.facebook.login.LoginManager;
+
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
@@ -297,6 +301,11 @@ public class MainActivity extends AppCompatActivity
             startActivity(init);
         } else if (id == R.id.nav_contact) {
             Intent init = new Intent(MainActivity.this, ContactActivity.class);
+            startActivity(init);
+        }
+        else if (id == R.id.nav_logout) {
+            LoginManager.getInstance().logOut();
+            Intent init = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(init);
         }
 
