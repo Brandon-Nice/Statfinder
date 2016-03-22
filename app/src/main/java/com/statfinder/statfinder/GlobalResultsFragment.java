@@ -52,7 +52,7 @@ public class GlobalResultsFragment extends Fragment {
         faActivity  = (FragmentActivity)    super.getActivity();
         llLayout    = (RelativeLayout)    inflater.inflate(R.layout.fragment_results, container, false);
         TextView chartTitle = (TextView)llLayout.findViewById(R.id.textView3);
-        chartTitle.setText("Global Results");
+        chartTitle.setText("(<- Local) Global Results");
         User currentUser = ((MyApplication) faActivity.getApplication()).getUser();
         final PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
         /* Turn off pie chart spinning */

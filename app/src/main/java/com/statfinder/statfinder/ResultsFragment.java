@@ -48,6 +48,8 @@ public class ResultsFragment extends Fragment {
         llLayout    = (RelativeLayout)    inflater.inflate(R.layout.fragment_results, container, false);
         User currentUser = ((MyApplication) faActivity.getApplication()).getUser();
         final PieChart pieChart = (PieChart) llLayout.findViewById(R.id.chart);
+        TextView chartTitle = (TextView)llLayout.findViewById(R.id.textView3);
+
         /* Turn off pie chart spinning */
         pieChart.setTouchEnabled(false);
         pieChart.setHoleRadius(0);
@@ -71,6 +73,10 @@ public class ResultsFragment extends Fragment {
 
         final String category = getArguments().getString("category");
         final String questionID = getArguments().getString("id");
+        final boolean modStatus = getArguments().getBoolean("modStatus");
+        if (modStatus) {
+            chartTitle.setText("Local Results (Global ->)");
+        }
 
         //Gets a reference to Firebase, then goes through the answers of the question and adds them to the pieChart
         final String finalCity = currentUser.getCity();

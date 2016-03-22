@@ -28,7 +28,7 @@
                 android:id="@+id/qText"
                 android:layout_gravity="center_horizontal"
                 android:textColor="#33ccff"
-                android:textSize="17dp" />
+                android:textSize="20dp" />
 
             <LinearLayout
                 android:layout_height="wrap_content"
