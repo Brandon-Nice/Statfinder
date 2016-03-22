@@ -476,6 +476,7 @@ public class QuestionActivity extends FragmentActivity {
                                                                  ;
                                                          AlertDialog dialog = builder.create();
                                                          //dialog.create(); */
+
                                                          //TODO dialogueBox 6
                                                          //Toast.makeText(getApplicationContext(), "Lost connect.", Toast.LENGTH_LONG).show();
                                                          final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
