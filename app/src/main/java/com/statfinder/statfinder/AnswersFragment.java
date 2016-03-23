@@ -40,6 +40,7 @@ public class AnswersFragment extends Fragment {
         String[] answers = getArguments().getStringArray("answers");
         final String category = getArguments().getString("category");
         final String questionID = getArguments().getString("id");
+        final Boolean modStatus = getArguments().getBoolean("modStatus");
 
         final MyViewPager viewpager = (MyViewPager) getActivity().findViewById(R.id.viewpager);
         final Button nextButton = (Button) getActivity().findViewById(R.id.skipButton);
@@ -64,54 +65,55 @@ public class AnswersFragment extends Fragment {
                     nextButton.setText("Next");
                     flagButton.setVisibility(View.INVISIBLE);
                     //TODO: Specify between Moderator and User question in URL
-                    final Firebase moderatorRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
-                            category + "/" + questionID);
-                    final Firebase moderatorAnswerRef = moderatorRef.child("/Answers/" + replacedATexted);
-                    moderatorAnswerRef.runTransaction(new Transaction.Handler() {
-                        @Override
-                        public Transaction.Result doTransaction(MutableData currentData) {
-                            if (currentData.getValue() == null) {
-                                currentData.setValue(1);
-                            } else {
-                                currentData.setValue((Long) currentData.getValue() + 1);
-                                // Add in once answers are ordered by priority
-                                //currentData.setPriority(b.getId());
+                    if (modStatus) {
+                        final Firebase moderatorRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
+                                category + "/" + questionID);
+                        final Firebase moderatorAnswerRef = moderatorRef.child("/Answers/" + replacedATexted);
+                        moderatorAnswerRef.runTransaction(new Transaction.Handler() {
+                            @Override
+                            public Transaction.Result doTransaction(MutableData currentData) {
+                                if (currentData.getValue() == null) {
+                                    currentData.setValue(1);
+                                } else {
+                                    currentData.setValue((Long) currentData.getValue() + 1);
+                                    // Add in once answers are ordered by priority
+                                    //currentData.setPriority(b.getId());
+                                }
+                                return Transaction.success(currentData);
                             }
-                            return Transaction.success(currentData);
-                        }
 
-                        @Override
-                        public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
-                            //transaction complete
-                            viewpager.setCurrentItem(1);
-                            for (int i = 0; i < buttonList.length; i++) {
-                                buttonList[i].setClickable(false);
+                            @Override
+                            public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+                                //transaction complete
+                                viewpager.setCurrentItem(1);
+                                for (int i = 0; i < buttonList.length; i++) {
+                                    buttonList[i].setClickable(false);
+                                }
+                                //Commented this out, due to users being able to go back to question and answer again, over and over
+                                viewpager.setPagingEnabled(true);
                             }
-                            //Commented this out, due to users being able to go back to question and answer again, over and over
-                            viewpager.setPagingEnabled(true);
-                        }
-                    });
-                    final Firebase moderatorTotalRef = moderatorRef.child("/Total_Votes");
-                    moderatorTotalRef.runTransaction(new Transaction.Handler() {
-                        @Override
-                        public Transaction.Result doTransaction(MutableData currentData) {
-                            if (currentData.getValue() == null) {
-                                currentData.setValue(1);
-                            } else {
-                                currentData.setValue((Long) currentData.getValue() + 1);
+                        });
+                        final Firebase moderatorTotalRef = moderatorRef.child("/Total_Votes");
+                        moderatorTotalRef.runTransaction(new Transaction.Handler() {
+                            @Override
+                            public Transaction.Result doTransaction(MutableData currentData) {
+                                if (currentData.getValue() == null) {
+                                    currentData.setValue(1);
+                                } else {
+                                    currentData.setValue((Long) currentData.getValue() + 1);
+                                }
+                                return Transaction.success(currentData);
                             }
-                            return Transaction.success(currentData);
-                        }
 
-                        @Override
-                        public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
-                            moderatorRef.setPriority(0 - (Long) dataSnapshot.getValue());
-                        }
-                    });
-
+                            @Override
+                            public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+                                moderatorRef.setPriority(0 - (Long) dataSnapshot.getValue());
+                            }
+                        });
+                    }
                     final User currentUser = ((MyApplication) factivity.getApplication()).getUser();
-                    final Firebase localRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry().replace(" ", "_") +
-                            "/" + currentUser.getState().replace(" ", "_") + "/" + currentUser.getCity().replace(" ", "_") + "/" + category + "/" + questionID);
+                    final Firebase localRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry() +
+                            "/" + currentUser.getState() + "/" + currentUser.getCity() + "/" + category + "/" + questionID);
                     final Firebase localAnswerRef = localRef.child("/Answers/" + replacedATexted);
                     localAnswerRef.runTransaction(new Transaction.Handler() {
                         @Override
