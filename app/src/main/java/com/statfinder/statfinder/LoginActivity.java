@@ -109,9 +109,9 @@ public class LoginActivity extends AppCompatActivity {
         PieChart pieChart = (PieChart) findViewById(R.id.chart);
         ArrayList<Entry> entries = new ArrayList<>();
         entries.add(new Entry(5.5f, 0));
-        entries.add(new Entry(1f, 1));
+        entries.add(new Entry(3f, 1));
         entries.add(new Entry(1.5f, 2));
-        entries.add(new Entry(2f, 3));
+        //entries.add(new Entry(1f, 3));
 
         ArrayList<String> labels = new ArrayList<>();
 
@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
         colors[0] = getResources().getColor(R.color.darkBlue);
         colors[1] = getResources().getColor(R.color.darkMagenta);
         colors[2] = getResources().getColor(R.color.darkModerateLimeGreen);
-        colors[3] = getResources().getColor(R.color.darkCyan);
+        //colors[3] = getResources().getColor(R.color.darkCyan);
 
         dataSet.setColors(colors);
 
