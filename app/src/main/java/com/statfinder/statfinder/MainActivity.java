@@ -310,10 +310,45 @@ public class MainActivity extends AppCompatActivity
             Intent init = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(init);
         }
+        else if (id == R.id.nav_reset_questions)
+        {
+            createQuestions();
+        }
+        else if (id == R.id.nav_reset_history)
+        {
+            resetUserHistory();
+        }
+
 
 //        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 //        drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void resetUserHistory() {
+        final Firebase users = new Firebase("https://statfinderproject.firebaseio.com/Users/");
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("Users:" + dataSnapshot);
+                HashMap<String, Object> user = (HashMap) dataSnapshot.getValue();
+                for (String userID : user.keySet()) {
+                    Firebase specificUser = users.child(userID);
+                    Firebase skippedHistory = specificUser.child("SkippedQuestions");
+                    Firebase answeredHistory = specificUser.child("AnsweredQuestions");
+                    Firebase createdHistory = specificUser.child("CreatedQuestions");
+                    skippedHistory.removeValue();
+                    answeredHistory.removeValue();
+                    createdHistory.removeValue();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
 
@@ -406,24 +441,6 @@ public class MainActivity extends AppCompatActivity
 
                                                     @Override
                                                     public void onCancelled(FirebaseError firebaseError) {
-
-                                                    }
-                                                });
-                                                Firebase numQuestionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/NumQuestions");
-                                                numQuestionRef.runTransaction(new Transaction.Handler() {
-                                                    @Override
-                                                    public Transaction.Result doTransaction(MutableData mutableData) {
-                                                        if (mutableData.getValue() == null) {
-                                                            mutableData.setValue("1");
-                                                        } else {
-                                                            String value = MainActivity.this.incrementHex((String) mutableData.getValue());
-                                                            mutableData.setValue(value);
-                                                        }
-                                                        return Transaction.success(mutableData);
-                                                    }
-
-                                                    @Override
-                                                    public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
 
                                                     }
                                                 });
@@ -813,5 +830,136 @@ public class MainActivity extends AppCompatActivity
         currentUser.setState(state.replace(' ', '_'));
         currentUser.setCountry(country.replace(' ', '_'));
     }
+
+    public void createQuestions() {
+        Firebase nuked = new Firebase("https://statfinderproject.firebaseio.com/Questions/");
+        nuked.removeValue();
+        createQuestion("Choose one for all eternity:", true, new ArrayList<String>() {{
+            add("Bread");
+            add("Rice");
+            add("Pasta");
+            add("Tortillas");
+        }}, "0");
+        createQuestion("You have just won 50,000 dollars! Only catch is, you have to spend it NOW, What are you going to buy?", true, new ArrayList<String>() {{
+            add("DANCE");
+            add("Go on a shopping spree at the mall");
+            add(" Go to Walmart I'll figure out the rest when I get there");
+            add("Donate it to charity");
+            add("Stocks");
+        }}, "1");
+        createQuestion("Which do you prefer:", true, new ArrayList<String>() {{
+            add("Apples");
+            add("Bananas");
+            add("Oranges");
+        }}, "2");
+        createQuestion("How would you describe your romantic life??", true, new ArrayList<String>() {{
+            add("Happy relationship");
+            add("Eligible Bachelor");
+            add("NULL POINTER EXCEPTION");
+            add("I have no idea what I'm doing");
+            add("Focused on beautiful Science");
+        }}, "3");
+        createQuestion("What is the best day", true, new ArrayList<String>() {{
+            add("Christmas");
+            add("Halloween");
+            add("Thanksgiving");
+            add("Valentine's");
+            add("Other");
+        }}, "4");
+
+        createQuestion("Would you rather", true, new ArrayList<String>() {{
+            add("own a yacht");
+            add("have free, coach-seating, air travel once a month");
+        }}, "5");
+        //ref.child("7").setValue(createQuestion("What's your ideal vacation?", true, new ArrayList<String>() {{add(" Anywhere with a beach");add("An exciting city ");add("Somewhere culturally significant");add("Comfy at home");}}));
+        createQuestion("Do you believe in love at first sight?", true, new ArrayList<String>() {{
+            add("Yes");
+            add("No");
+            add("Love is Dead");
+        }}, "6");
+        createQuestion("Would you rather run through a football field that has", true, new ArrayList<String>() {{
+            add("1,000 non-venomous snakes");
+            add("three landmines");
+        }}, "7");
+        createQuestion("Do you cry a lot?", true, new ArrayList<String>() {{
+            add("Yes");
+            add("No");
+        }}, "8");
+        createQuestion("Would you rather", true, new ArrayList<String>() {{
+            add("fight your crush");
+            add("fight a bear cub");
+        }}, "9");
+        createQuestion("Who is the fairest of them all?", true, new ArrayList<String>() {{
+            add("Douglas Comer");
+            add("Sophie Dee");
+        }}, "a");
+        createQuestion("Butterscotch or Caramel?", true, new ArrayList<String>() {{
+            add("Butterscotch");
+            add("Caramel");
+        }}, "b");
+        createQuestion("Chess or Othello?", true, new ArrayList<String>() {{
+            add("Chess");
+            add("Othello");
+        }}, "c");
+        createQuestion("Would you rather, every morning for an entire month,", true, new ArrayList<String>() {{
+            add("eat a package of oreos?");
+            add("drink a liter of heavy coffee creamer?");
+        }}, "d");
+        createQuestion("Would you rather have", true, new ArrayList<String>() {{
+            add("Brains");
+            add("Health");
+        }}, "e");
+        createQuestion("What's the most important thing in life?", true, new ArrayList<String>() {{
+            add("Success");
+            add("True Love");
+            add("Integrity");
+            add("Luck");
+        }}, "f");
+        createQuestion("What's scarier?", true, new ArrayList<String>() {{
+            add("Spiders");
+            add("Snakes");
+            add("Having a lisp");
+            add("Sassafrases");
+        }}, "10");
+        createQuestion("Which is best?", true, new ArrayList<String>() {{
+            add("Pancakes");
+            add("Waffles");
+            add("French Toast");
+            add("Muffins");
+            add("Oatmeal");
+            add("Other");
+        }}, "11");
+
+        Firebase numQuestion = new Firebase("https://statfinderproject.firebaseio.com/Questions/NumQuestions");
+        numQuestion.setValue("12");
+        finish();
+
+    }
+    private HashMap createQuestion(String question, Boolean moderated, ArrayList<String> answers, String idNumber)
+    {
+        Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
+
+        HashMap questionMap = new HashMap();
+        questionMap.put("Flags", 0);
+        questionMap.put("Name", question.trim().replaceAll(" ", "_"));
+        questionMap.put("Moderated", moderated);
+        questionMap.put("Category", "General");
+        //Long tsLong = System.currentTimeMillis()/1000;
+        //questionMap.put("Time_Created", tsLong);
+        questionMap.put("Total_Votes", 0);
+        ref.child(idNumber).setValue(questionMap);
+        ref.child(idNumber).setPriority(0);
+        //questionMap.put("Answers", answers);
+        for(int i = 0; i < answers.size(); i++) {
+            Firebase answerRef =  new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General/" + idNumber + "/Answers/" + answers.get(i).trim().replaceAll(" ", "_"));
+            answerRef.setValue(0);
+            answerRef.setPriority(i);
+            //questionsMap.put("")
+        }
+
+
+        return questionMap;
+    }
+
 
 }

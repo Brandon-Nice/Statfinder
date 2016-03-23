@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddQuestionActivity extends AppCompatActivity {
 
@@ -272,7 +273,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                 if (otherCheckBox.isChecked()) {
                     answers.add("Other");
                 }
-                Boolean moderated = ((MyApplication) getApplication()).getUser().getModStatus();
+                final Boolean moderated = ((MyApplication) getApplication()).getUser().getModStatus();
                 final String category = categorySpinner.getSelectedItem().toString();
                 final HashMap questionInfo = createQuestion(questionName, moderated, answers);
                 final String finalCity = city.replace(" ", "_");
@@ -294,14 +295,70 @@ public class AddQuestionActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
                         System.out.println(dataSnapshot);
-                        String idNumber = decrementHex((String) dataSnapshot.getValue());
-                        Firebase questionRef = ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" + category + "/" + idNumber);
-                        questionRef.setValue(questionInfo);
-                        questionRef.setPriority(0);
-                        for (int i = 0; i < answers.size(); i++) {
-                            Firebase answerRef = questionRef.child("/Answers/" + answers.get(i));
-                            answerRef.setValue(0);
-                            answerRef.setPriority(i);
+                        final String idNumber = decrementHex((String) dataSnapshot.getValue());
+
+                        if (moderated)
+                        {
+                            Firebase modRef = ref.child("Questions/ModeratorQuestions/" + category + "/" + idNumber);
+                            modRef.setValue(questionInfo);
+                            modRef.setPriority(0);
+                            for (int i = 0; i < answers.size(); i++) {
+                                Firebase answerRef = modRef.child("/Answers/" + answers.get(i));
+                                answerRef.setValue(0);
+                                answerRef.setPriority(i);
+                            }
+
+                            Firebase citiesRef = ref.child("Questions/");
+                            citiesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    HashMap<String, Object> questions = (HashMap) dataSnapshot.getValue();
+                                    for (Map.Entry<String, Object> entry : questions.entrySet()) {
+                                        String country = entry.getKey();
+                                        if (!country.equals("NumQuestions") && !country.equals("ModeratorQuestions"))
+                                        {
+                                            HashMap<String, Object> countries = (HashMap) entry.getValue();
+                                            for (Map.Entry<String, Object> entry2 : countries.entrySet())
+                                            {
+                                                String state = entry2.getKey();
+                                                HashMap<String, Object> states = (HashMap) entry2.getValue();
+                                                for (Map.Entry<String, Object> entry3 : states.entrySet())
+                                                {
+                                                    String city = entry3.getKey();
+                                                    System.out.println(city);
+                                                    Firebase cities = ref.child("Questions/" + country + "/" + state + "/" + city + "/" + category + "/" + idNumber);
+                                                    cities.setValue(questionInfo);
+                                                    cities.setPriority(0);
+                                                    for (int i = 0; i < answers.size(); i++) {
+                                                        Firebase answerRef = cities.child("/Answers/" + answers.get(i));
+                                                        answerRef.setValue(0);
+                                                        answerRef.setPriority(i);
+                                                    }
+
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+
+                                }
+                            });
+
+                        }
+                        else
+                        {
+                            Firebase questionRef = ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" + category + "/" + idNumber);
+                            questionRef.setValue(questionInfo);
+                            questionRef.setPriority(0);
+                            for (int i = 0; i < answers.size(); i++) {
+                                Firebase answerRef = questionRef.child("/Answers/" + answers.get(i));
+                                answerRef.setValue(0);
+                                answerRef.setPriority(i);
+                            }
                         }
 
                         Firebase userRef = ref.child("Users/" + ((MyApplication) getApplication()).getUser().getId() + "/CreatedQuestions/" + idNumber);
