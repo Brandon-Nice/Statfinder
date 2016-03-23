@@ -8,6 +8,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -313,15 +314,18 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_reset_questions)
         {
             createQuestions();
+            DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+            mDrawerLayout.closeDrawers();
+
+
         }
         else if (id == R.id.nav_reset_history)
         {
             resetUserHistory();
+            DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+            mDrawerLayout.closeDrawers();
         }
 
-
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -340,7 +344,7 @@ public class MainActivity extends AppCompatActivity
                     skippedHistory.removeValue();
                     answeredHistory.removeValue();
                     createdHistory.removeValue();
-                    finish();
+                    //finish();
                 }
             }
 
@@ -932,7 +936,15 @@ public class MainActivity extends AppCompatActivity
 
         Firebase numQuestion = new Firebase("https://statfinderproject.firebaseio.com/Questions/NumQuestions");
         numQuestion.setValue("12");
-        finish();
+        View decorView = getWindow().getDecorView();
+// Hide both the navigation bar and the status bar.
+// SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+// a general rule, you should design your app to hide the status bar whenever you
+// hide the navigation bar.
+//        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+//        decorView.setSystemUiVisibility(uiOptions);
+        //finish();
 
     }
     private HashMap createQuestion(String question, Boolean moderated, ArrayList<String> answers, String idNumber)
