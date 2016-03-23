@@ -318,6 +318,7 @@ public class MainActivity extends AppCompatActivity
             mDrawerLayout.closeDrawers();
             Toast.makeText(MainActivity.this, "You have successfully reset the questions in the database.",
                     Toast.LENGTH_SHORT).show();
+            onResume();
 
 
         }
@@ -328,6 +329,7 @@ public class MainActivity extends AppCompatActivity
             mDrawerLayout.closeDrawers();
             Toast.makeText(MainActivity.this, "You have successfully reset your question history.",
                     Toast.LENGTH_SHORT).show();
+            onResume();
         }
 
         return true;
