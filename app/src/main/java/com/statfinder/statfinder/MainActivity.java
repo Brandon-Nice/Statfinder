@@ -679,6 +679,9 @@ public class MainActivity extends AppCompatActivity
                                                             String randomPreview = nameRandom.replaceAll("_", " ");
                                                             popularQuestionButton.setText("Popular Question:\n" + popularPreview);
                                                             randomQuestionButton.setText("Random Question:\n" + randomPreview);
+                                                            popularQuestionButton.setVisibility(View.VISIBLE);
+                                                            randomQuestionButton.setVisibility(View.VISIBLE);
+
                                                         }
 
 
