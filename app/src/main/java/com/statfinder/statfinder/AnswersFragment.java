@@ -44,6 +44,7 @@ public class AnswersFragment extends Fragment {
 
         final MyViewPager viewpager = (MyViewPager) getActivity().findViewById(R.id.viewpager);
         final Button nextButton = (Button) getActivity().findViewById(R.id.skipButton);
+
         final Button flagButton = (Button) getActivity().findViewById(R.id.flagButton);
 
         final Button[] buttonList = new Button[answers.length];
