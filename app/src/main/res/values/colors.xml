@@ -10,6 +10,7 @@
     <color name="darkCyan">#11aa99</color>
     <color name="vividOrange">#f25f0a</color>
     <color name="gray">#a9a9a9</color>
+    <color name="lightBlue">#33ccff</color>
 
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="windowBackground">#FFFFFF</color>

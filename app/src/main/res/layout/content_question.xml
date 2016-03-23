@@ -27,7 +27,7 @@
                 android:text="&quot;Question goes here&quot;"
                 android:id="@+id/qText"
                 android:layout_gravity="center_horizontal"
-                android:textColor="#33ccff"
+                android:textColor="#ffffff"
                 android:textSize="20dp" />
 
             <LinearLayout
@@ -44,7 +44,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:textColor="#51fa03"
+                    android:textColor="#FFFFFF"
                     android:layout_weight="9.9" >
                 </TextView>
                 <Button

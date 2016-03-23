@@ -487,6 +487,9 @@ public class QuestionActivity extends FragmentActivity {
                                                                                                      home.setVisibility(View.VISIBLE);
 
                                                                                                      TextView tv = (TextView) findViewById(R.id.qText);
+                                                                                                     if (modStatus) {
+                                                                                                         tv.setTextColor(getResources().getColor(R.color.lightBlue));
+                                                                                                     }
                                                                                                      tv.setText(questionName);
 
                                                  /* Set category at top left */
