@@ -56,20 +56,73 @@ public class AnswersFragment extends Fragment {
             btn.setText(answers[i].replace('_', ' ')); //set each button with the corresponding text
             btn.setId(i);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final Button b = (Button) v;
-                    String answeredText = (String) b.getText();
-                    String replacedATexted = answeredText.replaceAll(" ", "_");
-                    nextButton.setText("Next");
-                    flagButton.setVisibility(View.INVISIBLE);
-                    //TODO: Specify between Moderator and User question in URL
-                    if (modStatus) {
-                        final Firebase moderatorRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
-                                category + "/" + questionID);
-                        final Firebase moderatorAnswerRef = moderatorRef.child("/Answers/" + replacedATexted);
-                        moderatorAnswerRef.runTransaction(new Transaction.Handler() {
+
+            if (((QuestionActivity) getActivity()).getAnswered())
+            {
+                btn.setClickable(false);
+            }
+            else {
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((QuestionActivity) getActivity()).setAnswered(true);
+                        final Button b = (Button) v;
+                        String answeredText = (String) b.getText();
+                        String replacedATexted = answeredText.replaceAll(" ", "_");
+                        nextButton.setText("Next");
+                        flagButton.setVisibility(View.INVISIBLE);
+                        //TODO: Specify between Moderator and User question in URL
+                        if (modStatus) {
+                            final Firebase moderatorRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
+                                    category + "/" + questionID);
+                            final Firebase moderatorAnswerRef = moderatorRef.child("/Answers/" + replacedATexted);
+                            moderatorAnswerRef.runTransaction(new Transaction.Handler() {
+                                @Override
+                                public Transaction.Result doTransaction(MutableData currentData) {
+                                    if (currentData.getValue() == null) {
+                                        currentData.setValue(1);
+                                    } else {
+                                        currentData.setValue((Long) currentData.getValue() + 1);
+                                        // Add in once answers are ordered by priority
+                                        //currentData.setPriority(b.getId());
+                                    }
+                                    return Transaction.success(currentData);
+                                }
+
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+                                    //transaction complete
+                                    viewpager.setCurrentItem(1);
+                                    for (int i = 0; i < buttonList.length; i++) {
+                                        buttonList[i].setClickable(false);
+                                    }
+                                    //Commented this out, due to users being able to go back to question and answer again, over and over
+                                    viewpager.setPagingEnabled(true);
+                                }
+                            });
+                            final Firebase moderatorTotalRef = moderatorRef.child("/Total_Votes");
+                            moderatorTotalRef.runTransaction(new Transaction.Handler() {
+                                @Override
+                                public Transaction.Result doTransaction(MutableData currentData) {
+                                    if (currentData.getValue() == null) {
+                                        currentData.setValue(1);
+                                    } else {
+                                        currentData.setValue((Long) currentData.getValue() + 1);
+                                    }
+                                    return Transaction.success(currentData);
+                                }
+
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+                                    moderatorRef.setPriority(0 - (Long) dataSnapshot.getValue());
+                                }
+                            });
+                        }
+                        final User currentUser = ((MyApplication) factivity.getApplication()).getUser();
+                        final Firebase localRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry() +
+                                "/" + currentUser.getState() + "/" + currentUser.getCity() + "/" + category + "/" + questionID);
+                        final Firebase localAnswerRef = localRef.child("/Answers/" + replacedATexted);
+                        localAnswerRef.runTransaction(new Transaction.Handler() {
                             @Override
                             public Transaction.Result doTransaction(MutableData currentData) {
                                 if (currentData.getValue() == null) {
@@ -78,23 +131,19 @@ public class AnswersFragment extends Fragment {
                                     currentData.setValue((Long) currentData.getValue() + 1);
                                     // Add in once answers are ordered by priority
                                     //currentData.setPriority(b.getId());
+
                                 }
                                 return Transaction.success(currentData);
                             }
 
                             @Override
                             public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
-                                //transaction complete
-                                viewpager.setCurrentItem(1);
-                                for (int i = 0; i < buttonList.length; i++) {
-                                    buttonList[i].setClickable(false);
-                                }
-                                //Commented this out, due to users being able to go back to question and answer again, over and over
-                                viewpager.setPagingEnabled(true);
+
                             }
                         });
-                        final Firebase moderatorTotalRef = moderatorRef.child("/Total_Votes");
-                        moderatorTotalRef.runTransaction(new Transaction.Handler() {
+
+                        final Firebase localTotalRef = localRef.child("/Total_Votes/");
+                        localTotalRef.runTransaction(new Transaction.Handler() {
                             @Override
                             public Transaction.Result doTransaction(MutableData currentData) {
                                 if (currentData.getValue() == null) {
@@ -107,77 +156,36 @@ public class AnswersFragment extends Fragment {
 
                             @Override
                             public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
-                                moderatorRef.setPriority(0 - (Long) dataSnapshot.getValue());
+                                localRef.setPriority(0 - (Long) dataSnapshot.getValue());
                             }
                         });
+                        localRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                HashMap questionInfo = (HashMap) dataSnapshot.getValue();
+                                Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/AnsweredQuestions/" + questionID);
+                                HashMap historyMap = new HashMap();
+                                Long tsLong = System.currentTimeMillis() / 1000;
+                                historyMap.put("TimeCreated", tsLong);
+                                historyMap.put("City", currentUser.getCity());
+                                historyMap.put("State", currentUser.getState());
+                                historyMap.put("Country", currentUser.getCountry());
+                                historyMap.put("Category", category);
+                                historyMap.put("Name", questionInfo.get("Name"));
+                                userRef.setValue(historyMap);
+                                userRef.setPriority(0 - tsLong);
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+
+
                     }
-                    final User currentUser = ((MyApplication) factivity.getApplication()).getUser();
-                    final Firebase localRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry() +
-                            "/" + currentUser.getState() + "/" + currentUser.getCity() + "/" + category + "/" + questionID);
-                    final Firebase localAnswerRef = localRef.child("/Answers/" + replacedATexted);
-                    localAnswerRef.runTransaction(new Transaction.Handler() {
-                        @Override
-                        public Transaction.Result doTransaction(MutableData currentData) {
-                            if (currentData.getValue() == null) {
-                                currentData.setValue(1);
-                            } else {
-                                currentData.setValue((Long) currentData.getValue() + 1);
-                                // Add in once answers are ordered by priority
-                                //currentData.setPriority(b.getId());
-
-                            }
-                            return Transaction.success(currentData);
-                        }
-
-                        @Override
-                        public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
-
-                        }
-                    });
-
-                    final Firebase localTotalRef = localRef.child("/Total_Votes/");
-                    localTotalRef.runTransaction(new Transaction.Handler() {
-                        @Override
-                        public Transaction.Result doTransaction(MutableData currentData) {
-                            if (currentData.getValue() == null) {
-                                currentData.setValue(1);
-                            } else {
-                                currentData.setValue((Long) currentData.getValue() + 1);
-                            }
-                            return Transaction.success(currentData);
-                        }
-
-                        @Override
-                        public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
-                            localRef.setPriority(0 - (Long) dataSnapshot.getValue());
-                        }
-                    });
-                    localRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            HashMap questionInfo = (HashMap) dataSnapshot.getValue();
-                            Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/AnsweredQuestions/" + questionID);
-                            HashMap historyMap = new HashMap();
-                            Long tsLong = System.currentTimeMillis() / 1000;
-                            historyMap.put("TimeCreated", tsLong);
-                            historyMap.put("City", currentUser.getCity());
-                            historyMap.put("State", currentUser.getState());
-                            historyMap.put("Country", currentUser.getCountry());
-                            historyMap.put("Category", category);
-                            historyMap.put("Name", questionInfo.get("Name"));
-                            userRef.setValue(historyMap);
-                            userRef.setPriority(0 - tsLong);
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
-
-
-                }
-            });
+                });
+            }
             llLayout.addView(btn, lp);
             buttonList[i] = btn;
         }

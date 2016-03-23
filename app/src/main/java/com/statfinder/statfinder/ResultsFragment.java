@@ -75,7 +75,7 @@ public class ResultsFragment extends Fragment {
         final String questionID = getArguments().getString("id");
         final boolean modStatus = getArguments().getBoolean("modStatus");
         if (modStatus) {
-            chartTitle.setText("Local Results (Global ->)");
+            chartTitle.setText("Local Results (State->)");
         }
 
         //Gets a reference to Firebase, then goes through the answers of the question and adds them to the pieChart
@@ -95,7 +95,6 @@ public class ResultsFragment extends Fragment {
                 int currentColor = 0;
                 for (DataSnapshot child : dataSnapshot.getChildren())
                 {
-                    System.out.println(child);
                     if (((Long) child.getValue()).compareTo(0L) != 0)
                     {
                         entries.add(new Entry( ((Long) child.getValue()).floatValue(), currentAnswer));
