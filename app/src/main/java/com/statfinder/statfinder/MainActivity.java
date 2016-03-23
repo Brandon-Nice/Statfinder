@@ -316,6 +316,8 @@ public class MainActivity extends AppCompatActivity
             createQuestions();
             DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
             mDrawerLayout.closeDrawers();
+            Toast.makeText(MainActivity.this, "You have successfully reset the questions in the database.",
+                    Toast.LENGTH_SHORT).show();
 
 
         }
@@ -324,6 +326,8 @@ public class MainActivity extends AppCompatActivity
             resetUserHistory();
             DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
             mDrawerLayout.closeDrawers();
+            Toast.makeText(MainActivity.this, "You have successfully reset your question history.",
+                    Toast.LENGTH_SHORT).show();
         }
 
         return true;
