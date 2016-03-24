@@ -87,59 +87,69 @@ public class StateResultsFragment extends Fragment {
 
         final LinkedHashMap<String, Long> questions = new LinkedHashMap();
 
-        Firebase countryRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState);
-        countryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        Firebase modRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" +
+                category + "/" + questionID + "/" + "Answers");
+        modRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                HashMap<String, Object> statesMap = (HashMap) dataSnapshot.getValue();
-                System.out.println("StatesMap in States: " + statesMap);
-                for (Map.Entry<String, Object> entry : statesMap.entrySet()) {
-                    HashMap<String, Object> value = (HashMap) entry.getValue();
-                    HashMap<String, Object> questionId = (HashMap) value.get(category);
-                    HashMap<String, Object> questionInfo = (HashMap) questionId.get(questionID);
-                    HashMap<String, Long> answersMap = (HashMap) questionInfo.get("Answers");
-                    for (Map.Entry<String, Long> entry2 : answersMap.entrySet())
-                    {
-                        long currentValue = 0;
-                        if (questions.containsKey(entry2.getKey()))
-                        {
-                            currentValue = questions.get(entry2.getKey());
-                        }
-                        questions.put(entry2.getKey(), currentValue + entry2.getValue());
-                    }
-                }
-                ArrayList<Entry> entries = new ArrayList();
-                ArrayList<String> labels = new ArrayList();
-                ArrayList<Integer> usedColors = new ArrayList();
-                int currentAnswer = 0;
-                int currentColor = 0;
-                for (Map.Entry<String, Long> question: questions.entrySet())
+                for (DataSnapshot child : dataSnapshot.getChildren())
                 {
-                    if (question.getValue().compareTo(0L) != 0)
-                    {
-                        entries.add(new Entry( question.getValue().floatValue(), currentAnswer));
-                        labels.add(currentAnswer, question.getKey().replace('_', ' '));
-                        usedColors.add(colors[currentColor]);
-                        currentAnswer++;
-                    }
-                    currentColor++;
+                    questions.put(child.getKey(), 0L);
                 }
 
-                PieDataSet dataset = new PieDataSet(entries, "");
-                PieData data = new PieData(labels, dataset);
+                Firebase stateRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + finalCountry + "/" + finalState);
+                stateRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        HashMap<String, Object> statesMap = (HashMap) dataSnapshot.getValue();
+                        System.out.println("StatesMap in States: " + statesMap);
+                        for (Map.Entry<String, Object> entry : statesMap.entrySet()) {
+                            HashMap<String, Object> value = (HashMap) entry.getValue();
+                            HashMap<String, Object> questionId = (HashMap) value.get(category);
+                            HashMap<String, Object> questionInfo = (HashMap) questionId.get(questionID);
+                            HashMap<String, Long> answersMap = (HashMap) questionInfo.get("Answers");
+                            for (Map.Entry<String, Long> entry2 : answersMap.entrySet()) {
+                                long currentValue = questions.get(entry2.getKey());
+                                questions.put(entry2.getKey(), currentValue + entry2.getValue());
+                            }
+                        }
+                        ArrayList<Entry> entries = new ArrayList();
+                        ArrayList<String> labels = new ArrayList();
+                        ArrayList<Integer> usedColors = new ArrayList();
+                        int currentAnswer = 0;
+                        int currentColor = 0;
+                        for (Map.Entry<String, Long> question : questions.entrySet()) {
+                            if (question.getValue().compareTo(0L) != 0) {
+                                entries.add(new Entry(question.getValue().floatValue(), currentAnswer));
+                                labels.add(currentAnswer, question.getKey().replace('_', ' '));
+                                usedColors.add(colors[currentColor]);
+                                currentAnswer++;
+                            }
+                            currentColor++;
+                        }
 
-                pieChart.setData(data); //set data into chart
-                pieChart.setDrawSliceText(false);
+                        PieDataSet dataset = new PieDataSet(entries, "");
+                        PieData data = new PieData(labels, dataset);
+
+                        pieChart.setData(data); //set data into chart
+                        pieChart.setDrawSliceText(false);
 
 
-                dataset.setColors(usedColors);
-                dataset.setValueTextColor(Color.WHITE);
-                dataset.setValueTextSize(13);
-                dataset.setValueFormatter(new PercentFormatter());
+                        dataset.setColors(usedColors);
+                        dataset.setValueTextColor(Color.WHITE);
+                        dataset.setValueTextSize(13);
+                        dataset.setValueFormatter(new PercentFormatter());
 
-                pieChart.notifyDataSetChanged();
-                pieChart.invalidate();
+                        pieChart.notifyDataSetChanged();
+                        pieChart.invalidate();
 
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
             }
 
             @Override
@@ -147,6 +157,8 @@ public class StateResultsFragment extends Fragment {
 
             }
         });
+
+
 
 
 

@@ -2,6 +2,7 @@ package com.statfinder.statfinder;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -233,7 +234,7 @@ public class AddQuestionActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                submitButton.setVisibility(View.INVISIBLE);
+                submitButton.setClickable(false);
 
                 if (question.getText().toString().equals("Reset Database"))
                 {
@@ -261,16 +262,16 @@ public class AddQuestionActivity extends AppCompatActivity {
 
                 final String questionName = question.getText().toString().trim();
                 final ArrayList<String> answers = new ArrayList();
-                answers.add(firstAnswer.getText().toString().trim());
-                answers.add(secondAnswer.getText().toString().trim());
+                answers.add(firstAnswer.getText().toString().trim().replace(' ', '_'));
+                answers.add(secondAnswer.getText().toString().trim().replace(' ', '_'));
                 if (thirdAnswer.getText().length() != 0 && thirdAnswer.getVisibility() == View.VISIBLE) {
-                    answers.add(thirdAnswer.getText().toString().trim());
+                    answers.add(thirdAnswer.getText().toString().trim().replace(' ', '_'));
                 }
                 if (fourthAnswer.getText().length() != 0 && fourthAnswer.getVisibility() == View.VISIBLE) {
-                    answers.add(fourthAnswer.getText().toString().trim());
+                    answers.add(fourthAnswer.getText().toString().trim().replace(' ', '_'));
                 }
                 if (fifthAnswer.getText().length() != 0 && fifthAnswer.getVisibility() == View.VISIBLE) {
-                    answers.add(fifthAnswer.getText().toString().trim());
+                    answers.add(fifthAnswer.getText().toString().trim().replace(' ', '_'));
                 }
                 if (otherCheckBox.isChecked()) {
                     answers.add("Other");
@@ -371,9 +372,20 @@ public class AddQuestionActivity extends AppCompatActivity {
                         historyMap.put("State", currentUser.getState());
                         historyMap.put("Country", currentUser.getCountry());
                         historyMap.put("Category", category);
-                        historyMap.put("Name", questionName);
+                        historyMap.put("Name", questionName.replace(' ', '_'));
+                        historyMap.put("hasBeenAnswered", false);
                         userRef.setValue(historyMap);
                         userRef.setPriority(0 - tsLong);
+
+                        Intent init = new Intent(AddQuestionActivity.this, QuestionActivityFromAddQuestion.class);
+                        HashMap<String, Object> question = new HashMap();
+                        HashMap<String, Object> questionInfo2 = new HashMap(questionInfo);
+                        questionInfo2.put("Answers", answers);
+                        questionInfo2.put("Category", category);
+                        question.put(idNumber, questionInfo2);
+                        init.putExtra("Question", question);
+                        startActivity(init);
+
 
                         finish();
                     }

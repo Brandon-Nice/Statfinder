@@ -5,6 +5,7 @@ package com.statfinder.statfinder;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,12 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 
+import com.firebase.client.DataSnapshot;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class HistoryAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<HashMap<String, Object>> list = new ArrayList();
@@ -57,13 +61,15 @@ public class HistoryAdapter extends BaseAdapter implements ListAdapter {
         final TextView subListItemText = (TextView) view.findViewById(android.R.id.text2);
         subListItemText.setTextColor(context.getResources().getColor(R.color.gray));
 
-        String listText = ((String) list.get(position).get("Name")).replace('_', ' ');
+        HashMap<String, Object> questionInfo = (HashMap) list.get(position).entrySet().iterator().next().getValue();
+        String listText = ((String) questionInfo.get("Name")).replace('_', ' ');
 
-        long longDate = (Long) list.get(position).get("TimeCreated") * 1000;
+        long longDate = (Long) questionInfo.get("TimeCreated") * 1000;
         String subListText = DateFormat.format("MM/dd/yyyy hh:mm:ss a", new Date(longDate)).toString();
 
         listItemText.setText(listText);
         subListItemText.setText(subListText);
+
 
         return view;
     }

@@ -88,7 +88,7 @@ public class QuestionActivity extends FragmentActivity {
                     historyMap.put("State", currentUser.getState());
                     historyMap.put("Country", currentUser.getCountry());
                     historyMap.put("Category", globalCategory);
-                    historyMap.put("Name", globalName);
+                    historyMap.put("Name", globalName.replace(' ', '_'));
                     userRef.setValue(historyMap);
                     userRef.setPriority(0 - tsLong);
                 }
@@ -521,6 +521,7 @@ public class QuestionActivity extends FragmentActivity {
                                                                                                      bundle.putString("id", questionID);
                                                                                                      bundle.putString("category", category);
                                                                                                      bundle.putBoolean("modStatus", modStatus);
+                                                                                                     bundle.putString("cameFrom", "QuestionActivity");
 
                                                                                                      AnswersFragment answerFragment = new AnswersFragment();
                                                                                                      answerFragment.setArguments(bundle);

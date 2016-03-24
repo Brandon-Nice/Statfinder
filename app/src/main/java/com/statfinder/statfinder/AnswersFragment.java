@@ -36,10 +36,15 @@ public class AnswersFragment extends Fragment {
         llLayout = (LinearLayout) inflater.inflate(R.layout.fragment_answers, container, false);
         llLayout.setOrientation(LinearLayout.VERTICAL);
 
+        String activityType = null;
+
         String[] answers = getArguments().getStringArray("answers");
         final String category = getArguments().getString("category");
         final String questionID = getArguments().getString("id");
         final Boolean modStatus = getArguments().getBoolean("modStatus");
+        final String cameFrom = getArguments().getString("cameFrom");
+
+
 
         final MyViewPager viewpager = (MyViewPager) getActivity().findViewById(R.id.viewpager);
         final Button nextButton = (Button) getActivity().findViewById(R.id.skipButton);
@@ -50,6 +55,12 @@ public class AnswersFragment extends Fragment {
 
         System.out.println(answers);
 
+        if (cameFrom.equals("AnsweredHistory") )
+        {
+            viewpager.setPagingEnabled(true);
+            ((QuestionActivityFromHistory) getActivity()).setAnswered(true);
+        }
+
         for (int i = 0; i < answers.length; i++) {
             System.out.println(answers[i]);
             Button btn = new Button(getActivity());
@@ -57,15 +68,47 @@ public class AnswersFragment extends Fragment {
             btn.setId(i);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            if (((QuestionActivity) getActivity()).getAnswered())
+            if (factivity instanceof QuestionActivity)
             {
-                btn.setClickable(false);
+                if (((QuestionActivity) getActivity()).getAnswered())
+                {
+                    btn.setClickable(false);
+                    viewpager.setPagingEnabled(true);
+                }
             }
-            else {
+            else if (factivity instanceof QuestionActivityFromHistory)
+            {
+                if (((QuestionActivityFromHistory) getActivity()).getAnswered())
+                {
+                    btn.setClickable(false);
+                    viewpager.setPagingEnabled(true);
+                }
+            }
+            else if (factivity instanceof QuestionActivityFromAddQuestion)
+            {
+                if (((QuestionActivityFromAddQuestion) getActivity()).getAnswered())
+                {
+                    btn.setClickable(false);
+                    viewpager.setPagingEnabled(true);
+                }
+            }
+
+
+            if (btn.isClickable()) {
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ((QuestionActivity) getActivity()).setAnswered(true);
+                        if (factivity instanceof QuestionActivity) {
+                            ((QuestionActivity) getActivity()).setAnswered(true);
+                        }
+                        else if (factivity instanceof QuestionActivityFromHistory)
+                        {
+                            ((QuestionActivityFromHistory) getActivity()).setAnswered(true);
+                        }
+                        else if (factivity instanceof QuestionActivityFromAddQuestion)
+                        {
+                            ((QuestionActivityFromAddQuestion) getActivity()).setAnswered(true);
+                        }
                         final Button b = (Button) v;
                         String answeredText = (String) b.getText();
                         String replacedATexted = answeredText.replaceAll(" ", "_");
@@ -83,8 +126,7 @@ public class AnswersFragment extends Fragment {
                                         currentData.setValue(1);
                                     } else {
                                         currentData.setValue((Long) currentData.getValue() + 1);
-                                        // Add in once answers are ordered by priority
-                                        //currentData.setPriority(b.getId());
+                                        currentData.setPriority(b.getId());
                                     }
                                     return Transaction.success(currentData);
                                 }
@@ -129,8 +171,7 @@ public class AnswersFragment extends Fragment {
                                     currentData.setValue(1);
                                 } else {
                                     currentData.setValue((Long) currentData.getValue() + 1);
-                                    // Add in once answers are ordered by priority
-                                    //currentData.setPriority(b.getId());
+                                    currentData.setPriority(b.getId());
 
                                 }
                                 return Transaction.success(currentData);
@@ -162,18 +203,32 @@ public class AnswersFragment extends Fragment {
                         localRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                HashMap questionInfo = (HashMap) dataSnapshot.getValue();
-                                Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/AnsweredQuestions/" + questionID);
-                                HashMap historyMap = new HashMap();
-                                Long tsLong = System.currentTimeMillis() / 1000;
-                                historyMap.put("TimeCreated", tsLong);
-                                historyMap.put("City", currentUser.getCity());
-                                historyMap.put("State", currentUser.getState());
-                                historyMap.put("Country", currentUser.getCountry());
-                                historyMap.put("Category", category);
-                                historyMap.put("Name", questionInfo.get("Name"));
-                                userRef.setValue(historyMap);
-                                userRef.setPriority(0 - tsLong);
+                                if (!cameFrom.equals("CreatedHistory")) {
+                                    HashMap questionInfo = (HashMap) dataSnapshot.getValue();
+                                    Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/AnsweredQuestions/" + questionID);
+                                    HashMap historyMap = new HashMap();
+                                    Long tsLong = System.currentTimeMillis() / 1000;
+                                    historyMap.put("TimeCreated", tsLong);
+                                    historyMap.put("City", currentUser.getCity());
+                                    historyMap.put("State", currentUser.getState());
+                                    historyMap.put("Country", currentUser.getCountry());
+                                    historyMap.put("Category", category);
+                                    historyMap.put("Name", questionInfo.get("Name"));
+                                    userRef.setValue(historyMap);
+                                    userRef.setPriority(0 - tsLong);
+                                }
+
+                                if (cameFrom.equals("CreatedHistory"))
+                                {
+                                    Firebase createdRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/CreatedQuestions/" + questionID + "/hasBeenAnswered");
+                                    createdRef.setValue(true);
+                                }
+
+                                if (cameFrom.equals("SkippedHistory"))
+                                {
+                                    Firebase skippedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/SkippedQuestions/" + questionID);
+                                    skippedRef.removeValue();
+                                }
                             }
 
                             @Override
