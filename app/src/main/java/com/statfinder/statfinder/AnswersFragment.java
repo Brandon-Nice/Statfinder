@@ -221,14 +221,7 @@ public class AnswersFragment extends Fragment {
                         localRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                if (cameFrom.equals("CreatedHistory"))
-                                {
-                                    Firebase createdRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/CreatedQuestions/" + questionID + "/hasBeenAnswered");
-                                    createdRef.setValue(true);
-                                }
-
-                                else if (cameFrom.equals("SkippedHistory"))
+                                if (!cameFrom.equals("CreatedHistory"))
                                 {
                                     HashMap questionInfo = (HashMap) dataSnapshot.getValue();
                                     Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/AnsweredQuestions/" + questionID);
@@ -242,6 +235,17 @@ public class AnswersFragment extends Fragment {
                                     historyMap.put("Name", questionInfo.get("Name"));
                                     userRef.setValue(historyMap);
                                     userRef.setPriority(0 - tsLong);
+                                }
+
+
+                                if (cameFrom.equals("CreatedHistory"))
+                                {
+                                    Firebase createdRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/CreatedQuestions/" + questionID + "/hasBeenAnswered");
+                                    createdRef.setValue(true);
+                                }
+
+                                if (cameFrom.equals("SkippedHistory"))
+                                {
                                     Firebase skippedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) factivity.getApplication()).getUser().getId() + "/SkippedQuestions/" + questionID);
                                     skippedRef.removeValue();
                                 }
