@@ -9,4 +9,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.statfinder.statfinder.AboutActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Statfinder is a mobile Android application created for devices with a minimum API level of 16 and targeted for 23. The application was created using Android Studio which uses IntelliJ. Our app also utilizes the Firebase API as an online server and database as well as the Facebook API to handle user login and account info.
+
+It’s primary purpose is to allow users to answer questions created by our team and see how their answer compares with past results. Questions are sorted by their assigned type (Games, Entertainment, Sports, etc.) and can be filtered by those same categories in the user’s settings.  A user can also create questions of their own and share them with their local community. Questions can be flagged by users allowing for the removal of unpopular or otherwise unaccepted questions according to a community."
+        android:id="@+id/textView6"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
