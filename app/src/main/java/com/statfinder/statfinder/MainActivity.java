@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity
     boolean modStatusPopular = false;
     boolean modStatusRandom = false;
     boolean outOfQuestions = false;
-
     String globalName = "";
 
     @Override
@@ -476,6 +475,8 @@ public class MainActivity extends AppCompatActivity
                                                             HashMap<String, Object> bestQuestion = null;
                                                             boolean firstCheck = false;
                                                             boolean bestCheck = false;
+                                                            User tempCurrentUser = ((MyApplication) getApplication()).getUser();
+                                                            ArrayList<String> userCategories = tempCurrentUser.getSelCat();
 
                                                             /* Initializes user's history if it does not exist */
                                                             if (answeredSnapshot.getValue() == null || skippedSnapshot.getValue() == null || createdSnapshot.getValue() == null) {
@@ -489,10 +490,13 @@ public class MainActivity extends AppCompatActivity
                                                                     checkedRef.child("-1").setValue("-1");
                                                                 }
                                                                 for (DataSnapshot child : savedSnapshot.getChildren()) {
+                                                                    if(!userCategories.contains(child.getKey())) {
+                                                                        continue;
+                                                                    }
                                                                     /* Checks for a question user has not seen yet in category */
                                                                     for (DataSnapshot currentCategory : child.getChildren()) {
                                                                         bestQuestion = (HashMap<String, Object>) currentCategory.getValue();
-                                                                        bestID = (String) currentCategory.getKey();
+                                                                        bestID = currentCategory.getKey();
                                                                         categoryPopular = child.getKey();
                                                                         modStatusPopular = (boolean)bestQuestion.get("Moderated");
                                                                         break;
@@ -500,6 +504,9 @@ public class MainActivity extends AppCompatActivity
                                                                     break;
                                                                 }
                                                                 for (DataSnapshot child : savedSnapshot.getChildren()) {
+                                                                    if(!userCategories.contains(child.getKey())) {
+                                                                        continue;
+                                                                    }
                                                                     for (DataSnapshot currentCategory : child.getChildren()) {
                                                                         HashMap<String, Object> currentQuestion = (HashMap<String, Object>) currentCategory.getValue();
                                                                             /* Checks first unseen question in the current category which should also be the most popular
@@ -523,13 +530,15 @@ public class MainActivity extends AppCompatActivity
                                                                 namePopular = (String) bestQuestion.get("Name");
 
                                                                 /* Random question generation for when user's history is empty */
-
                                                                 HashMap<String, Object> allCategories = (HashMap<String, Object>) savedSnapshot.getValue();
                                                                 int numCategories = allCategories.size();
                                                                 ArrayList<HashMap.Entry> randomQuestions = new ArrayList<HashMap.Entry>(numCategories);
                                                                 ArrayList<String> randomCategory = new ArrayList<String>(numCategories);
                                                                 int index = 0;
                                                                 for(DataSnapshot child : savedSnapshot.getChildren()) {
+                                                                    if(!userCategories.contains(child.getKey())) {
+                                                                        continue;
+                                                                    }
                                                                     /* Loop through each category available, add first question from each to HashMap */
                                                                     HashMap<String, Object> categoryQuestions = (HashMap<String, Object>) child.getValue();
                                                                     Iterator it = categoryQuestions.entrySet().iterator();
@@ -549,6 +558,9 @@ public class MainActivity extends AppCompatActivity
                                                             } else {
                                                                 /* Finds category with best question by comparing first found with all categories' best */
                                                                 for (DataSnapshot child : savedSnapshot.getChildren()) {
+                                                                    if(!userCategories.contains(child.getKey())) {
+                                                                        continue;
+                                                                    }
                                                                     /* Checks for a question user has not seen yet in category */
                                                                     for (DataSnapshot currentCategory : child.getChildren()) {
                                                                         String firstID = (String) currentCategory.getKey();
@@ -576,6 +588,9 @@ public class MainActivity extends AppCompatActivity
                                                                     categoryPopular = "Out of questions!";
                                                                 } else {
                                                                     for (DataSnapshot child : savedSnapshot.getChildren()) {
+                                                                        if(!userCategories.contains(child.getKey())) {
+                                                                            continue;
+                                                                        }
                                                                         for (DataSnapshot currentCategory : child.getChildren()) {
                                                                             HashMap<String, Object> currentQuestion = (HashMap<String, Object>) currentCategory.getValue();
                                                                             if (!answeredHistory.containsKey(currentCategory.getKey()) && !skippedHistory.containsKey(currentCategory.getKey())
@@ -610,6 +625,9 @@ public class MainActivity extends AppCompatActivity
 
                                                                     /* Loop through each category available, add first question from each to HashMap */
                                                                     for(DataSnapshot child : savedSnapshot.getChildren()) {
+                                                                        if(!userCategories.contains(child.getKey())) {
+                                                                            continue;
+                                                                        }
                                                                         HashMap<String, Object> categoryQuestions = (HashMap<String, Object>)child.getValue();
                                                                         Iterator it = categoryQuestions.entrySet().iterator();
                                                                         while(it.hasNext()) {
@@ -638,6 +656,7 @@ public class MainActivity extends AppCompatActivity
                                                                     categoryRandom = "Out of questions!";
                                                                 }
                                                             }
+
                                                             Button popularQuestionButton = (Button) findViewById(R.id.popularButton);
                                                             Button randomQuestionButton = (Button) findViewById(R.id.randomButton);
 

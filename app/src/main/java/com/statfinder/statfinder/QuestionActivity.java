@@ -42,7 +42,6 @@ public class QuestionActivity extends FragmentActivity {
     Firebase answeredRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/answeredQuestions/");
     Firebase skippedRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/skippedQuestions/");
     Firebase checkedRef = null; //new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/createdQuestions/");
-    //boolean flag = false;
     String id = null;
     HashMap.Entry tempQuestion = null;
     MyPagerAdapter mPagerAdapter;
@@ -100,8 +99,6 @@ public class QuestionActivity extends FragmentActivity {
                     newInit.putExtra("Name", "null");
                     newInit.putExtra("categoryOrigin", "");
                     newInit.putExtra("modStatus", false);
-
-
                 }
                 else {
                     newInit = new Intent(QuestionActivity.this, QuestionActivity.class);
@@ -212,6 +209,9 @@ public class QuestionActivity extends FragmentActivity {
                                              String bestID = "";
                                              HashMap<String, Object> bestQuestion = null;
                                              boolean firstCheck = false;
+                                             User tempCurrentUser = ((MyApplication) getApplication()).getUser();
+                                             ArrayList<String> userCategories = tempCurrentUser.getSelCat();
+
                                              /* Signifies the question was a skipped Popular or previous, a new history
                                               needs to be generated similar to the MainActivity */
                                              if (cameFrom.equals("")) {
@@ -224,6 +224,9 @@ public class QuestionActivity extends FragmentActivity {
                                                      ArrayList<String> randomCategory = new ArrayList<String>(numCategories);
                                                      int index = 0;
                                                      for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                                         if(!userCategories.contains(child.getKey())) {
+                                                             continue;
+                                                         }
                                                         /* Loop through each category available, add first question from each to HashMap */
                                                          HashMap<String, Object> categoryQuestions = (HashMap<String, Object>) child.getValue();
                                                          Iterator it = categoryQuestions.entrySet().iterator();
@@ -267,6 +270,9 @@ public class QuestionActivity extends FragmentActivity {
                                                      modStatus = (boolean) chosenRandomValue.get("Moderated");
                                                  } else {
                                                      for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                                         if(!userCategories.contains(child.getKey())) {
+                                                             continue;
+                                                         }
                                                          /* Checks for a question user has not seen yet in category */
                                                          for (DataSnapshot currentCategory : child.getChildren()) {
                                                              String firstID = (String) currentCategory.getKey();
@@ -308,6 +314,9 @@ public class QuestionActivity extends FragmentActivity {
 
                                                     /* Finds category with best question by comparing first found with all categories' best */
                                                      for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                                         if(!userCategories.contains(child.getKey())) {
+                                                             continue;
+                                                         }
                                                          for (DataSnapshot currentCategory : child.getChildren()) {
                                                              HashMap<String, Object> currentQuestion = (HashMap<String, Object>) currentCategory.getValue();
                                                              if (!answeredHistory.containsKey(currentCategory.getKey()) && !skippedHistory.containsKey(currentCategory.getKey())
@@ -333,7 +342,8 @@ public class QuestionActivity extends FragmentActivity {
                                                      uniqueQuestionEntry = bestQuestion;
 
                                                  }
-                                             }  /* End of Popular and Random Question initialization */ else { /* Regular category Check */
+                                             }  /* End of Popular and Random Question initialization */
+                                             else { /* Regular category Check */
                                                  if (init.getStringExtra("category").equals("Popular") || init.getStringExtra("category").equals("Random")) {
                                                      id = init.getStringExtra("questionID");
                                                      modStatus = init.getBooleanExtra("modStatus", false);
@@ -362,7 +372,7 @@ public class QuestionActivity extends FragmentActivity {
                                                              bestID = currentCategory.getKey();
                                                              bestCheck = true;
                                                              modStatus = (boolean) currentQuestion.get("Moderated");
-
+                                                             break;
                                                          }
                                                      }
                                                      /* No more questions left in category, redirect user to home page */
