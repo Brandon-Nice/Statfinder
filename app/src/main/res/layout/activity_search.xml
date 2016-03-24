@@ -9,12 +9,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.statfinder.statfinder.SearchActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Search for questions here!"
-        android:id="@+id/textView2"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:inputType="textCapSentences"
+        android:id="@+id/searchText"
+        android:singleLine="true"
+        android:gravity="left"
+        android:imeOptions="actionSearch"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchList"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:divider="#000000"
+        android:dividerHeight="1dp"
+        android:layout_below="@id/searchText"/>
 </RelativeLayout>
