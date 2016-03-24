@@ -52,7 +52,13 @@ public class QuestionActivityFromHistory extends FragmentActivity {
         questionNameLabel.setText(((String) questionInfo.get("Name")).replace('_', ' '));
 
         TextView categoryLabel = (TextView) findViewById(R.id.categoryLabel);
-        categoryLabel.setText("Category: " + category);
+        if (category.equals("SciTech"))
+        {
+            categoryLabel.setText("Category: Science and Technology");
+        }
+        else {
+            categoryLabel.setText("Category: " + category);
+        }
 
         final Button home = (Button) findViewById(R.id.homeButton);
         home.setText("History");

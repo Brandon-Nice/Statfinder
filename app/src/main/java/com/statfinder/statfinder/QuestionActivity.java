@@ -483,7 +483,13 @@ public class QuestionActivity extends FragmentActivity {
 
                                             /* Set category at top left */
                                              TextView cat = (TextView) findViewById(R.id.categoryLabel);
-                                             cat.setText("Category: " + category);
+                                             if (category.equals("SciTech"))
+                                             {
+                                                 cat.setText("Category: Science and Technology");
+                                             }
+                                             else {
+                                                 cat.setText("Category: " + category);
+                                             }
 
                                              //gets the list of answers for each question
                                              HashMap<String, Object> answersList = (HashMap) questionEntry.get("Answers");

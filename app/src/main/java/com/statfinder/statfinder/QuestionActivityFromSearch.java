@@ -103,7 +103,13 @@ public class QuestionActivityFromSearch extends FragmentActivity {
 
 
         TextView categoryLabel = (TextView) findViewById(R.id.categoryLabel);
-        categoryLabel.setText("Category: " + category);
+        if (category.equals("SciTech"))
+        {
+            categoryLabel.setText("Category: Science and Technology");
+        }
+        else {
+            categoryLabel.setText("Category: " + category);
+        }
 
         final Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + country + "/" + state + "/" + city + "/" + category + "/" + questionID);
         questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
