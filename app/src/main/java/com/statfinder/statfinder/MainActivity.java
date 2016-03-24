@@ -1,17 +1,14 @@
 package com.statfinder.statfinder;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -30,10 +27,8 @@ import com.facebook.login.LoginManager;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.facebook.login.widget.ProfilePictureView;
 
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,8 +39,6 @@ import org.json.JSONObject;
 import com.firebase.client.Firebase;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.MutableData;
-import com.firebase.client.Transaction;
 import com.firebase.client.ValueEventListener;
 
 import java.io.IOException;
@@ -61,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     Firebase answeredRef = null;
     Firebase skippedRef = null;
     Firebase checkedRef = null;
+
     /* String id to store question ID in setUser*/
     String id;
     String idPopular = null;
@@ -78,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //this is a comment
+
         //Initialize Facebook SDK and Firebase
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         Firebase.setAndroidContext(this);
@@ -96,8 +90,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        final TextView user_name = (TextView) findViewById(R.id.usertextView);
-        //String name;
 
         //Gets the name of the user
         new GraphRequest(AccessToken.getCurrentAccessToken(), "/me", null,
@@ -122,13 +114,11 @@ public class MainActivity extends AppCompatActivity
             }
         }).executeAsync();
 
-        //user_name.setText(globalName);
-
-        //setUser
         setUser();
 
         /* Create button object for making a question */
         Button makeQuestionButton = (Button) findViewById(R.id.makequestionButton);
+
         /* Send user to the add question page on button press */
         makeQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +129,7 @@ public class MainActivity extends AppCompatActivity
 
         /* Create button object for making a question */
         Button popularQuestionButton = (Button) findViewById(R.id.popularButton);
+
         /* Send user to the add question page on button press */
         popularQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,22 +137,21 @@ public class MainActivity extends AppCompatActivity
                 Intent init = new Intent(MainActivity.this, QuestionActivity.class);
                 init.putExtra("category", "Popular");
                 init.putExtra("Name", namePopular);
+
                 //Tells questionActivity what to pull from database
                 init.putExtra("questionID", idPopular);
                 init.putExtra("categoryOrigin", categoryPopular);
                 init.putExtra("modStatus", modStatusPopular);
                 startActivity(init);
-                //startActivity(new Intent(MainActivity.this, QuestionActivity.class));
-
             }
         });
         final Button randomQuestionButton = (Button) findViewById(R.id.randomButton);
+
         /* Send user to the add question page on button press */
         randomQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent init = new Intent(MainActivity.this, QuestionActivity.class);
-                //init.putExtra("category", "Random");
                 init.putExtra("category", "Random");
                 init.putExtra("Name", nameRandom);
 
@@ -171,7 +161,6 @@ public class MainActivity extends AppCompatActivity
                 init.putExtra("modStatus", modStatusRandom);
 
                 startActivity(init);
-                //startActivity(new Intent(MainActivity.this, QuestionActivity.class));
             }
         });
 
@@ -340,7 +329,6 @@ public class MainActivity extends AppCompatActivity
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("Users:" + dataSnapshot);
                 HashMap<String, Object> user = (HashMap) dataSnapshot.getValue();
                 for (String userID : user.keySet()) {
                     Firebase specificUser = users.child(userID);
@@ -350,7 +338,6 @@ public class MainActivity extends AppCompatActivity
                     skippedHistory.removeValue();
                     answeredHistory.removeValue();
                     createdHistory.removeValue();
-                    //finish();
                 }
             }
 
@@ -383,16 +370,11 @@ public class MainActivity extends AppCompatActivity
                     //modPreference
                     ref.child("modPreference").setValue(currentUser.getModPreference());
 
-                    //ref.child("skippedQuestions").setValue(currentUser.getSkippedQuestions());
-
-                    //ref.child("answeredQuestions").setValue(currentUser.getAnsweredQuestions());
                 } else {
                     //User has information stored on Firebase, retrieve it
                     Boolean dbModStatus = (Boolean) val.get("modStatus");
                     Boolean dbModPreference = (Boolean) val.get("modPreference");
                     ArrayList<String> dbSelCat = (ArrayList<String>) val.get("selectedCategory");
-                    // ArrayList<String> dbskippedQuestion = (ArrayList<String>) val.get
-
                     if (dbModStatus != null) {
                         currentUser.setModStatus(dbModStatus);
                     }
@@ -511,12 +493,9 @@ public class MainActivity extends AppCompatActivity
                                                                     for (DataSnapshot currentCategory : child.getChildren()) {
                                                                         bestQuestion = (HashMap<String, Object>) currentCategory.getValue();
                                                                         bestID = (String) currentCategory.getKey();
-                                                                        //firstCheck = true;
                                                                         categoryPopular = child.getKey();
                                                                         modStatusPopular = (boolean)bestQuestion.get("Moderated");
-                                                                        System.out.println("Current popular modStatus: " + modStatusPopular);
                                                                         break;
-
                                                                     }
                                                                     break;
                                                                 }
@@ -530,11 +509,8 @@ public class MainActivity extends AppCompatActivity
                                                                                 bestQuestion = currentQuestion;
                                                                                 categoryPopular = child.getKey();
                                                                                 modStatusPopular = (boolean)bestQuestion.get("Moderated");
-                                                                                System.out.println("Current popular modStatus: " + modStatusPopular);
-
                                                                                 bestCheck = true;
                                                                             }
-                                                                        //}
                                                                         if (bestCheck) {
                                                                             break;
                                                                         }
@@ -570,11 +546,6 @@ public class MainActivity extends AppCompatActivity
                                                                 nameRandom = (String) chosenRandomValue.get("Name");
                                                                 categoryRandom = randomCategory.get(randomCategoryIndex);
                                                                 modStatusRandom = (boolean)chosenRandomValue.get("Moderated");
-                                                                System.out.println("Current popular modStatus: " + modStatusRandom);
-
-
-
-
                                                             } else {
                                                                 /* Finds category with best question by comparing first found with all categories' best */
                                                                 for (DataSnapshot child : savedSnapshot.getChildren()) {
@@ -587,9 +558,6 @@ public class MainActivity extends AppCompatActivity
                                                                             firstCheck = true;
                                                                             categoryPopular = child.getKey();
                                                                             modStatusPopular = (boolean)bestQuestion.get("Moderated");
-                                                                            System.out.println("Current popular modStatus: " + modStatusPopular);
-
-
                                                                             break;
                                                                         }
                                                                         if (firstCheck) {
@@ -612,16 +580,14 @@ public class MainActivity extends AppCompatActivity
                                                                             HashMap<String, Object> currentQuestion = (HashMap<String, Object>) currentCategory.getValue();
                                                                             if (!answeredHistory.containsKey(currentCategory.getKey()) && !skippedHistory.containsKey(currentCategory.getKey())
                                                                                     && !createdHistory.containsKey(currentCategory.getKey())) {
-                                                                            /* Checks first unseen question in the current category which should also be the most popular
-                                                                            given that our database is sorted by most popular first */
+                                                                                /* Checks first unseen question in the current category which should also be the most popular
+                                                                                given that our database is sorted by most popular first */
                                                                                 if ((long) bestQuestion.get("Total_Votes") < (long) currentQuestion.get("Total_Votes")) {
                                                                                     bestID = (String) currentCategory.getKey();
                                                                                     bestQuestion = currentQuestion;
                                                                                     bestCheck = true;
                                                                                     categoryPopular = child.getKey();
                                                                                     modStatusPopular = (boolean)bestQuestion.get("Moderated");
-                                                                                    System.out.println("Current popular modStatus: " + modStatusPopular);
-
                                                                                 } else {
                                                                                     break;
                                                                                 }
@@ -641,8 +607,9 @@ public class MainActivity extends AppCompatActivity
                                                                     ArrayList<HashMap.Entry> randomQuestions = new ArrayList<HashMap.Entry>(numCategories);
                                                                     ArrayList<String> randomCategory = new ArrayList<String>(numCategories);
                                                                     int index = 0;
-                                                                    for(DataSnapshot child : savedSnapshot.getChildren()) {
+
                                                                     /* Loop through each category available, add first question from each to HashMap */
+                                                                    for(DataSnapshot child : savedSnapshot.getChildren()) {
                                                                         HashMap<String, Object> categoryQuestions = (HashMap<String, Object>)child.getValue();
                                                                         Iterator it = categoryQuestions.entrySet().iterator();
                                                                         while(it.hasNext()) {
@@ -812,7 +779,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void setUserLocation() {
-        System.out.println("Set user location");
         User currentUser = ((MyApplication) getApplication()).getUser();
         Location location = null;
         double longitude;
@@ -965,17 +931,13 @@ public class MainActivity extends AppCompatActivity
         questionMap.put("Name", question.trim().replaceAll(" ", "_"));
         questionMap.put("Moderated", moderated);
         questionMap.put("Category", "General");
-        //Long tsLong = System.currentTimeMillis()/1000;
-        //questionMap.put("Time_Created", tsLong);
         questionMap.put("Total_Votes", 0);
         ref.child(idNumber).setValue(questionMap);
         ref.child(idNumber).setPriority(0);
-        //questionMap.put("Answers", answers);
         for(int i = 0; i < answers.size(); i++) {
             Firebase answerRef =  new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General/" + idNumber + "/Answers/" + answers.get(i).trim().replaceAll(" ", "_"));
             answerRef.setValue(0);
             answerRef.setPriority(i);
-            //questionsMap.put("")
         }
 
 

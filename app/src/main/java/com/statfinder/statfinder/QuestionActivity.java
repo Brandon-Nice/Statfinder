@@ -148,8 +148,6 @@ public class QuestionActivity extends FragmentActivity {
                         totalRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot votesSnapshot) {
-                                System.out.println(totalRef);
-                                System.out.println(votesSnapshot);
                                 long totalFlags = (Long) flagSnapshot.getValue();
                                 long totalVotes = (Long) votesSnapshot.getValue();
                                 long totalInteractions = totalFlags + totalVotes;
@@ -552,13 +550,6 @@ public class QuestionActivity extends FragmentActivity {
                                                                                                      mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragments);
                                                                                                      final MyViewPager pager = (MyViewPager) findViewById(R.id.viewpager);
                                                                                                      pager.setAdapter(mPagerAdapter);
-                                                                                                     //flag = true;
-
-                                                                                                     //} else {
-                                                                                                     //    System.out.println("Error");
-                                                                                                     // }
-
-                                                                                                     //}
                                                                                                  }
 
                                                                                                  @Override
