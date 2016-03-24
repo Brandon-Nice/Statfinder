@@ -77,13 +77,26 @@ public class SearchActivity extends AppCompatActivity {
                                                 HashMap<String, Object> question = new HashMap();
                                                 HashMap<String, String> questionInfo = new HashMap();
                                                 String name = (String) ((HashMap) idNumbers.getValue()).get("Name");
+                                                boolean modStatus = (boolean) ((HashMap) idNumbers.getValue()).get("Moderated");
+                                                boolean modPreference = currentUser.getModPreference();
                                                 if (name.contains(search.replace(' ', '_')))
                                                 {
                                                     questionInfo.put("Name", name);
                                                     questionInfo.put("Category", categories.getKey());
                                                     question.put(idNumbers.getKey(), questionInfo);
-                                                    searchQuestions.add(question);
-                                                    searchAdapter.notifyDataSetChanged();
+                                                    if (modPreference)
+                                                    {
+                                                        if (modStatus) {
+                                                            searchQuestions.add(question);
+                                                            searchAdapter.notifyDataSetChanged();
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        searchQuestions.add(question);
+                                                        searchAdapter.notifyDataSetChanged();
+                                                    }
+
                                                 }
 
                                             }
