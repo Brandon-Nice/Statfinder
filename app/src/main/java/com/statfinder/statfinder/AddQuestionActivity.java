@@ -37,7 +37,6 @@ import com.firebase.client.Transaction;
 import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AddQuestionActivity extends AppCompatActivity {

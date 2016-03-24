@@ -638,7 +638,6 @@ public class MainActivity extends AppCompatActivity
                                                                     categoryRandom = "Out of questions!";
                                                                 }
                                                             }
-
                                                             Button popularQuestionButton = (Button) findViewById(R.id.popularButton);
                                                             Button randomQuestionButton = (Button) findViewById(R.id.randomButton);
 
