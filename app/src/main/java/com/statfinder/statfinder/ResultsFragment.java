@@ -74,8 +74,11 @@ public class ResultsFragment extends Fragment {
         final String category = getArguments().getString("category");
         final String questionID = getArguments().getString("id");
         final boolean modStatus = getArguments().getBoolean("modStatus");
+
+
         if (modStatus) {
             chartTitle.setText("Local Results (State->)");
+
         }
 
         //Gets a reference to Firebase, then goes through the answers of the question and adds them to the pieChart

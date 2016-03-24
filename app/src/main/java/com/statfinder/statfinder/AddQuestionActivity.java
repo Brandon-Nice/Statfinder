@@ -233,6 +233,8 @@ public class AddQuestionActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                submitButton.setVisibility(View.INVISIBLE);
+
                 if (question.getText().toString().equals("Reset Database"))
                 {
                     resetDatabase();

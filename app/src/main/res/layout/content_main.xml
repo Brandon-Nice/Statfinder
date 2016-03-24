@@ -27,7 +27,8 @@
         android:text="Popular Questions"
         android:id="@+id/popularButton"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.10" />
+        android:layout_weight="0.10"
+        android:visibility="invisible"/>
 
     <Space
         android:layout_width="0dp"
@@ -41,7 +42,8 @@
         android:text="Random Questions"
         android:id="@+id/randomButton"
         android:layout_gravity="center_horizontal"
-        android:layout_weight=".1" />
+        android:layout_weight=".1"
+        android:visibility="invisible"/>
 
     <Space
         android:layout_width="0dp"
