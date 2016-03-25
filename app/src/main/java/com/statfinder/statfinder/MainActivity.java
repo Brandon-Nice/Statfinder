@@ -1103,7 +1103,7 @@ public class MainActivity extends AppCompatActivity
             add("No");
             add("Love isn't real");
         }}, "21", "SciTech");
-        createQuestion("Pick a sci-fi series", false, new ArrayList<String>() {{
+        createQuestion("Pick a sci-fi series", true, new ArrayList<String>() {{
             add("Twilight Zone");
             add("Star Trek");
             add("Battlestar Galactica");

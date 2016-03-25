@@ -357,7 +357,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                             Firebase questionRef = ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" + category + "/" + idNumber);
                             questionRef.setValue(questionInfo);
                             questionRef.setPriority(0);
-                            for (int i = 0; i < answers.size(); i++) {
+                            for (int i = 0; i < answers.size() - 1; i++) {
                                 Firebase answerRef = questionRef.child("/Answers/" + answers.get(i));
                                 answerRef.setValue(0);
                                 answerRef.setPriority(i);
