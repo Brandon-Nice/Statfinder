@@ -79,24 +79,24 @@ public class SearchActivity extends AppCompatActivity {
                                                 String name = (String) ((HashMap) idNumbers.getValue()).get("Name");
                                                 boolean modStatus = (boolean) ((HashMap) idNumbers.getValue()).get("Moderated");
                                                 boolean modPreference = currentUser.getModPreference();
-                                                if (name.contains(search.replace(' ', '_')))
-                                                {
-                                                    questionInfo.put("Name", name);
-                                                    questionInfo.put("Category", categories.getKey());
-                                                    question.put(idNumbers.getKey(), questionInfo);
-                                                    if (modPreference)
-                                                    {
-                                                        if (modStatus) {
+                                                int i = 0;
+                                                while(i<2) { //Bug 16: displays bug twice
+                                                    if (name.contains(search.replace(' ', '_'))) {
+                                                        questionInfo.put("Name", name);
+                                                        questionInfo.put("Category", categories.getKey());
+                                                        question.put(idNumbers.getKey(), questionInfo);
+                                                        if (modPreference) {
+                                                            if (modStatus) {
+                                                                searchQuestions.add(question);
+                                                                searchAdapter.notifyDataSetChanged();
+                                                            }
+                                                        } else {
                                                             searchQuestions.add(question);
                                                             searchAdapter.notifyDataSetChanged();
                                                         }
-                                                    }
-                                                    else
-                                                    {
-                                                        searchQuestions.add(question);
-                                                        searchAdapter.notifyDataSetChanged();
-                                                    }
 
+                                                    }
+                                                    i++;
                                                 }
 
                                             }
