@@ -58,7 +58,7 @@ public class AnsweredQuestionsFragment extends Fragment{
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                answeredQuestions.clear();
+                //answeredQuestions.clear();
                 for (DataSnapshot child : dataSnapshot.getChildren())
                 {
                     if (!child.getKey().equals("-1"))
