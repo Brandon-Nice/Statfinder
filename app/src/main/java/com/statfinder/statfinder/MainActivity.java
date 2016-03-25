@@ -585,10 +585,7 @@ public class MainActivity extends AppCompatActivity
                                                                 }
                                                                 int numberOfCategories = randomQuestions.size();
                                                                 int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
-                                                                System.out.println("Random category index 0: " + randomCategoryIndex);
-                                                                System.out.println("Random questions 0: " + randomQuestions);
                                                                 HashMap.Entry chosenRandomQuestion = randomQuestions.get(randomCategoryIndex);
-                                                                System.out.println("Random question 0: " + chosenRandomQuestion);
                                                                 HashMap<String, Object> chosenRandomValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
                                                                 idRandom = (String) chosenRandomQuestion.getKey();
                                                                 nameRandom = (String) chosenRandomValue.get("Name");
@@ -694,10 +691,7 @@ public class MainActivity extends AppCompatActivity
                                                                     }
                                                                     int numberOfCategories = randomQuestions.size();
                                                                     int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
-                                                                    System.out.println("Random category index 1: " + randomCategoryIndex);
-                                                                    System.out.println("Random questions 1: " + randomQuestions);
                                                                     HashMap.Entry chosenRandomQuestion = randomQuestions.get(randomCategoryIndex);
-                                                                    System.out.println("Random question 1: " + chosenRandomQuestion);
                                                                     HashMap<String, Object> chosenRandomValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
                                                                     idRandom = (String) chosenRandomQuestion.getKey();
                                                                     nameRandom = (String) chosenRandomValue.get("Name");
@@ -884,123 +878,236 @@ public class MainActivity extends AppCompatActivity
     public void createQuestions() {
         Firebase nuked = new Firebase("https://statfinderproject.firebaseio.com/Questions/");
         nuked.removeValue();
-        createQuestion("Choose one for all eternity:", true, new ArrayList<String>() {{
-            add("Bread");
-            add("Rice");
-            add("Pasta");
-            add("Tortillas");
-        }}, "0");
-        createQuestion("You have just won 50,000 dollars! Only catch is, you have to spend it NOW, What are you going to buy?", true, new ArrayList<String>() {{
-            add("DANCE");
-            add("Go on a shopping spree at the mall");
-            add(" Go to Walmart I'll figure out the rest when I get there");
-            add("Donate it to charity");
-            add("Stocks");
-        }}, "1");
-        createQuestion("Which do you prefer:", true, new ArrayList<String>() {{
-            add("Apples");
-            add("Bananas");
-            add("Oranges");
-        }}, "2");
-        createQuestion("How would you describe your romantic life??", true, new ArrayList<String>() {{
-            add("Happy relationship");
-            add("Eligible Bachelor");
-            add("NULL POINTER EXCEPTION");
-            add("I have no idea what I'm doing");
-            add("Focused on beautiful Science");
-        }}, "3");
-        createQuestion("What is the best day", true, new ArrayList<String>() {{
-            add("Christmas");
-            add("Halloween");
-            add("Thanksgiving");
-            add("Valentine's");
-            add("Other");
-        }}, "4");
 
-        createQuestion("Would you rather", true, new ArrayList<String>() {{
-            add("own a yacht");
-            add("have free, coach-seating, air travel once a month");
-        }}, "5");
-        //ref.child("7").setValue(createQuestion("What's your ideal vacation?", true, new ArrayList<String>() {{add(" Anywhere with a beach");add("An exciting city ");add("Somewhere culturally significant");add("Comfy at home");}}));
-        createQuestion("Do you believe in love at first sight?", true, new ArrayList<String>() {{
-            add("Yes");
+        createQuestion("Do you love the Purdue football and basketball teams?", true, new ArrayList<String>() {{
+            add("Sure");
             add("No");
-            add("Love is Dead");
-        }}, "6");
-        createQuestion("Would you rather run through a football field that has", true, new ArrayList<String>() {{
-            add("1,000 non-venomous snakes");
-            add("three landmines");
-        }}, "7");
-        createQuestion("Do you cry a lot?", true, new ArrayList<String>() {{
-            add("Yes");
-            add("No");
-        }}, "8");
-        createQuestion("Would you rather", true, new ArrayList<String>() {{
-            add("fight your crush");
-            add("fight a bear cub");
-        }}, "9");
+            add("Why do they keep hurting us");
+        }}, "a", "Sports");
         createQuestion("Who is the fairest of them all?", true, new ArrayList<String>() {{
-            add("Douglas Comer");
-            add("Sophie Dee");
-        }}, "a");
-        createQuestion("Butterscotch or Caramel?", true, new ArrayList<String>() {{
-            add("Butterscotch");
-            add("Caramel");
-        }}, "b");
-        createQuestion("Chess or Othello?", true, new ArrayList<String>() {{
-            add("Chess");
-            add("Othello");
-        }}, "c");
-        createQuestion("Would you rather, every morning for an entire month,", true, new ArrayList<String>() {{
-            add("eat a package of oreos?");
-            add("drink a liter of heavy coffee creamer?");
-        }}, "d");
-        createQuestion("Would you rather have", true, new ArrayList<String>() {{
-            add("Brains");
-            add("Health");
-        }}, "e");
-        createQuestion("What's the most important thing in life?", true, new ArrayList<String>() {{
+            add("Snow White");
+            add("Jasmine");
+            add("Ariel");
+            add("Aurora");
+            add("Belle");
+        }}, "b", "Entertainment");
+        createQuestion("Which of these games is best?", true, new ArrayList<String>() {{
+            add("Pong");
+            add("KOTOR");
+            add("Teleroboxer");
+            add("Sega Bass Fishing");
+        }}, "c", "Games");
+        createQuestion("Who is you favorite artist?", true, new ArrayList<String>() {{
+            add("Vincent Van Gogh");
+            add("Andy Warhol");
+            add("The dude with the weird clocks");
+            add("Who cares");
+            add("Other");
+        }}, "d", "Art");
+        createQuestion("Which language is best?", true, new ArrayList<String>() {{
+            add("Java");
+            add("C");
+            add("C++");
+            add("Python");
+            add("Assembly");
+            add("Other");
+        }}, "e", "SciTech");
+        createQuestion("What's the most important thing in life?", false, new ArrayList<String>() {{
             add("Success");
             add("True Love");
             add("Integrity");
             add("Luck");
-        }}, "f");
-        createQuestion("What's scarier?", true, new ArrayList<String>() {{
-            add("Spiders");
-            add("Snakes");
-            add("Having a lisp");
-            add("Sassafrases");
-        }}, "10");
-        createQuestion("Which is best?", true, new ArrayList<String>() {{
-            add("Pancakes");
-            add("Waffles");
-            add("French Toast");
-            add("Muffins");
-            add("Oatmeal");
-            add("Other");
-        }}, "11");
-        createQuestion("How many push-ups can you do in a set?", false, new ArrayList<String>() {{
-            add(">1");
-            add("1-10");
-            add("11-25");
-            add("26-50");
-            add("All of them");
-        }}, "12");
-        createQuestion("Do you like non-moderated questions?", false, new ArrayList<String>() {{
-            add("Ha");
-            add("Yah");
-            add("Nah");
-        }}, "13");
+        }}, "f", "General");
+        createQuestion("Who is the cutest president?", true, new ArrayList<String>() {{
+            add("William Taft");
+            add("Abraham Lincoln");
+            add("Frankling D Roosevelt");
+            add("Grover Cleveland");
+            add("Martin Van Buren");
+        }}, "1a", "History");
+
+
+        createQuestion("Which do you prefer:", true, new ArrayList<String>() {{
+            add("Apples");
+            add("Bananas");
+            add("Oranges");
+        }}, "0", "General");
+        createQuestion("You have just won 50,000 dollars! Only catch is, you have to spend it NOW, What are you going to buy?", true, new ArrayList<String>() {{
+            add("DANCE");
+            add("Go on a shopping spree at the mall");
+            add("Go to Walmart I'll figure out the rest when I get there");
+            add("Donate it to charity");
+            add("Stocks");
+        }}, "1", "General");
+        createQuestion("You are stuck on an island and can only play one game (with networking). Obviously, you choose: ", false, new ArrayList<String>() {{
+            add("Minecraft");
+            add("League of Legends");
+            add("Tetris");
+            add("Pokemon (Your Choice)");
+            add("NBA 2K14");
+        }}, "2", "Games");
+        createQuestion("You are challenged to one of the following games in a life or death scenario. Which would you choose?", false, new ArrayList<String>() {{
+            add("Call of Duty 4, Custom loadouts, First to 10, Shipment");
+            add("League of Legends, Howling Abyss");
+            add("Guitar Hero, Expert, Raining Blood");
+            add("Smash Bros Melee, No items, Final Destination, Princess Peach only");
+            add("Tetris, Battle mode, best of three");
+            add("Dance Dance Revolution, Cartoon Heroes(Speedy Mix) by Aqua/BARBIE YOUNG");
+        }}, "3", "Games");
+        createQuestion("Which of the following do you prefer: ", true, new ArrayList<String>() {{
+            add("Xbox Original");
+            add("Playstation 2");
+            add("Gamecube");
+            add("Gameboy Advance");
+        }}, "4", "Games");
+        createQuestion("Do you think video games are lame?", true, new ArrayList<String>() {{
+            add("Yes");
+            add("No");
+            add("No, but some of the people who play them are");
+        }}, "5", "Games");
+        createQuestion("Would you rather run through a football field that has", true, new ArrayList<String>() {{
+            add("1,000 random snakes?");
+            add("Three landmines?");
+        }}, "6", "General");
         createQuestion("Who will win the 2016 election?", false, new ArrayList<String>() {{
             add("Donald Trump");
             add("Hilary Clinton");
             add("Rebecca Black");
             add("Zoboomafoo");
             add("A bucket of tomato juice");
-        }}, "14");
+        }}, "7", "General");
+        createQuestion("Pick a sport", true, new ArrayList<String>() {{
+            add("Extreme Ironing");
+            add("Underwater Hockey");
+            add("Chess Boxing");
+            add("Bog Snorkeling");
+        }}, "8", "Sports");
+        createQuestion("Would you rather", false, new ArrayList<String>() {{
+            add("Work out");
+            add("Eat like a slob");
+        }}, "9", "Sports");
+        createQuestion("What's your favorite Leo movie?", true, new ArrayList<String>() {{
+            add("Wolf of Wall Street");
+            add("Inception");
+            add("The Revenant");
+            add("Titanic");
+            add("I'm not a huge fan");
+            add("Other");
+        }}, "10", "Entertainment");
+        createQuestion("The best Netflix original series is obviously", true, new ArrayList<String>() {{
+            add("House of Cards");
+            add("Orange is the New Black");
+            add("Daredevil");
+            add("Bojack Horseman");
+            add("Lego Bionicle: The Journey to One");
+            add("Other");
+        }}, "11", "Entertainment");
+        createQuestion("How many push-ups can you do in a set?", false, new ArrayList<String>() {{
+            add(">1");
+            add("1-10");
+            add("11-25");
+            add("26-50");
+            add("All of them");
+        }}, "12", "Sports");
+        createQuestion("Who would win in a fight?", true, new ArrayList<String>() {{
+            add("Donald Trump");
+            add("Hilary Clinton");
+            add("Barack Obama");
+            add("Condoleza Rice");
+            add("Vladimir Putin");
+        }}, "13", "Sports");
+        createQuestion("Pick one of the following shows to show to a class of children (first episode)", false, new ArrayList<String>() {{
+            add("Breaking Bad");
+            add("Mad Men");
+            add("House of Cards");
+            add("Game of Thrones");
+        }}, "14", "Entertainment");
+        createQuestion("What's your favorite Dreamworks movie?", true, new ArrayList<String>() {{
+            add("The Incredibles");
+            add("Ratatouille");
+            add("Kung Fu Panda");
+            add("Shrek");
+            add("How to Train Your Dragon");
+            add("Other");
+        }}, "15", "Entertainment");
+        createQuestion("Favorite composer?", true, new ArrayList<String>() {{
+            add("Beethoven");
+            add("Mozart");
+            add("Rachmaninoff");
+            add("Chopin");
+            add("Justin Bieber");
+        }}, "16", "Art");
+        createQuestion("Which genre could you live without?", true, new ArrayList<String>() {{
+            add("Metal");
+            add("Reggae");
+            add("Country");
+            add("Pop");
+        }}, "17", "Art");
+        createQuestion("Choose one to erase from existence. (Think of the consequences first)", false, new ArrayList<String>() {{
+            add("Queen");
+            add("The Beatles");
+            add("Biggie Smalls");
+            add("Michael Jackson");
+        }}, "18", "Art");
+        createQuestion("Have you ever cried from listening to a song/looking at art?", false, new ArrayList<String>() {{
+            add("Yes");
+            add("No");
+        }}, "19", "Art");
+        createQuestion("True of False: Columbus did what he had too", false, new ArrayList<String>() {{
+            add("True");
+            add("False");
+        }}, "1b", "History");
+        createQuestion("Which country has the coolest history?", true, new ArrayList<String>() {{
+            add("China");
+            add("Egypt");
+            add("England");
+            add("Greece");
+            add("USA");
+        }}, "1c", "History");
+        createQuestion("If you could go back in time, would you?", true, new ArrayList<String>() {{
+            add("Yes, to less then a century ago");
+            add("Yes, to the Middle Ages");
+            add("Yes, to the previous era");
+            add("Yes, to prehistoric times");
+            add("Nah, I'm good");
+        }}, "1d", "History");
+        createQuestion("Do you have any regrets", false, new ArrayList<String>() {{
+            add("Not a single one! Our past is what makes us today");
+            add("Maybe a couple");
+            add("Yeah a bunch");
+            add("High school was a mistake");
+        }}, "1e", "History");
+        createQuestion("Which is the superior field of science?", true, new ArrayList<String>() {{
+            add("Physics");
+            add("Chemistry");
+            add("Biology");
+            add("Geology");
+            add("Political");
+            add("Other");
+        }}, "1f", "SciTech");
+        createQuestion("How many of the following devices do you own: smart watch, smart phone, tablet, laptop, desktop", true, new ArrayList<String>() {{
+            add("1");
+            add("2");
+            add("3");
+            add("4");
+            add("5");
+        }}, "20", "SciTech");
+        createQuestion("Can robots fall in love?", false, new ArrayList<String>() {{
+            add("Yes");
+            add("No");
+            add("Love isn't real");
+        }}, "21", "SciTech");
+        createQuestion("Pick a sci-fi series", false, new ArrayList<String>() {{
+            add("Twilight Zone");
+            add("Star Trek");
+            add("Battlestar Galactica");
+            add("Firefly");
+            add("Sci-fi is for huge nerds");
+        }}, "22", "SciTech");
+
 
         Firebase numQuestion = new Firebase("https://statfinderproject.firebaseio.com/Questions/NumQuestions");
-        numQuestion.setValue("12");
+        numQuestion.setValue("23");
         View decorView = getWindow().getDecorView();
 // Hide both the navigation bar and the status bar.
 // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
@@ -1012,20 +1119,20 @@ public class MainActivity extends AppCompatActivity
         //finish();
 
     }
-    private HashMap createQuestion(String question, Boolean moderated, ArrayList<String> answers, String idNumber)
+    private HashMap createQuestion(String question, Boolean moderated, ArrayList<String> answers, String idNumber, String category)
     {
-        Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
+        Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" + category);
 
         HashMap questionMap = new HashMap();
         questionMap.put("Flags", 0);
         questionMap.put("Name", question.trim().replaceAll(" ", "_"));
         questionMap.put("Moderated", moderated);
-        questionMap.put("Category", "General");
+        questionMap.put("Category", category);
         questionMap.put("Total_Votes", 0);
         ref.child(idNumber).setValue(questionMap);
         ref.child(idNumber).setPriority(0);
         for(int i = 0; i < answers.size(); i++) {
-            Firebase answerRef =  new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General/" + idNumber + "/Answers/" + answers.get(i).trim().replaceAll(" ", "_"));
+            Firebase answerRef =  new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" + category + "/" + idNumber + "/Answers/" + answers.get(i).trim().replaceAll(" ", "_"));
             answerRef.setValue(0);
             answerRef.setPriority(i);
         }
