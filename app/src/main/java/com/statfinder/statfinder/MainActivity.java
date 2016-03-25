@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity
             Intent init = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(init);
         }
-        /*else if (id == R.id.nav_reset_questions)
+        else if (id == R.id.nav_reset_questions)
         {
             createQuestions();
             deleteAllUserHistories();
@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(MainActivity.this, "You have successfully reset your question history.",
                     Toast.LENGTH_SHORT).show();
             onResume();
-        }*/
+        }
 
         return true;
     }

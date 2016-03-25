@@ -251,7 +251,7 @@ public class AnswersFragment extends Fragment {
                                     historyMap.put("Category", category);
                                     historyMap.put("Name", questionInfo.get("Name"));
                                     userRef.setValue(historyMap);
-                                    userRef.setPriority(0 - tsLong);
+                                    //userRef.setPriority(0 - tsLong);
                                 }
 
 
