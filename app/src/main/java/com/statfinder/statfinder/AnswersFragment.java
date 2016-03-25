@@ -197,7 +197,13 @@ public class AnswersFragment extends Fragment {
 
                             @Override
                             public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
-
+                                //transaction complete
+                                viewpager.setCurrentItem(1);
+                                for (int i = 0; i < buttonList.length; i++) {
+                                    buttonList[i].setClickable(false);
+                                }
+                                //Commented this out, due to users being able to go back to question and answer again, over and over
+                                viewpager.setPagingEnabled(true);
                             }
                         });
 
