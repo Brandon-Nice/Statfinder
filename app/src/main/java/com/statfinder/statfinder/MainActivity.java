@@ -291,8 +291,8 @@ public class MainActivity extends AppCompatActivity
             Intent init = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(init);
         } else if (id == R.id.nav_contact) {
-            Intent init = new Intent(MainActivity.this, ContactActivity.class);
-            startActivity(init);
+//            Intent init = new Intent(MainActivity.this, ContactActivity.class);
+//            startActivity(init);
         }
         else if (id == R.id.nav_logout) {
             LoginManager.getInstance().logOut();
