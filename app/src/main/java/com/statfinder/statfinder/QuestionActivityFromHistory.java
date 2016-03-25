@@ -140,10 +140,11 @@ public class QuestionActivityFromHistory extends FragmentActivity {
                     questionNameLabel.setTextColor(getResources().getColor(R.color.lightBlue));
                 }
 
-                String[] answersArray = Arrays.copyOf(answers.toArray(), answers.size(), String[].class);
+                //String[] answersArray = Arrays.copyOf(answers.toArray(), answers.size(), String[].class);
 
                 Bundle bundle = new Bundle();
-                bundle.putStringArray("answers", answersArray);
+                //bundle.putStringArray("answers", answersArray);
+                bundle.putStringArrayList("answers", answers);
                 bundle.putString("id", questionID);
                 bundle.putString("category", category);
                 bundle.putBoolean("modStatus", modStatus);

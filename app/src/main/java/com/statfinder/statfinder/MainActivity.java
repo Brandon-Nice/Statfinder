@@ -955,6 +955,25 @@ public class MainActivity extends AppCompatActivity
             add("Oatmeal");
             add("Other");
         }}, "11");
+        createQuestion("How many push-ups can you do in a set?", false, new ArrayList<String>() {{
+            add(">1");
+            add("1-10");
+            add("11-25");
+            add("26-50");
+            add("All of them");
+        }}, "12");
+        createQuestion("Do you like non-moderated questions?", false, new ArrayList<String>() {{
+            add("Ha");
+            add("Yah");
+            add("Nah");
+        }}, "13");
+        createQuestion("Who will win the 2016 election?", false, new ArrayList<String>() {{
+            add("Donald Trump");
+            add("Hilary Clinton");
+            add("Rebecca Black");
+            add("Zoboomafoo");
+            add("A bucket of tomato juice");
+        }}, "14");
 
         Firebase numQuestion = new Firebase("https://statfinderproject.firebaseio.com/Questions/NumQuestions");
         numQuestion.setValue("12");

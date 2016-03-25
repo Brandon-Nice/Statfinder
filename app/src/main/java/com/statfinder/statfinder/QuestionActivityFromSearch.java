@@ -137,7 +137,7 @@ public class QuestionActivityFromSearch extends FragmentActivity {
                     questionNameLabel.setTextColor(getResources().getColor(R.color.lightBlue));
                 }
 
-                final String[] answersArray = Arrays.copyOf(answers.toArray(), answers.size(), String[].class);
+                //final String[] answersArray = Arrays.copyOf(answers.toArray(), answers.size(), String[].class);
 
                 final Firebase answeredRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/AnsweredQuestions/");
                 final Firebase skippedRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/SkippedQuestions/");
@@ -186,11 +186,11 @@ public class QuestionActivityFromSearch extends FragmentActivity {
                                                 }
                                                 if (cameFrom == null)
                                                 {
-                                                    setUpViewPager(questionID, answersArray, category, modStatus, "Search");
+                                                    setUpViewPager(questionID, answers, category, modStatus, "Search");
                                                 }
                                                 else
                                                 {
-                                                    setUpViewPager(questionID, answersArray, category, modStatus, cameFrom);
+                                                    setUpViewPager(questionID, answers, category, modStatus, cameFrom);
                                                 }
                                             }
 
@@ -202,7 +202,7 @@ public class QuestionActivityFromSearch extends FragmentActivity {
                                     }
                                     else
                                     {
-                                        setUpViewPager(questionID, answersArray, category, modStatus, cameFrom);
+                                        setUpViewPager(questionID, answers, category, modStatus, cameFrom);
                                     }
                                 }
 
@@ -214,7 +214,7 @@ public class QuestionActivityFromSearch extends FragmentActivity {
                         }
                         else
                         {
-                            setUpViewPager(questionID, answersArray, category, modStatus, cameFrom);
+                            setUpViewPager(questionID, answers, category, modStatus, cameFrom);
                         }
                     }
 
@@ -250,7 +250,7 @@ public class QuestionActivityFromSearch extends FragmentActivity {
         this.answered = answered;
     }
 
-    public void setUpViewPager(String questionID, String[] answersArray, String category, boolean modStatus, String cameFrom)
+    public void setUpViewPager(String questionID, ArrayList<String> answers, String category, boolean modStatus, String cameFrom)
     {
         if (!modStatus) {
             flag.setVisibility(View.VISIBLE);
@@ -259,7 +259,7 @@ public class QuestionActivityFromSearch extends FragmentActivity {
         home.setVisibility(View.VISIBLE);
 
         Bundle bundle = new Bundle();
-        bundle.putStringArray("answers", answersArray);
+        bundle.putStringArrayList("answers", answers);
         bundle.putString("id", questionID);
         bundle.putString("category", category);
         bundle.putBoolean("modStatus", modStatus);

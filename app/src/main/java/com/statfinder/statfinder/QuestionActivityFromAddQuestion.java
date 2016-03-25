@@ -37,7 +37,7 @@ public class QuestionActivityFromAddQuestion extends FragmentActivity {
         HashMap<String, Object> questionInfo = (HashMap) question.entrySet().iterator().next().getValue();
 
         String cameFrom = "CreatedHistory";
-        String[] answers = Arrays.copyOf(((ArrayList) questionInfo.get("Answers")).toArray(), ((ArrayList) questionInfo.get("Answers")).size(), String[].class);
+        //String[] answers = Arrays.copyOf(((ArrayList) questionInfo.get("Answers")).toArray(), ((ArrayList) questionInfo.get("Answers")).size(), String[].class);
         String category = (String) questionInfo.get("Category");
         boolean modStatus = (boolean) questionInfo.get("Moderated");
 
@@ -70,7 +70,7 @@ public class QuestionActivityFromAddQuestion extends FragmentActivity {
 
 
         Bundle bundle = new Bundle();
-        bundle.putStringArray("answers", answers);
+        bundle.putStringArrayList("answers", (ArrayList) questionInfo.get("Answers"));
         bundle.putString("id", questionID);
         bundle.putString("category", category);
         bundle.putBoolean("modStatus", modStatus);

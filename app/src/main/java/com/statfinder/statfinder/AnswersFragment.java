@@ -54,7 +54,15 @@ public class AnswersFragment extends Fragment {
         final Button flagButton = (Button) getActivity().findViewById(R.id.flagButton);
 
         //final Button[] buttonList = new Button[answers.length];
-        final Button[] buttonList = new Button[answersList.size()];
+        int answersListSize;
+        if(answersList == null) {
+            answersListSize = 0;
+        }
+        else{
+            answersListSize = answersList.size();
+        }
+
+        final Button[] buttonList = new Button[answersListSize];
 
         System.out.println("CameFrom: " + cameFrom);
 
@@ -70,7 +78,7 @@ public class AnswersFragment extends Fragment {
             }
         }
 
-        for (int i = 0; i < answersList.size(); i++) {
+        for (int i = 0; i < answersListSize; i++) {
             System.out.println(answersList.get(i));
             Button btn = new Button(getActivity());
             btn.setText(answersList.get(i).replace('_', ' ')); //set each button with the corresponding text
