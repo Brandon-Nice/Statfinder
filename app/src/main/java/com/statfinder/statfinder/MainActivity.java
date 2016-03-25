@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_art) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
-            init.putExtra("category", "Art");
+            init.putExtra("category", "History");
             init.putExtra("questionID", "null");
             init.putExtra("categoryOrigin", "null");
             init.putExtra("Name", "null");
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_history) {
             Intent init = new Intent(MainActivity.this, QuestionActivity.class);
-            init.putExtra("category", "History");
+            init.putExtra("category", "Art");
             init.putExtra("questionID", "null");
             init.putExtra("categoryOrigin", "null");
             init.putExtra("Name", "null");
