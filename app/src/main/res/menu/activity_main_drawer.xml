@@ -54,7 +54,7 @@
         </menu>
     </item>
 
-    <item android:title="About Statfinder">
+    <item android:title="Extras">
         <menu>
             <item
                 android:id="@+id/nav_about"

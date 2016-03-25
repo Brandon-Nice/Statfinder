@@ -1,9 +1,5 @@
 package com.statfinder.statfinder;
 
-/**
- * Created by Kenny on 10/17/2015.
- */
-
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateFormat;
