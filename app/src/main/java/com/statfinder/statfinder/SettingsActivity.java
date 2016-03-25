@@ -77,10 +77,10 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
                     //only moderator questions
-                    User currentUser = ((MyApplication) getApplication()).getUser();
-                    final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId());
-                    ref.child("modPreference").setValue(true);
-                    currentUser.setModPreference(true);
+//                    User currentUser = ((MyApplication) getApplication()).getUser();
+//                    final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId());
+//                    ref.child("modPreference").setValue(true);
+//                    currentUser.setModPreference(true);
                 }
                 else {
                     User currentUser = ((MyApplication) getApplication()).getUser();
