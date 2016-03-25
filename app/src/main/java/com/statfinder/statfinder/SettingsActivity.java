@@ -24,8 +24,8 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Settings");
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Settin.gs");
 
         final Boolean isChecked = false;
 
