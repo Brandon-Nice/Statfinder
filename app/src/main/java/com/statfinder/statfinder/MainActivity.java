@@ -541,7 +541,9 @@ public class MainActivity extends AppCompatActivity
                                                                         if((boolean)currentQuestion.get("Moderated") == false && currentUser.getModPreference() == true) {
                                                                             continue;
                                                                         }
-                                                                            if ((long) bestQuestion.get("Total_Votes") < (long) currentQuestion.get("Total_Votes")) {
+                                                                            //if ((long) bestQuestion.get("Total_Votes") < (long) currentQuestion.get("Total_Votes")) {
+                                                                        if ((long) bestQuestion.get("Total_Votes") > (long) currentQuestion.get("Total_Votes") &&
+                                                                                !bestQuestion.get("Name").equals(currentQuestion.get("Name"))) {
 
                                                                                 bestID = (String) currentCategory.getKey();
                                                                                 bestQuestion = currentQuestion;
