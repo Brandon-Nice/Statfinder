@@ -252,6 +252,7 @@ public class QuestionActivity extends FragmentActivity {
                                                      if (randomCheck == false) {
                                                          //When out of questions, returns to home page but home page still shows last questions seen instead of default message
                                                          //TODO dialogueBox 1
+                                                         /*
                                                          final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
                                                          alertDialog.setTitle("Alert");
                                                          alertDialog.setMessage("Sorry there are no available Random questions at the moment.");
@@ -263,6 +264,8 @@ public class QuestionActivity extends FragmentActivity {
                                                                      }
                                                                  });
                                                          alertDialog.show();
+                                                         return;*/
+                                                         finish();
                                                          return;
                                                      }
                                                      /* Generates random index to pull question from */
@@ -308,6 +311,7 @@ public class QuestionActivity extends FragmentActivity {
                                                      }
                                                      if (firstCheck == false) {
                                                          //No questions left in category or in general, redirect user to home page
+                                                         /*
                                                          //TODO dialogueBox 2
                                                          final AlertDialog alertDialog = new AlertDialog.Builder(QuestionActivity.this).create();
                                                          alertDialog.setTitle("Alert");
@@ -320,6 +324,8 @@ public class QuestionActivity extends FragmentActivity {
                                                                      }
                                                                  });
                                                          alertDialog.show();
+                                                         return;*/
+                                                         finish();
                                                          return;
                                                      }
                                                      boolean bestCheck = false;
