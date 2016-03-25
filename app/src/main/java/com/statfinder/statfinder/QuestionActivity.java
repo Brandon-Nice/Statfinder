@@ -56,6 +56,8 @@ public class QuestionActivity extends FragmentActivity {
     Button home;
     Button skip;
     boolean answered = false;
+    boolean flagged = false;
+    String creator;
 
 
     @Override
@@ -89,6 +91,7 @@ public class QuestionActivity extends FragmentActivity {
                     historyMap.put("Country", currentUser.getCountry());
                     historyMap.put("Category", globalCategory);
                     historyMap.put("Name", globalName.replace(' ', '_'));
+                    historyMap.put("hasBeenFlagged", flagged);
                     userRef.setValue(historyMap);
                     userRef.setPriority(0 - tsLong);
                 }
@@ -123,6 +126,7 @@ public class QuestionActivity extends FragmentActivity {
                 String questionID = id;
                 final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry() + "/"
                         + currentUser.getState() + "/" + currentUser.getCity() + "/" + category + "/" + questionID);
+
                 final Firebase flagRef = ref.child("/Flags");
                 final Firebase totalRef = ref.child("/Total_Votes");
                 flagRef.runTransaction(new Transaction.Handler() {
@@ -141,19 +145,24 @@ public class QuestionActivity extends FragmentActivity {
                         totalRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot votesSnapshot) {
-                                long totalFlags = (Long) flagSnapshot.getValue();
-                                long totalVotes = (Long) votesSnapshot.getValue();
-                                long totalInteractions = totalFlags + totalVotes;
+                                float totalFlags = (float) flagSnapshot.getValue();
+                                float totalVotes = (float) votesSnapshot.getValue();
+                                float totalInteractions = totalFlags + totalVotes;
                                 if (totalInteractions > 10 && totalInteractions < 20) {
                                     if (totalFlags > totalVotes) {
                                         ref.removeValue();
+                                        Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + creator + "/CreatedQuestions/" + id);
+                                        userRef.removeValue();
                                     }
-                                } else {
-                                    long percentRage = totalFlags / totalInteractions;
+                                } else if (totalInteractions > 20) {
+                                    float percentRage =  totalFlags /  totalInteractions;
                                     if (percentRage > 0.25) {
                                         ref.removeValue();
+                                        Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + creator + "/CreatedQuestions/" + id);
+                                        userRef.removeValue();
                                     }
                                 }
+                                flagged = true;
                                 skip.performClick();
                             }
 
@@ -538,6 +547,10 @@ public class QuestionActivity extends FragmentActivity {
                                                  }
                                              }
                                              globalCategory = category;
+
+                                             if (questionEntry.containsKey("Creator")) {
+                                                 creator = (String) questionEntry.get("Creator");
+                                             }
 
                                              //Get the Question name
                                              globalName = questionName;

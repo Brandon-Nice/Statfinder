@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ public class QuestionActivityFromHistory extends FragmentActivity {
 
     MyPagerAdapter mPagerAdapter;
     boolean answered = false;
+    boolean flagged = false;
+    String creator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,10 @@ public class QuestionActivityFromHistory extends FragmentActivity {
         if (questionInfo.containsKey("hasBeenAnswered"))
         {
             answered = (boolean) questionInfo.get("hasBeenAnswered");
+        }
+        if (questionInfo.containsKey("hasBeenFlagged"))
+        {
+            flagged = (boolean) questionInfo.get("hasBeenFlagged");
         }
 
         final String cameFrom = init.getStringExtra("CameFrom");
@@ -107,6 +115,69 @@ public class QuestionActivityFromHistory extends FragmentActivity {
         });
 
         final Button flag = (Button) findViewById(R.id.flagButton);
+        flag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final User currentUser = ((MyApplication) getApplication()).getUser();
+                final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry() + "/"
+                        + currentUser.getState() + "/" + currentUser.getCity() + "/" + category + "/" + questionID);
+                if (cameFrom.equals("CreatedHistory"))
+                {
+                    Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/CreatedQuestions/" + questionID + "/hasBeenFlagged");
+                    userRef.setValue(true);
+                }
+                else if (cameFrom.equals("SkippedHistory"))
+                {
+                    Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + currentUser.getId() + "/SkippedQuestions/" + questionID + "/hasBeenFlagged");
+                    userRef.setValue(true);
+                }
+
+                final Firebase flagRef = ref.child("/Flags");
+                final Firebase totalRef = ref.child("/Total_Votes");
+                flagRef.runTransaction(new Transaction.Handler() {
+                    @Override
+                    public Transaction.Result doTransaction(MutableData currentData) {
+                        if (currentData.getValue() == null) {
+                            currentData.setValue(1);
+                        } else {
+                            currentData.setValue((Long) currentData.getValue() + 1);
+                        }
+                        return Transaction.success(currentData);
+                    }
+
+                    @Override
+                    public void onComplete(FirebaseError firebaseError, boolean b, final DataSnapshot flagSnapshot) {
+                        totalRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot votesSnapshot) {
+                                float totalFlags = (float) flagSnapshot.getValue();
+                                float totalVotes = (float) votesSnapshot.getValue();
+                                float totalInteractions = totalFlags + totalVotes;
+                                if (totalInteractions > 10 && totalInteractions < 20) {
+                                    if (totalFlags > totalVotes) {
+                                        ref.removeValue();
+                                    }
+                                } else if (totalInteractions > 20){
+                                    float percentRage = totalFlags / totalInteractions;
+                                    if (percentRage > 0.25) {
+                                        ref.removeValue();
+                                        Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + creator + "/CreatedQuestions/" + questionID);
+                                        userRef.removeValue();
+                                    }
+                                }
+                                skip.performClick();
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
 
         final Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + country + "/" + state + "/" + city + "/" + category + "/" + questionID);
         questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -128,9 +199,13 @@ public class QuestionActivityFromHistory extends FragmentActivity {
                     {
                         modStatus = (boolean) child.getValue();
                     }
+                    else if (child.getKey().equals("Creator"))
+                    {
+                        creator = (String) child.getValue();
+                    }
                 }
 
-                if (!modStatus) {
+                if (!modStatus && !answered && !skip.getText().equals("Next") && !flagged) {
                     flag.setVisibility(View.VISIBLE);
                 }
                 skip.setVisibility(View.VISIBLE);

@@ -234,11 +234,6 @@ public class AddQuestionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 submitButton.setClickable(false);
 
-                if (question.getText().toString().equals("Reset Database"))
-                {
-                    resetDatabase();
-                    return;
-                }
                 if (question.getText().toString().trim().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please enter a question.", Toast.LENGTH_LONG).show();
                     return;
@@ -372,6 +367,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                         historyMap.put("Category", category);
                         historyMap.put("Name", questionName.replace(' ', '_'));
                         historyMap.put("hasBeenAnswered", false);
+                        historyMap.put("hasBeenFlagged", false);
                         userRef.setValue(historyMap);
                         userRef.setPriority(0 - tsLong);
 
@@ -400,6 +396,8 @@ public class AddQuestionActivity extends AppCompatActivity {
         questionMap.put("Name", question.trim().replace(" ", "_"));
         questionMap.put("Moderated", moderated);
         questionMap.put("Total_Votes", 0);
+        final User currentUser = ((MyApplication) getApplication()).getUser();
+        questionMap.put("Creator", currentUser.getId());
         return questionMap;
     }
 
@@ -580,15 +578,5 @@ public class AddQuestionActivity extends AppCompatActivity {
             hexValue = tempHexValue.toCharArray();
         }
         return new String(hexValue);
-    }
-
-    private void resetDatabase()
-    {
-        Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/");
-        Firebase questionRef = ref.child("Questions");
-        Firebase moderatorQuestions = questionRef.child("ModeratorQuestions");
-        Firebase moderatorGeneral = moderatorQuestions.child("General");
-        Firebase moderatorGames = moderatorQuestions.child("Games");
-        Firebase moderatorSports = moderatorQuestions.child("Sports");
     }
 }

@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ public class QuestionActivityFromSearch extends FragmentActivity {
     Button flag;
     Button home;
     Button skip;
+    boolean flagged = false;
+    String creator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,58 @@ public class QuestionActivityFromSearch extends FragmentActivity {
         questionNameLabel.setText(name);
 
         flag = (Button) findViewById(R.id.flagButton);
+        flag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry() + "/"
+                        + currentUser.getState() + "/" + currentUser.getCity() + "/" + category + "/" + questionID);
+                final Firebase flagRef = ref.child("/Flags");
+                final Firebase totalRef = ref.child("/Total_Votes");
+                flagRef.runTransaction(new Transaction.Handler() {
+                    @Override
+                    public Transaction.Result doTransaction(MutableData currentData) {
+                        if (currentData.getValue() == null) {
+                            currentData.setValue(1);
+                        } else {
+                            currentData.setValue((Long) currentData.getValue() + 1);
+                        }
+                        return Transaction.success(currentData);
+                    }
+
+                    @Override
+                    public void onComplete(FirebaseError firebaseError, boolean b, final DataSnapshot flagSnapshot) {
+                        totalRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot votesSnapshot) {
+                                float totalFlags = (float) flagSnapshot.getValue();
+                                float totalVotes = (float) votesSnapshot.getValue();
+                                float totalInteractions = totalFlags + totalVotes;
+                                if (totalInteractions > 10 && totalInteractions < 20) {
+                                    if (totalFlags > totalVotes) {
+                                        ref.removeValue();
+                                    }
+                                } else if (totalInteractions > 20) {
+                                    float percentRage = totalFlags / totalInteractions;
+                                    if (percentRage > 0.25) {
+                                        ref.removeValue();
+                                        Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + creator + "/CreatedQuestions/" + questionID);
+                                        userRef.removeValue();
+                                    }
+                                }
+                                flagged = true;
+                                skip.performClick();
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
 
         home = (Button) findViewById(R.id.homeButton);
         home.setText("Search");
@@ -74,6 +130,7 @@ public class QuestionActivityFromSearch extends FragmentActivity {
                     historyMap.put("Country", currentUser.getCountry());
                     historyMap.put("Category", category);
                     historyMap.put("Name", name);
+                    historyMap.put("hasBeenFlagged", flagged);
                     userRef.setValue(historyMap);
                     userRef.setPriority(0 - tsLong);
                 }
@@ -131,6 +188,10 @@ public class QuestionActivityFromSearch extends FragmentActivity {
                     {
                         modStatus = (boolean) child.getValue();
                     }
+                    else if (child.getKey().equals("Creator"))
+                    {
+                        creator = (String) child.getValue();
+                    }
                 }
 
                 if (modStatus) {
@@ -164,6 +225,8 @@ public class QuestionActivityFromSearch extends FragmentActivity {
                                         if (questionID.equals(child.getKey()))
                                         {
                                             cameFrom = "SkippedHistory";
+                                            HashMap<String, Object> questionInfo = (HashMap) child.getValue();
+                                            flagged = (boolean) questionInfo.get("hasBeenFlagged");
                                         }
                                     }
                                     if (cameFrom == null)
@@ -178,6 +241,7 @@ public class QuestionActivityFromSearch extends FragmentActivity {
                                                         cameFrom = "CreatedHistory";
                                                         HashMap<String, Object> questionInfo = (HashMap) child.getValue();
                                                         answered = (boolean) questionInfo.get("hasBeenAnswered");
+                                                        flagged = (boolean) questionInfo.get("hasBeenFlagged");
                                                         if (answered)
                                                         {
                                                             skip.setText("Next");
@@ -252,7 +316,7 @@ public class QuestionActivityFromSearch extends FragmentActivity {
 
     public void setUpViewPager(String questionID, ArrayList<String> answers, String category, boolean modStatus, String cameFrom)
     {
-        if (!modStatus) {
+        if (!modStatus && !answered && !skip.getText().equals("Next") && !flagged) {
             flag.setVisibility(View.VISIBLE);
         }
         skip.setVisibility(View.VISIBLE);
