@@ -110,7 +110,15 @@ public class CountryResultsFragment extends Fragment {
                                 HashMap<String, Object> value = (HashMap) entry2.getValue();
                                 HashMap<String, Object> questionId = (HashMap) value.get(category);
                                 HashMap<String, Object> questionInfo = (HashMap) questionId.get(questionID);
-                                HashMap<String, Long> answersMap = (HashMap) questionInfo.get("Answers");
+                                HashMap<String, Long> answersMap;
+                                if (questionInfo.get("Answers") instanceof ArrayList)
+                                {
+                                    answersMap = arrayListToHashMap((ArrayList<Long>) questionInfo.get("Answers"));
+                                }
+                                else
+                                {
+                                    answersMap = (HashMap) questionInfo.get("Answers");
+                                }
                                 for (Map.Entry<String, Long> entry3 : answersMap.entrySet()) {
                                     long currentValue = 0;
                                     if (questions.containsKey(entry3.getKey()))
@@ -173,6 +181,20 @@ public class CountryResultsFragment extends Fragment {
 
         return llLayout;
 
+    }
+
+    public HashMap arrayListToHashMap(ArrayList<Long> list)
+    {
+        HashMap<String, Long> map = new HashMap<String, Long>();
+        for (int i = 0; i < list.size(); i++)
+        {
+            if (list.get(i) != null)
+            {
+                map.put(Integer.toString(i), list.get(i));
+            }
+
+        }
+        return map;
     }
 
 }
