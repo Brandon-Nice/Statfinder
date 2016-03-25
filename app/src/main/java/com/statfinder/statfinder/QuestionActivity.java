@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -232,6 +233,10 @@ public class QuestionActivity extends FragmentActivity {
                                                          Iterator it = categoryQuestions.entrySet().iterator();
                                                          while (it.hasNext()) {
                                                              HashMap.Entry currentQuestion = (HashMap.Entry) it.next();
+                                                             HashMap<String, Object> categoryQuestion = (HashMap<String, Object>)currentQuestion.getValue();
+                                                             if((boolean)categoryQuestion.get("Moderated") == false && currentUser.getModPreference() == true) {
+                                                                 continue;
+                                                             }
                                                              if (!answeredHistory.containsKey(currentQuestion.getKey()) && !skippedHistory.containsKey(currentQuestion.getKey())
                                                                      && !createdHistory.containsKey(currentQuestion.getKey())) {
                                                                  randomQuestions.add(index, currentQuestion);
@@ -260,11 +265,15 @@ public class QuestionActivity extends FragmentActivity {
                                                          alertDialog.show();
                                                          return;
                                                      }
+                                                     /* Generates random index to pull question from */
                                                      int numberOfCategories = randomQuestions.size();
                                                      int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
+                                                     System.out.println("Random category index: " + randomCategoryIndex);
+                                                     System.out.println("Random questions: " + randomQuestions);
                                                      HashMap.Entry chosenRandomQuestion = randomQuestions.get(randomCategoryIndex);
                                                      HashMap<String, Object> chosenRandomValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
                                                      id = (String) chosenRandomQuestion.getKey();
+
                                                      uniqueQuestionEntry = chosenRandomValue;
                                                      uniqueCategory = randomCategory.get(randomCategoryIndex);
                                                      modStatus = (boolean) chosenRandomValue.get("Moderated");
@@ -276,6 +285,10 @@ public class QuestionActivity extends FragmentActivity {
                                                          /* Checks for a question user has not seen yet in category */
                                                          for (DataSnapshot currentCategory : child.getChildren()) {
                                                              String firstID = (String) currentCategory.getKey();
+                                                             HashMap<String, Object> categoryQuestion = (HashMap<String, Object>)currentCategory.getValue();
+                                                             if((boolean)categoryQuestion.get("Moderated") == false && currentUser.getModPreference() == true) {
+                                                                 continue;
+                                                             }
                                                              if (!answeredHistory.containsKey(firstID) && !skippedHistory.containsKey(firstID) && !createdHistory.containsKey(firstID)) {
                                                                  bestQuestion = (HashMap<String, Object>) currentCategory.getValue();
                                                                  bestID = (String) currentCategory.getKey();
@@ -310,8 +323,6 @@ public class QuestionActivity extends FragmentActivity {
                                                          return;
                                                      }
                                                      boolean bestCheck = false;
-                                                     /* Initializes user's history if it does not exist */
-
                                                     /* Finds category with best question by comparing first found with all categories' best */
                                                      for (DataSnapshot child : dataSnapshot.getChildren()) {
                                                          if(!userCategories.contains(child.getKey())) {
@@ -319,6 +330,9 @@ public class QuestionActivity extends FragmentActivity {
                                                          }
                                                          for (DataSnapshot currentCategory : child.getChildren()) {
                                                              HashMap<String, Object> currentQuestion = (HashMap<String, Object>) currentCategory.getValue();
+                                                             if ((boolean)currentQuestion.get("Moderated") == false && currentUser.getModPreference() == true) {
+                                                                 continue;
+                                                             }
                                                              if (!answeredHistory.containsKey(currentCategory.getKey()) && !skippedHistory.containsKey(currentCategory.getKey())
                                                                      && !createdHistory.containsKey(currentCategory.getKey())) {
                                                                  if ((long) bestQuestion.get("Total_Votes") < (long) currentQuestion.get("Total_Votes")) {
@@ -369,6 +383,9 @@ public class QuestionActivity extends FragmentActivity {
                                                          String firstID = currentCategory.getKey();
                                                          if (!answeredHistory.containsKey(firstID) && !skippedHistory.containsKey(firstID) && !createdHistory.containsKey(firstID)) {
                                                              HashMap<String, Object> currentQuestion = (HashMap<String, Object>) currentCategory.getValue();
+                                                             if((boolean)currentQuestion.get("Moderated") == false && currentUser.getModPreference() == true) {
+                                                                 continue;
+                                                             }
                                                              bestID = currentCategory.getKey();
                                                              bestCheck = true;
                                                              modStatus = (boolean) currentQuestion.get("Moderated");
@@ -434,13 +451,51 @@ public class QuestionActivity extends FragmentActivity {
                                              //Get the category first
                                              String category;
                                              String questionName;
+                                             ArrayList<String> answersList = new ArrayList<String>(6);
+
                                              if (init.getStringExtra("category").equals("Popular") || init.getStringExtra("category").equals("Random")) {
                                                  if (init.getStringExtra("categoryOrigin").equals("")) {
                                                      category = uniqueCategory;
                                                      questionName = questionEntry.get("Name").toString().replace('_', ' ');
+
+                                                     for(DataSnapshot child : dataSnapshot.getChildren()) {
+                                                         if (child.getKey().equals(category)) {
+                                                             for (DataSnapshot currentCategory : child.getChildren()) {
+                                                                 int answerIndex = 0;
+                                                                 if (currentCategory.getKey().equals(id)) {
+                                                                     for (DataSnapshot currentQuestion : currentCategory.getChildren()) {
+                                                                         for (DataSnapshot currentAnswers : currentQuestion.getChildren()) {
+                                                                             answersList.add(answerIndex, currentAnswers.getKey().toString());
+                                                                             answerIndex++;
+                                                                         }
+                                                                     }
+                                                                     break;
+                                                                 }
+                                                             }
+                                                         }
+                                                     }
                                                  } else {
                                                      category = init.getStringExtra("categoryOrigin");
                                                      questionName = init.getStringExtra("Name").toString().replace('_', ' ');
+
+                                                     int answerIndex = 0;
+                                                     System.out.println("CURRENT SPOT 1");
+                                                     for(DataSnapshot child : dataSnapshot.getChildren()) {
+                                                         System.out.println("child: " + child);
+                                                         if(child.getKey().equals(id)) {
+                                                             for (DataSnapshot currentQuestion : child.getChildren()) {
+                                                                 System.out.println("currentQuestions: " + currentQuestion);
+                                                                 for(DataSnapshot currentAnswers : currentQuestion.getChildren()) {
+                                                                     System.out.println("currentAnswer: " + currentAnswers);
+                                                                     System.out.println("current answer: " + currentAnswers.getKey());
+                                                                     System.out.println("current value: " + currentAnswers.getValue());
+                                                                     answersList.add(answerIndex, currentAnswers.getKey().toString());
+                                                                     answerIndex++;
+                                                                 }
+                                                             }
+                                                             break;
+                                                         }
+                                                     }
 
                                                  }
                                              } else {
@@ -468,15 +523,23 @@ public class QuestionActivity extends FragmentActivity {
                                                      return;
 
                                                  }
+
+                                                 for(DataSnapshot child : dataSnapshot.getChildren()) {
+                                                     int answerIndex = 0;
+                                                     if (child.getKey().equals(id)) {
+                                                         for (DataSnapshot currentQuestion : child.getChildren()) {
+                                                             for (DataSnapshot currentAnswers : currentQuestion.getChildren()) {
+                                                                 answersList.add(answerIndex, currentAnswers.getKey().toString());
+                                                                 answerIndex++;
+                                                             }
+                                                         }
+                                                         break;
+                                                     }
+                                                 }
                                              }
                                              globalCategory = category;
 
-
-                                             //if the category from the question matches what the user selects
-                                             //if (category.equals(cameFrom)) {
-
                                              //Get the Question name
-
                                              globalName = questionName;
 
                                              if (!modStatus) {
@@ -501,27 +564,9 @@ public class QuestionActivity extends FragmentActivity {
                                                  cat.setText("Category: " + category);
                                              }
 
-                                             //gets the list of answers for each question
-                                             HashMap<String, Object> answersList = (HashMap) questionEntry.get("Answers");
-
-                                             //ArrayList for storing vote counts for each answer
-                                             ArrayList<Integer> answerCount = new ArrayList<Integer>();
-
-
-                                             //gets the question name
-                                             Object question = questionEntry.get("Name");
-
-                                             //make the answers an array for easy access
-                                             Object[] objectAnswers = answersList.keySet().toArray();
-                                             String[] answers = Arrays.copyOf(objectAnswers, objectAnswers.length, String[].class);
-
-                                             //Cast all answerCount strings into integers
-                                             for (int j = 0; j < answersList.size(); j++) {
-                                                 answerCount.add(Integer.parseInt(answersList.get(answers[j]).toString()));
-                                             }
-
                                              Bundle bundle = new Bundle();
-                                             bundle.putStringArray("answers", answers);
+                                             //bundle.putStringArray("answers", answers);
+                                             bundle.putStringArrayList("answers", answersList);
                                              bundle.putString("id", questionID);
                                              bundle.putString("category", category);
                                              bundle.putBoolean("modStatus", modStatus);

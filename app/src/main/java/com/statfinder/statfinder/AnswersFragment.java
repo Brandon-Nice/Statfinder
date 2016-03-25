@@ -19,6 +19,7 @@ import com.firebase.client.MutableData;
 import com.firebase.client.Transaction;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -38,7 +39,8 @@ public class AnswersFragment extends Fragment {
 
         String activityType = null;
 
-        String[] answers = getArguments().getStringArray("answers");
+        //String[] answers = getArguments().getStringArray("answers");
+        ArrayList<String> answersList = getArguments().getStringArrayList("answers");
         final String category = getArguments().getString("category");
         final String questionID = getArguments().getString("id");
         final Boolean modStatus = getArguments().getBoolean("modStatus");
@@ -51,7 +53,8 @@ public class AnswersFragment extends Fragment {
 
         final Button flagButton = (Button) getActivity().findViewById(R.id.flagButton);
 
-        final Button[] buttonList = new Button[answers.length];
+        //final Button[] buttonList = new Button[answers.length];
+        final Button[] buttonList = new Button[answersList.size()];
 
         System.out.println("CameFrom: " + cameFrom);
 
@@ -67,10 +70,10 @@ public class AnswersFragment extends Fragment {
             }
         }
 
-        for (int i = 0; i < answers.length; i++) {
-            System.out.println(answers[i]);
+        for (int i = 0; i < answersList.size(); i++) {
+            System.out.println(answersList.get(i));
             Button btn = new Button(getActivity());
-            btn.setText(answers[i].replace('_', ' ')); //set each button with the corresponding text
+            btn.setText(answersList.get(i).replace('_', ' ')); //set each button with the corresponding text
             btn.setId(i);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 

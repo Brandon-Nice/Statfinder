@@ -496,6 +496,9 @@ public class MainActivity extends AppCompatActivity
                                                                     /* Checks for a question user has not seen yet in category */
                                                                     for (DataSnapshot currentCategory : child.getChildren()) {
                                                                         bestQuestion = (HashMap<String, Object>) currentCategory.getValue();
+                                                                        if((boolean)bestQuestion.get("Moderated") == false && currentUser.getModPreference() == true) {
+                                                                            continue;
+                                                                        }
                                                                         bestID = currentCategory.getKey();
                                                                         categoryPopular = child.getKey();
                                                                         modStatusPopular = (boolean)bestQuestion.get("Moderated");
@@ -511,7 +514,11 @@ public class MainActivity extends AppCompatActivity
                                                                         HashMap<String, Object> currentQuestion = (HashMap<String, Object>) currentCategory.getValue();
                                                                             /* Checks first unseen question in the current category which should also be the most popular
                                                                             given that our database is sorted by most popular first */
+                                                                        if((boolean)currentQuestion.get("Moderated") == false && currentUser.getModPreference() == true) {
+                                                                            continue;
+                                                                        }
                                                                             if ((long) bestQuestion.get("Total_Votes") < (long) currentQuestion.get("Total_Votes")) {
+
                                                                                 bestID = (String) currentCategory.getKey();
                                                                                 bestQuestion = currentQuestion;
                                                                                 categoryPopular = child.getKey();
@@ -541,15 +548,23 @@ public class MainActivity extends AppCompatActivity
                                                                     }
                                                                     /* Loop through each category available, add first question from each to HashMap */
                                                                     HashMap<String, Object> categoryQuestions = (HashMap<String, Object>) child.getValue();
+
                                                                     Iterator it = categoryQuestions.entrySet().iterator();
                                                                     HashMap.Entry topQuestion = (HashMap.Entry)it.next();
+                                                                    HashMap<String, Object> categoryQuestion = (HashMap<String, Object>)topQuestion.getValue();
+                                                                    if((boolean)categoryQuestion.get("Moderated") == false && currentUser.getModPreference() == true) {
+                                                                        continue;
+                                                                    }
                                                                     randomQuestions.add(index, topQuestion);
                                                                     randomCategory.add(index, child.getKey());
                                                                     index++;
                                                                 }
                                                                 int numberOfCategories = randomQuestions.size();
                                                                 int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
+                                                                System.out.println("Random category index 0: " + randomCategoryIndex);
+                                                                System.out.println("Random questions 0: " + randomQuestions);
                                                                 HashMap.Entry chosenRandomQuestion = randomQuestions.get(randomCategoryIndex);
+                                                                System.out.println("Random question 0: " + chosenRandomQuestion);
                                                                 HashMap<String, Object> chosenRandomValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
                                                                 idRandom = (String) chosenRandomQuestion.getKey();
                                                                 nameRandom = (String) chosenRandomValue.get("Name");
@@ -565,8 +580,12 @@ public class MainActivity extends AppCompatActivity
                                                                     for (DataSnapshot currentCategory : child.getChildren()) {
                                                                         String firstID = (String) currentCategory.getKey();
                                                                         if (!answeredHistory.containsKey(firstID) && !skippedHistory.containsKey(firstID) && !createdHistory.containsKey(firstID)) {
-                                                                            bestQuestion = (HashMap<String, Object>) currentCategory.getValue();
-                                                                            bestID = (String) currentCategory.getKey();
+                                                                            HashMap<String, Object> tempQuestion = (HashMap<String, Object>) currentCategory.getValue();
+                                                                            if((boolean)tempQuestion.get("Moderated") == false && currentUser.getModPreference() == true) {
+                                                                                continue;
+                                                                            }
+                                                                            bestQuestion = tempQuestion; //(HashMap<String, Object>) currentCategory.getValue();
+                                                                            bestID = currentCategory.getKey();
                                                                             firstCheck = true;
                                                                             categoryPopular = child.getKey();
                                                                             modStatusPopular = (boolean)bestQuestion.get("Moderated");
@@ -593,6 +612,9 @@ public class MainActivity extends AppCompatActivity
                                                                         }
                                                                         for (DataSnapshot currentCategory : child.getChildren()) {
                                                                             HashMap<String, Object> currentQuestion = (HashMap<String, Object>) currentCategory.getValue();
+                                                                            if((boolean)currentQuestion.get("Moderated") == false && currentUser.getModPreference() == true) {
+                                                                                continue;
+                                                                            }
                                                                             if (!answeredHistory.containsKey(currentCategory.getKey()) && !skippedHistory.containsKey(currentCategory.getKey())
                                                                                     && !createdHistory.containsKey(currentCategory.getKey())) {
                                                                                 /* Checks first unseen question in the current category which should also be the most popular
@@ -632,6 +654,10 @@ public class MainActivity extends AppCompatActivity
                                                                         Iterator it = categoryQuestions.entrySet().iterator();
                                                                         while(it.hasNext()) {
                                                                             HashMap.Entry currentQuestion = (HashMap.Entry)it.next();
+                                                                            HashMap<String, Object> categoryQuestion = (HashMap<String, Object>)currentQuestion.getValue();
+                                                                            if((boolean)categoryQuestion.get("Moderated") == false && currentUser.getModPreference() == true) {
+                                                                                continue;
+                                                                            }
                                                                             if (!answeredHistory.containsKey(currentQuestion.getKey()) && !skippedHistory.containsKey(currentQuestion.getKey())
                                                                                     && !createdHistory.containsKey(currentQuestion.getKey())) {
                                                                                 randomQuestions.add(index, currentQuestion);
@@ -644,7 +670,10 @@ public class MainActivity extends AppCompatActivity
                                                                     }
                                                                     int numberOfCategories = randomQuestions.size();
                                                                     int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
+                                                                    System.out.println("Random category index 1: " + randomCategoryIndex);
+                                                                    System.out.println("Random questions 1: " + randomQuestions);
                                                                     HashMap.Entry chosenRandomQuestion = randomQuestions.get(randomCategoryIndex);
+                                                                    System.out.println("Random question 1: " + chosenRandomQuestion);
                                                                     HashMap<String, Object> chosenRandomValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
                                                                     idRandom = (String) chosenRandomQuestion.getKey();
                                                                     nameRandom = (String) chosenRandomValue.get("Name");
