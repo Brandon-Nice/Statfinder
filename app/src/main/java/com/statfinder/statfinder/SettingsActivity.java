@@ -60,9 +60,9 @@ public class SettingsActivity extends AppCompatActivity {
             else if(str.equals("History")) {
                 history.setChecked(true);
             }
-            else if(str.equals("SciTech")) {
+            //else if(str.equals("SciTech")) {
                 scitech.setChecked(true);
-            }
+            //}
         }
 
         final Switch modSwitch = (Switch) findViewById(R.id.switch1);
@@ -123,10 +123,10 @@ public class SettingsActivity extends AppCompatActivity {
                     selCat.add("History");
                     atLeastOne = true;
                 }
-                if(scitech.isChecked()) {
+                //if(scitech.isChecked()) {
                     selCat.add("SciTech");
-                    atLeastOne = true;
-                }
+                    //atLeastOne = true;
+                //}
 
 
 

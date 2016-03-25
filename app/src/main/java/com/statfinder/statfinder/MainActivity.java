@@ -918,7 +918,7 @@ public class MainActivity extends AppCompatActivity
             add("Assembly");
             add("Other");
         }}, "e", "SciTech");
-        createQuestion("What's the most important thing in life?", false, new ArrayList<String>() {{
+        createQuestion("What's the most important thing in life?", true, new ArrayList<String>() {{
             add("Success");
             add("True Love");
             add("Integrity");
@@ -945,14 +945,14 @@ public class MainActivity extends AppCompatActivity
             add("Donate it to charity");
             add("Stocks");
         }}, "1", "General");
-        createQuestion("You are stuck on an island and can only play one game (with networking). Obviously, you choose: ", false, new ArrayList<String>() {{
+        createQuestion("You are stuck on an island and can only play one game (with networking). Obviously, you choose: ", true, new ArrayList<String>() {{
             add("Minecraft");
             add("League of Legends");
             add("Tetris");
             add("Pokemon (Your Choice)");
             add("NBA 2K14");
         }}, "2", "Games");
-        createQuestion("You are challenged to one of the following games in a life or death scenario. Which would you choose?", false, new ArrayList<String>() {{
+        createQuestion("You are challenged to one of the following games in a life or death scenario. Which would you choose?", true, new ArrayList<String>() {{
             add("Call of Duty 4, Custom loadouts, First to 10, Shipment");
             add("League of Legends, Howling Abyss");
             add("Guitar Hero, Expert, Raining Blood");
@@ -975,7 +975,7 @@ public class MainActivity extends AppCompatActivity
             add("1,000 random snakes?");
             add("Three landmines?");
         }}, "6", "General");
-        createQuestion("Who will win the 2016 election?", false, new ArrayList<String>() {{
+        createQuestion("Who will win the 2016 election?", true, new ArrayList<String>() {{
             add("Donald Trump");
             add("Hilary Clinton");
             add("Rebecca Black");
@@ -988,7 +988,7 @@ public class MainActivity extends AppCompatActivity
             add("Chess Boxing");
             add("Bog Snorkeling");
         }}, "8", "Sports");
-        createQuestion("Would you rather", false, new ArrayList<String>() {{
+        createQuestion("Would you rather", true, new ArrayList<String>() {{
             add("Work out");
             add("Eat like a slob");
         }}, "9", "Sports");
@@ -1008,7 +1008,7 @@ public class MainActivity extends AppCompatActivity
             add("Lego Bionicle: The Journey to One");
             add("Other");
         }}, "11", "Entertainment");
-        createQuestion("How many push-ups can you do in a set?", false, new ArrayList<String>() {{
+        createQuestion("How many push-ups can you do in a set?", true, new ArrayList<String>() {{
             add(">1");
             add("1-10");
             add("11-25");
@@ -1022,7 +1022,7 @@ public class MainActivity extends AppCompatActivity
             add("Condoleza Rice");
             add("Vladimir Putin");
         }}, "13", "Sports");
-        createQuestion("Pick one of the following shows to show to a class of children (first episode)", false, new ArrayList<String>() {{
+        createQuestion("Pick one of the following shows to show to a class of children (first episode)", true, new ArrayList<String>() {{
             add("Breaking Bad");
             add("Mad Men");
             add("House of Cards");
@@ -1049,17 +1049,17 @@ public class MainActivity extends AppCompatActivity
             add("Country");
             add("Pop");
         }}, "17", "Art");
-        createQuestion("Choose one to erase from existence. (Think of the consequences first)", false, new ArrayList<String>() {{
+        createQuestion("Choose one to erase from existence. (Think of the consequences first)", true, new ArrayList<String>() {{
             add("Queen");
             add("The Beatles");
             add("Biggie Smalls");
             add("Michael Jackson");
         }}, "18", "Art");
-        createQuestion("Have you ever cried from listening to a song/looking at art?", false, new ArrayList<String>() {{
+        createQuestion("Have you ever cried from listening to a song/looking at art?", true, new ArrayList<String>() {{
             add("Yes");
             add("No");
         }}, "19", "Art");
-        createQuestion("True of False: Columbus did what he had too", false, new ArrayList<String>() {{
+        createQuestion("True of False: Columbus did what he had too", true, new ArrayList<String>() {{
             add("True");
             add("False");
         }}, "1b", "History");
@@ -1077,7 +1077,7 @@ public class MainActivity extends AppCompatActivity
             add("Yes, to prehistoric times");
             add("Nah, I'm good");
         }}, "1d", "History");
-        createQuestion("Do you have any regrets", false, new ArrayList<String>() {{
+        createQuestion("Do you have any regrets", true, new ArrayList<String>() {{
             add("Not a single one! Our past is what makes us today");
             add("Maybe a couple");
             add("Yeah a bunch");
@@ -1098,7 +1098,7 @@ public class MainActivity extends AppCompatActivity
             add("4");
             add("5");
         }}, "20", "SciTech");
-        createQuestion("Can robots fall in love?", false, new ArrayList<String>() {{
+        createQuestion("Can robots fall in love?", true, new ArrayList<String>() {{
             add("Yes");
             add("No");
             add("Love isn't real");
