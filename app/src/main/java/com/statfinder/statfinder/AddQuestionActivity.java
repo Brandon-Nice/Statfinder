@@ -197,14 +197,15 @@ public class AddQuestionActivity extends AppCompatActivity {
                         return;
                     }
                     fourthAnswer.setVisibility(View.VISIBLE);
-                } else if (numAnswers == 4) {
+                    addAnswer.setVisibility(View.INVISIBLE);
+                } /*else if (numAnswers == 4) {
                     if (fourthAnswer.getText().length() == 0) {
                         Toast.makeText(getApplicationContext(), "Please enter a fourth answer before adding fifth", Toast.LENGTH_LONG).show();
                         return;
                     }
                     addAnswer.setVisibility(View.INVISIBLE);
                     fifthAnswer.setVisibility(View.VISIBLE);
-                }
+                }*/
                 numAnswers++;
             }
         });
@@ -219,10 +220,11 @@ public class AddQuestionActivity extends AppCompatActivity {
                     thirdAnswer.setVisibility(View.GONE);
                 } else if (numAnswers == 3) {
                     fourthAnswer.setVisibility(View.GONE);
-                } else if (numAnswers == 4) {
+                    addAnswer.setVisibility(View.VISIBLE);
+                } /*else if (numAnswers == 4) {
                     addAnswer.setVisibility(View.VISIBLE);
                     fifthAnswer.setVisibility(View.GONE);
-                }
+                }*/
 
 
             }
