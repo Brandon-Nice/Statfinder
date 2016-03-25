@@ -566,6 +566,9 @@ public class QuestionActivity extends FragmentActivity {
                                              {
                                                  cat.setText("Category: Science and Technology");
                                              }
+                                             else if(category.equals("Sports")) {
+                                                 cat.setText("Category: Games");
+                                             }
                                              else {
                                                  cat.setText("Category: " + category);
                                              }
