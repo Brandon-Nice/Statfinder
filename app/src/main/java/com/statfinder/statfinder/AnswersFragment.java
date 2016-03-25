@@ -89,7 +89,7 @@ public class AnswersFragment extends Fragment {
             {
                 if (((QuestionActivity) getActivity()).getAnswered())
                 {
-                    btn.setClickable(false);
+                    //btn.setClickable(false);
                     viewpager.setPagingEnabled(true);
                 }
             }
@@ -97,7 +97,7 @@ public class AnswersFragment extends Fragment {
             {
                 if (((QuestionActivityFromHistory) getActivity()).getAnswered())
                 {
-                    btn.setClickable(false);
+                    //btn.setClickable(false);
                     viewpager.setPagingEnabled(true);
                 }
             }
@@ -105,7 +105,7 @@ public class AnswersFragment extends Fragment {
             {
                 if (((QuestionActivityFromAddQuestion) getActivity()).getAnswered())
                 {
-                    btn.setClickable(false);
+                    //btn.setClickable(false);
                     viewpager.setPagingEnabled(true);
                 }
             }
@@ -113,7 +113,7 @@ public class AnswersFragment extends Fragment {
             {
                 if (((QuestionActivityFromSearch) getActivity()).getAnswered())
                 {
-                    btn.setClickable(false);
+                   // btn.setClickable(false);
                     viewpager.setPagingEnabled(true);
                 }
             }
@@ -165,7 +165,7 @@ public class AnswersFragment extends Fragment {
                                     //transaction complete
                                     viewpager.setCurrentItem(1);
                                     for (int i = 0; i < buttonList.length; i++) {
-                                        buttonList[i].setClickable(false);
+                                        //buttonList[i].setClickable(false);
                                     }
                                     //Commented this out, due to users being able to go back to question and answer again, over and over
                                     viewpager.setPagingEnabled(true);
@@ -211,7 +211,7 @@ public class AnswersFragment extends Fragment {
                                 //transaction complete
                                 viewpager.setCurrentItem(1);
                                 for (int i = 0; i < buttonList.length; i++) {
-                                    buttonList[i].setClickable(false);
+                                   // buttonList[i].setClickable(false);
                                 }
                                 //Commented this out, due to users being able to go back to question and answer again, over and over
                                 viewpager.setPagingEnabled(true);
