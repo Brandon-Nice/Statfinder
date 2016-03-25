@@ -302,9 +302,10 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_reset_questions)
         {
             createQuestions();
+            deleteAllUserHistories();
             DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
             mDrawerLayout.closeDrawers();
-            Toast.makeText(MainActivity.this, "You have successfully reset the questions in the database.",
+            Toast.makeText(MainActivity.this, "You have successfully reset the questions in the database and reset everyone's history.",
                     Toast.LENGTH_SHORT).show();
             onResume();
 
@@ -323,6 +324,29 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void deleteAllUserHistories() {
+        final Firebase users = new Firebase("https://statfinderproject.firebaseio.com/Users/");
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot user : dataSnapshot.getChildren()) {
+                    Firebase specificUser = users.child(user.getKey());
+                    Firebase skippedHistory = specificUser.child("SkippedQuestions");
+                    Firebase answeredHistory = specificUser.child("AnsweredQuestions");
+                    Firebase createdHistory = specificUser.child("CreatedQuestions");
+                    skippedHistory.removeValue();
+                    answeredHistory.removeValue();
+                    createdHistory.removeValue();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
     private void resetUserHistory() {
         final Firebase users = new Firebase("https://statfinderproject.firebaseio.com/Users/");
         users.addListenerForSingleValueEvent(new ValueEventListener() {
