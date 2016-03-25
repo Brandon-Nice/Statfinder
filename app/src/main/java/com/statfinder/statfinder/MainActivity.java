@@ -587,6 +587,7 @@ public class MainActivity extends AppCompatActivity
                                                                 int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
                                                                 HashMap.Entry chosenRandomQuestion = randomQuestions.get(randomCategoryIndex);
                                                                 HashMap<String, Object> chosenRandomValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
+                                                                System.out.println("Chosen random Value 1: " + chosenRandomValue);
                                                                 idRandom = (String) chosenRandomQuestion.getKey();
                                                                 nameRandom = (String) chosenRandomValue.get("Name");
                                                                 categoryRandom = randomCategory.get(randomCategoryIndex);
@@ -659,13 +660,13 @@ public class MainActivity extends AppCompatActivity
                                                                     namePopular = (String) bestQuestion.get("Name");
                                                                 }
 
-                                                                if (!outOfQuestions) {
+                                                                //if (!outOfQuestions) {
                                                                     HashMap<String, Object> allCategories = (HashMap<String, Object>) savedSnapshot.getValue();
                                                                     int numCategories = allCategories.size();
                                                                     ArrayList<HashMap.Entry> randomQuestions = new ArrayList<HashMap.Entry>(numCategories);
                                                                     ArrayList<String> randomCategory = new ArrayList<String>(numCategories);
                                                                     int index = 0;
-
+                                                                    //boolean randomCheck = false;
                                                                     /* Loop through each category available, add first question from each to HashMap */
                                                                     for(DataSnapshot child : savedSnapshot.getChildren()) {
                                                                         if(!userCategories.contains(child.getKey())) {
@@ -689,18 +690,21 @@ public class MainActivity extends AppCompatActivity
 
                                                                         }
                                                                     }
-                                                                    int numberOfCategories = randomQuestions.size();
-                                                                    int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
-                                                                    HashMap.Entry chosenRandomQuestion = randomQuestions.get(randomCategoryIndex);
-                                                                    HashMap<String, Object> chosenRandomValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
-                                                                    idRandom = (String) chosenRandomQuestion.getKey();
-                                                                    nameRandom = (String) chosenRandomValue.get("Name");
-                                                                    categoryRandom = randomCategory.get(randomCategoryIndex);
-                                                                    modStatusRandom = (boolean)chosenRandomValue.get("Moderated");
-                                                                } else {
+                                                                int numberOfCategories = randomQuestions.size();
+                                                                if(numberOfCategories == 0) {
                                                                     idRandom = "Out of questions!";
                                                                     nameRandom = "Out of questions!";
                                                                     categoryRandom = "Out of questions!";
+                                                                }
+                                                                else {
+                                                                    int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
+                                                                    HashMap.Entry chosenRandomQuestion = randomQuestions.get(randomCategoryIndex);
+                                                                    HashMap<String, Object> chosenRandomValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
+                                                                    System.out.println("Chosen random Value 2: " + chosenRandomValue);
+                                                                    idRandom = (String) chosenRandomQuestion.getKey();
+                                                                    nameRandom = (String) chosenRandomValue.get("Name");
+                                                                    categoryRandom = randomCategory.get(randomCategoryIndex);
+                                                                    modStatusRandom = (boolean) chosenRandomValue.get("Moderated");
                                                                 }
                                                             }
 
@@ -897,7 +901,7 @@ public class MainActivity extends AppCompatActivity
             add("Teleroboxer");
             add("Sega Bass Fishing");
         }}, "c", "Games");
-        createQuestion("Who is you favorite artist?", true, new ArrayList<String>() {{
+        createQuestion("Who is your favorite artist?", true, new ArrayList<String>() {{
             add("Vincent Van Gogh");
             add("Andy Warhol");
             add("The dude with the weird clocks");
@@ -907,7 +911,7 @@ public class MainActivity extends AppCompatActivity
         createQuestion("Which language is best?", true, new ArrayList<String>() {{
             add("Java");
             add("C");
-            add("C++");
+            add("Angular JS");
             add("Python");
             add("Assembly");
             add("Other");
