@@ -362,6 +362,17 @@ public class AddQuestionActivity extends AppCompatActivity {
                                 answerRef.setValue(0);
                                 answerRef.setPriority(i);
                             }
+                            //Bug 17: Question gets added to the general category in addition to the category they selected
+                            if(!category.equals("General")) {
+                                Firebase questionRef2 = ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/General/" + idNumber);
+                                questionRef2.setValue(questionInfo);
+                                questionRef2.setPriority(0);
+                                for (int i = 0; i < answers.size() - 1; i++) {
+                                    Firebase answerRef2 = questionRef2.child("/Answers/" + answers.get(i));
+                                    answerRef2.setValue(0);
+                                    answerRef2.setPriority(i);
+                                }
+                            }
                         }
 
                         Firebase userRef = ref.child("Users/" + ((MyApplication) getApplication()).getUser().getId() + "/CreatedQuestions/" + idNumber);
