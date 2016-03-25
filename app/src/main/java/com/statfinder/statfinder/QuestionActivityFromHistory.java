@@ -96,10 +96,19 @@ public class QuestionActivityFromHistory extends FragmentActivity {
                     }
                 }
                 else {
-                    Intent init = new Intent(QuestionActivityFromHistory.this, QuestionActivityFromHistory.class);
-                    init.putExtra("List", questionList);
-                    init.putExtra("CurrentQuestion", position + 1);
-                    init.putExtra("CameFrom", cameFrom);
+                    Intent init = null;
+                    if(cameFrom.equals("SkippedHistory")) {
+                        //init = new Intent(QuestionActivityFromHistory.this, QuestionActivityFromHistory.class);
+                        //init = new Intent(QuestionActivityFromHistory.this, HistoryActivity.class);
+                        finish();
+                        return;
+                    }
+                    else {
+                        init = new Intent(QuestionActivityFromHistory.this, QuestionActivityFromHistory.class);
+                        init.putExtra("List", questionList);
+                        init.putExtra("CurrentQuestion", position + 1);
+                        init.putExtra("CameFrom", cameFrom);
+                    }
                     startActivity(init);
                 }
                 finish();
