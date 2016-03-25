@@ -71,11 +71,11 @@ public class AddQuestionActivity extends AppCompatActivity {
             }
         };
 
-        InputFilter answerLength = new InputFilter.LengthFilter(50);
-        InputFilter questionLength = new InputFilter.LengthFilter(80);
+        //InputFilter answerLength = new InputFilter.LengthFilter(50);
+        //InputFilter questionLength = new InputFilter.LengthFilter(80);
 
-        InputFilter[] answerFilters = new InputFilter[]{characterFilter, answerLength};
-        InputFilter[] questionFilters = new InputFilter[]{characterFilter, questionLength};
+        InputFilter[] answerFilters = new InputFilter[]{characterFilter};
+        InputFilter[] questionFilters = new InputFilter[]{characterFilter};
 
 
         final EditText question = (EditText) findViewById(R.id.questionText);
