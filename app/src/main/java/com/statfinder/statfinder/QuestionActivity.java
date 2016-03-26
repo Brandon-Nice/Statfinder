@@ -115,56 +115,90 @@ public class QuestionActivity extends FragmentActivity {
                 finish();
             }
         });
-        flag = (Button) findViewById(R.id.flagButton);
+        flag = (Button) findViewById(R.id.flagButton); //Bug 20: flag acts as skip
         flag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String category = globalCategory;
-                String questionID = id;
-                final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry() + "/"
-                        + currentUser.getState() + "/" + currentUser.getCity() + "/" + category + "/" + questionID);
-                final Firebase flagRef = ref.child("/Flags");
-                final Firebase totalRef = ref.child("/Total_Votes");
-                flagRef.runTransaction(new Transaction.Handler() {
-                    @Override
-                    public Transaction.Result doTransaction(MutableData currentData) {
-                        if (currentData.getValue() == null) {
-                            currentData.setValue(1);
-                        } else {
-                            currentData.setValue((Long) currentData.getValue() + 1);
-                        }
-                        return Transaction.success(currentData);
-                    }
+                Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + ((MyApplication) getApplication()).getUser().getId() + "/SkippedQuestions/" + id);
+                HashMap historyMap = new HashMap();
+                Long tsLong = System.currentTimeMillis() / 1000;
+                historyMap.put("TimeCreated", tsLong);
+                historyMap.put("City", currentUser.getCity());
+                historyMap.put("State", currentUser.getState());
+                historyMap.put("Country", currentUser.getCountry());
+                historyMap.put("Category", globalCategory);
+                historyMap.put("Name", globalName.replace(' ', '_'));
+                userRef.setValue(historyMap);
+                userRef.setPriority(0 - tsLong);
 
-                    @Override
-                    public void onComplete(FirebaseError firebaseError, boolean b, final DataSnapshot flagSnapshot) {
-                        totalRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot votesSnapshot) {
-                                long totalFlags = (Long) flagSnapshot.getValue();
-                                long totalVotes = (Long) votesSnapshot.getValue();
-                                long totalInteractions = totalFlags + totalVotes;
-                                if (totalInteractions > 10 && totalInteractions < 20) {
-                                    if (totalFlags > totalVotes) {
-                                        ref.removeValue();
-                                    }
-                                } else {
-                                    long percentRage = totalFlags / totalInteractions;
-                                    if (percentRage > 0.25) {
-                                        ref.removeValue();
-                                    }
-                                }
-                                skip.performClick();
-                            }
+                Intent newInit;
+                if(getIntent().getStringExtra("category").equals("Popular") || getIntent().getStringExtra("category").equals("Random")) {
+                    newInit = new Intent(QuestionActivity.this, QuestionActivity.class);
+                    newInit.putExtra("category", getIntent().getStringExtra("category"));
+                    newInit.putExtra("questionID", "null");
+                    newInit.putExtra("Name", "null");
+                    newInit.putExtra("categoryOrigin", "");
+                    newInit.putExtra("modStatus", false);
+                }
+                else {
+                    newInit = new Intent(QuestionActivity.this, QuestionActivity.class);
+                    newInit.putExtra("category", getIntent().getStringExtra("category"));
+                    newInit.putExtra("questionID", getIntent().getStringExtra("questionID"));
+                    newInit.putExtra("Name", getIntent().getStringExtra("Name"));
+                    newInit.putExtra("categoryOrigin", getIntent().getStringExtra("categoryOrigin"));
+                    newInit.putExtra("modStatus", false);
 
-                            @Override
-                            public void onCancelled(FirebaseError firebaseError) {
+                }
 
-                            }
-                        });
+                startActivity(newInit);
+                finish();
 
-                    }
-                });
+//                String category = globalCategory;
+//                String questionID = id;
+//                final Firebase ref = new Firebase("https://statfinderproject.firebaseio.com/Questions/" + currentUser.getCountry() + "/"
+//                        + currentUser.getState() + "/" + currentUser.getCity() + "/" + category + "/" + questionID);
+//                final Firebase flagRef = ref.child("/Flags");
+//                final Firebase totalRef = ref.child("/Total_Votes");
+//                flagRef.runTransaction(new Transaction.Handler() {
+//                    @Override
+//                    public Transaction.Result doTransaction(MutableData currentData) {
+//                        if (currentData.getValue() == null) {
+//                            currentData.setValue(1);
+//                        } else {
+//                            currentData.setValue((Long) currentData.getValue() + 1);
+//                        }
+//                        return Transaction.success(currentData);
+//                    }
+//
+//                    @Override
+//                    public void onComplete(FirebaseError firebaseError, boolean b, final DataSnapshot flagSnapshot) {
+//                        totalRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot votesSnapshot) {
+//                                long totalFlags = (Long) flagSnapshot.getValue();
+//                                long totalVotes = (Long) votesSnapshot.getValue();
+//                                long totalInteractions = totalFlags + totalVotes;
+//                                if (totalInteractions > 10 && totalInteractions < 20) {
+//                                    if (totalFlags > totalVotes) {
+//                                        ref.removeValue();
+//                                    }
+//                                } else {
+//                                    long percentRage = totalFlags / totalInteractions;
+//                                    if (percentRage > 0.25) {
+//                                        ref.removeValue();
+//                                    }
+//                                }
+//                                skip.performClick();
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(FirebaseError firebaseError) {
+//
+//                            }
+//                        });
+//
+//                    }
+//                });
             }
         });
 
