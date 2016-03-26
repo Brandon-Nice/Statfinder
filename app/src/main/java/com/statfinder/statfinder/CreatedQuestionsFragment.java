@@ -83,12 +83,12 @@ public class CreatedQuestionsFragment extends Fragment{
 
                 if (createdQuestions.size() == 0)
                 {
-                    title.setVisibility(View.VISIBLE);
+                    //title.setVisibility(View.VISIBLE);
                     createdAdapter.notifyDataSetChanged();
                 }
                 else
                 {
-                    title.setVisibility(View.GONE);
+                    //title.setVisibility(View.GONE);
                     createdAdapter.notifyDataSetChanged();
                 }
 
