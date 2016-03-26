@@ -602,9 +602,10 @@ public class QuestionActivity extends FragmentActivity {
                                                  countryFragment.setArguments(bundle);
                                                  fragments.add(countryFragment);
 
-                                                 GlobalResultsFragment globalFragment = new GlobalResultsFragment();
-                                                 globalFragment.setArguments(bundle);
-                                                 fragments.add(globalFragment);
+                                                    //Bug 19: Does not display global results for users
+//                                                 GlobalResultsFragment globalFragment = new GlobalResultsFragment();
+//                                                 globalFragment.setArguments(bundle);
+//                                                 fragments.add(globalFragment);
                                              }
 
                                              mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragments);
