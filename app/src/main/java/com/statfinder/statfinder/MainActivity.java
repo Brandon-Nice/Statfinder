@@ -718,8 +718,8 @@ public class MainActivity extends AppCompatActivity
                                                             Button popularQuestionButton = (Button) findViewById(R.id.popularButton);
                                                             Button randomQuestionButton = (Button) findViewById(R.id.randomButton);
 
-                                                            String popularPreview = namePopular.replaceAll("_", " ");
-                                                            String randomPreview = nameRandom.replaceAll("_", " ");
+                                                            String popularPreview = namePopular;
+                                                            String randomPreview = nameRandom;
                                                             popularQuestionButton.setText("Popular Question:\n" + popularPreview);
                                                             randomQuestionButton.setText("Random Question:\n" + randomPreview);
                                                             popularQuestionButton.setVisibility(View.VISIBLE);
@@ -1136,7 +1136,7 @@ public class MainActivity extends AppCompatActivity
 
         HashMap questionMap = new HashMap();
         questionMap.put("Flags", 0);
-        questionMap.put("Name", question.trim().replaceAll(" ", "_"));
+        questionMap.put("Name", question.trim());
         questionMap.put("Moderated", moderated);
         questionMap.put("Category", category);
         questionMap.put("Total_Votes", 0);
