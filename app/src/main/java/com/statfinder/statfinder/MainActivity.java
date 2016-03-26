@@ -122,7 +122,11 @@ public class MainActivity extends AppCompatActivity
         makeQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AddQuestionActivity.class));
+                Intent init = new Intent(MainActivity.this, AddQuestionActivity.class);
+                init.putExtra("check", "From_Make_Question");
+                startActivity(init);
+//                startActivity(new Intent(MainActivity.this, AddQuestionActivity.class));
+//                init.putExtra("check", "From_Make_Question");
             }
         });
 
@@ -215,6 +219,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_add) {
             Intent init = new Intent(MainActivity.this, AddQuestionActivity.class);
+            init.putExtra("check", "From_Nav_Bar");
             startActivity(init);
         }
         else if (id == R.id.nav_questionhist)
