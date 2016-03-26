@@ -426,9 +426,9 @@ public class AddQuestionActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            final ViewGroup viewGroup = (ViewGroup) this.findViewById(R.id.page);
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(viewGroup.getWindowToken(), 0);
+            //final ViewGroup viewGroup = (ViewGroup) this.findViewById(R.id.page);
+            //InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            //imm.hideSoftInputFromWindow(viewGroup.getWindowToken(), 0);
         }
         return super.onOptionsItemSelected(item);
     }
