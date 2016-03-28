@@ -145,9 +145,9 @@ public class QuestionActivity extends FragmentActivity {
                         totalRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot votesSnapshot) {
-                                float totalFlags = (float) flagSnapshot.getValue();
-                                float totalVotes = (float) votesSnapshot.getValue();
-                                float totalInteractions = totalFlags + totalVotes;
+                                double totalFlags =  ((Long) flagSnapshot.getValue()).doubleValue();
+                                double totalVotes =  ((Long) votesSnapshot.getValue()).doubleValue();
+                                double totalInteractions = totalFlags + totalVotes;
                                 if (totalInteractions > 10 && totalInteractions < 20) {
                                     if (totalFlags > totalVotes) {
                                         ref.removeValue();
@@ -155,7 +155,8 @@ public class QuestionActivity extends FragmentActivity {
                                         userRef.removeValue();
                                     }
                                 } else if (totalInteractions > 20) {
-                                    float percentRage =  totalFlags /  totalInteractions;
+                                    System.out.println("Percent rage");
+                                    double percentRage =  totalFlags /  totalInteractions;
                                     if (percentRage > 0.25) {
                                         ref.removeValue();
                                         Firebase userRef = new Firebase("https://statfinderproject.firebaseio.com/Users/" + creator + "/CreatedQuestions/" + id);
