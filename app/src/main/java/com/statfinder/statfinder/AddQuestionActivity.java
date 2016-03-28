@@ -232,9 +232,14 @@ public class AddQuestionActivity extends AppCompatActivity {
 
         submitButton.setOnClickListener(new View.OnClickListener() {
 
+
             @Override
             public void onClick(View v) {
                 submitButton.setClickable(false);
+                if(getIntent().getExtras().getString("check").equals("From_Make_Question")) {
+                    finish();
+                    return;
+                }
 
                 if (question.getText().toString().equals("Reset Database"))
                 {
@@ -354,7 +359,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            if(getIntent().getExtras().getString("check").equals("From_Make_Question")) {
+
                                 Firebase questionRef = ref.child("Questions/" + finalCountry + "/" + finalState + "/" + finalCity + "/" + category + "/" + idNumber);
                                 questionRef.setValue(questionInfo);
                                 questionRef.setPriority(0);
@@ -374,7 +379,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                                         answerRef2.setPriority(i);
                                     }
                                 }
-                            }
+
                         }
 
                         Firebase userRef = ref.child("Users/" + ((MyApplication) getApplication()).getUser().getId() + "/CreatedQuestions/" + idNumber);
