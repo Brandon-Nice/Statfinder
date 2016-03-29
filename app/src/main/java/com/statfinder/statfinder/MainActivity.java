@@ -1143,7 +1143,7 @@ public class MainActivity extends AppCompatActivity
         ref.child(idNumber).setValue(questionMap);
         ref.child(idNumber).setPriority(0);
         for(int i = 0; i < answers.size(); i++) {
-            Firebase answerRef =  new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" + category + "/" + idNumber + "/Answers/" + answers.get(i).trim().replaceAll(" ", "_"));
+            Firebase answerRef =  new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/" + category + "/" + idNumber + "/Answers/" + answers.get(i));//.trim().replaceAll(" ", "_"));
             answerRef.setValue(0);
             answerRef.setPriority(i);
         }
