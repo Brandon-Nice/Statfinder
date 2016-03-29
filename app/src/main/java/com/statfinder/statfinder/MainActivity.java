@@ -1136,7 +1136,7 @@ public class MainActivity extends AppCompatActivity
 
         HashMap questionMap = new HashMap();
         questionMap.put("Flags", 0);
-        questionMap.put("Name", question.trim());
+        questionMap.put("Name", question.trim().replace(' ', '_'));
         questionMap.put("Moderated", moderated);
         questionMap.put("Category", category);
         questionMap.put("Total_Votes", 0);
