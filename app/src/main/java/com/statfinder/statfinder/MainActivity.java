@@ -594,7 +594,7 @@ public class MainActivity extends AppCompatActivity
                                                                 int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
                                                                 HashMap.Entry chosenRandomQuestion = randomQuestions.get(randomCategoryIndex);
                                                                 HashMap<String, Object> chosenRandomValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
-                                                                System.out.println("Chosen random Value 1: " + chosenRandomValue);
+                                                                //System.out.println("Chosen random Value 1: " + chosenRandomValue);
                                                                 idRandom = (String) chosenRandomQuestion.getKey();
                                                                 nameRandom = (String) chosenRandomValue.get("Name");
                                                                 categoryRandom = randomCategory.get(randomCategoryIndex);
@@ -707,7 +707,7 @@ public class MainActivity extends AppCompatActivity
                                                                     int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
                                                                     HashMap.Entry chosenRandomQuestion = randomQuestions.get(randomCategoryIndex);
                                                                     HashMap<String, Object> chosenRandomValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
-                                                                    System.out.println("Chosen random Value 2: " + chosenRandomValue);
+                                                                    //System.out.println("Chosen random Value 2: " + chosenRandomValue);
                                                                     idRandom = (String) chosenRandomQuestion.getKey();
                                                                     nameRandom = (String) chosenRandomValue.get("Name");
                                                                     categoryRandom = randomCategory.get(randomCategoryIndex);

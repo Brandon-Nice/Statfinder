@@ -64,7 +64,7 @@ public class AnswersFragment extends Fragment {
 
         final Button[] buttonList = new Button[answersListSize];
 
-        System.out.println("CameFrom: " + cameFrom);
+        //System.out.println("CameFrom: " + cameFrom);
 
         if (cameFrom.equals("AnsweredHistory") )
         {
@@ -79,7 +79,7 @@ public class AnswersFragment extends Fragment {
         }
 
         for (int i = 0; i < answersListSize; i++) {
-            System.out.println(answersList.get(i));
+            //System.out.println(answersList.get(i));
             Button btn = new Button(getActivity());
             btn.setText(answersList.get(i).replace('_', ' ')); //set each button with the corresponding text
             btn.setId(i);

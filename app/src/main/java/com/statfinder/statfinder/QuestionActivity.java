@@ -305,8 +305,8 @@ public class QuestionActivity extends FragmentActivity {
                                                      /* Generates random index to pull question from */
                                                      int numberOfCategories = randomQuestions.size();
                                                      int randomCategoryIndex = (int) (Math.random() * numberOfCategories);
-                                                     System.out.println("Random category index: " + randomCategoryIndex);
-                                                     System.out.println("Random questions: " + randomQuestions);
+                                                     //System.out.println("Random category index: " + randomCategoryIndex);
+                                                     //System.out.println("Random questions: " + randomQuestions);
                                                      HashMap.Entry chosenRandomQuestion = randomQuestions.get(randomCategoryIndex);
                                                      HashMap<String, Object> chosenRandomValue = (HashMap<String, Object>) chosenRandomQuestion.getValue();
                                                      id = (String) chosenRandomQuestion.getKey();
@@ -519,16 +519,16 @@ public class QuestionActivity extends FragmentActivity {
                                                      questionName = init.getStringExtra("Name").toString().replace('_', ' ');
 
                                                      int answerIndex = 0;
-                                                     System.out.println("CURRENT SPOT 1");
+                                                     //System.out.println("CURRENT SPOT 1");
                                                      for(DataSnapshot child : dataSnapshot.getChildren()) {
-                                                         System.out.println("child: " + child);
+                                                         //System.out.println("child: " + child);
                                                          if(child.getKey().equals(id)) {
                                                              for (DataSnapshot currentQuestion : child.getChildren()) {
-                                                                 System.out.println("currentQuestions: " + currentQuestion);
+                                                                 //System.out.println("currentQuestions: " + currentQuestion);
                                                                  for(DataSnapshot currentAnswers : currentQuestion.getChildren()) {
-                                                                     System.out.println("currentAnswer: " + currentAnswers);
-                                                                     System.out.println("current answer: " + currentAnswers.getKey());
-                                                                     System.out.println("current value: " + currentAnswers.getValue());
+                                                                     //System.out.println("currentAnswer: " + currentAnswers);
+                                                                     //System.out.println("current answer: " + currentAnswers.getKey());
+                                                                     //System.out.println("current value: " + currentAnswers.getValue());
                                                                      answersList.add(answerIndex, currentAnswers.getKey().toString());
                                                                      answerIndex++;
                                                                  }

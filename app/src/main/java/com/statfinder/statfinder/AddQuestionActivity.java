@@ -302,7 +302,7 @@ public class AddQuestionActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
-                        System.out.println(dataSnapshot);
+                        //System.out.println(dataSnapshot);
                         final String idNumber = decrementHex((String) dataSnapshot.getValue());
 
                         if (moderated)
@@ -333,7 +333,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                                                 for (Map.Entry<String, Object> entry3 : states.entrySet())
                                                 {
                                                     String city = entry3.getKey();
-                                                    System.out.println(city);
+                                                    //System.out.println(city);
                                                     Firebase cities = ref.child("Questions/" + country + "/" + state + "/" + city + "/" + category + "/" + idNumber);
                                                     cities.setValue(questionInfo);
                                                     cities.setPriority(0);

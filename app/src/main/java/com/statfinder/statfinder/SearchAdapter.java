@@ -61,7 +61,7 @@ public class SearchAdapter extends BaseAdapter implements ListAdapter {
 
         HashMap<String, Object> questionInfo = (HashMap) list.get(position).entrySet().iterator().next().getValue();
         String listText = ((String) questionInfo.get("Name")).replace('_', ' ');
-        System.out.println(questionInfo);
+        //System.out.println(questionInfo);
 
         listItemText.setText(listText);
 

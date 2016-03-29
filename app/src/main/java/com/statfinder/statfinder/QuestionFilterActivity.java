@@ -57,7 +57,7 @@ public class QuestionFilterActivity extends AppCompatActivity {
         Intent init = getIntent();
         final String cameFrom;
         cameFrom = init.getStringExtra("category");
-        System.out.println("this is the category: " + category); //testing
+        //System.out.println("this is the category: " + category); //testing
 
         Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
         questionRef.orderByPriority().addListenerForSingleValueEvent(new ValueEventListener() {
@@ -120,7 +120,7 @@ public class QuestionFilterActivity extends AppCompatActivity {
                                             //Actual question with variables attached to it
                                             HashMap<String, Object> questionEntry = (HashMap) finalBuffer.getValue(); //stores each node in database
                                             String questionID = (String) finalBuffer.getKey();
-                                            System.out.println("QuestionID" + questionID);
+                                            //System.out.println("QuestionID" + questionID);
                                             //System.out.println("questionEntry: " + questionEntry);
                                             //Get the category first
                                             String category = questionEntry.get("Category").toString();
@@ -133,15 +133,15 @@ public class QuestionFilterActivity extends AppCompatActivity {
                                             Iterator it = questionEntry.entrySet().iterator();
                                             while(it.hasNext()) {
                                                 votes = Integer.parseInt(questionEntry.get("Total_Votes").toString());
-                                                System.out.print("Total votes for this question: " + votes);
+                                                //System.out.print("Total votes for this question: " + votes);
 
                                                 if (votes > tempmax) {
                                                     tempmax = votes;
-                                                    System.out.println("Highest number of votes : " + tempmax);
+                                                    //System.out.println("Highest number of votes : " + tempmax);
 
                                                     //Get the Question ID
                                                     questionID = (String) finalBuffer.getKey();
-                                                    System.out.println("Iterating.... Question # " + questionID);
+                                                    //System.out.println("Iterating.... Question # " + questionID);
 
 
                                                     //Get the Question name
@@ -152,11 +152,11 @@ public class QuestionFilterActivity extends AppCompatActivity {
 
                                                     //gets the list of answers for each question
                                                     HashMap<String, Object> answersList = (HashMap) questionEntry.get("Answers");
-                                                    System.out.println("Current question's answer list: " + answersList);
+                                                    //System.out.println("Current question's answer list: " + answersList);
 
                                                     //gets the question name
                                                     Object question = questionEntry.get("Name");
-                                                    System.out.println("Current question: " + question);
+                                                    //System.out.println("Current question: " + question);
 
                                                     //make the answers an array for easy access
                                                     Object[] objectAnswers = answersList.keySet().toArray();
@@ -196,7 +196,7 @@ public class QuestionFilterActivity extends AppCompatActivity {
                                             //    System.out.println("Error");
                                             // }
                                             id = questionID;
-                                            System.out.println("#### QuestionID #### " + questionID);
+                                            //System.out.println("#### QuestionID #### " + questionID);
 
                                         } else {
                                             //Question has already been seen, go to next question via recursion

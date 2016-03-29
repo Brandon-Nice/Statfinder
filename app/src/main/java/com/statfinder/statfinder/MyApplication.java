@@ -62,7 +62,7 @@ public class MyApplication extends Application {
         //Intent init = getIntent();
         final String cameFrom = category;
         //cameFrom = init.getStringExtra("category");
-        System.out.println("this is the category: " + category); //testing
+        //System.out.println("this is the category: " + category); //testing
 
         Firebase questionRef = new Firebase("https://statfinderproject.firebaseio.com/Questions/ModeratorQuestions/General");
         questionRef.orderByPriority().addListenerForSingleValueEvent(new ValueEventListener() {
@@ -125,31 +125,31 @@ public class MyApplication extends Application {
                                             //Actual question with variables attached to it
                                             HashMap<String, Object> questionEntry = (HashMap) finalBuffer.getValue(); //stores each node in database
                                             String questionID = (String) finalBuffer.getKey();
-                                            System.out.println("QuestionID" + questionID);
+                                            //System.out.println("QuestionID" + questionID);
                                             //System.out.println("questionEntry: " + questionEntry);
                                             //Get the category first
                                             String category = questionEntry.get("Category").toString();
 
                                             //Get the User votes
                                             int votes = Integer.parseInt(questionEntry.get("Total_Votes").toString());
-                                            System.out.print("Num of votes: " + votes);
+                                            //System.out.print("Num of votes: " + votes);
                                             //check for the most popular question
                                             if (votes > tempmax) {
                                                 tempmax = votes;
-                                                System.out.println("Highest number of votes : " + tempmax);
+                                                //System.out.println("Highest number of votes : " + tempmax);
                                                 //Get the Question name
                                                 String questionName = questionEntry.get("Name").toString().replace('_', ' ');
-                                                System.out.println("Question: " + questionName);
+                                                //System.out.println("Question: " + questionName);
                                                 //TextView tv = (TextView) findViewById(R.id.qText);
                                                 //tv.setText(questionName);
 
                                                 //gets the list of answers for each question
                                                 HashMap<String, Object> answersList = (HashMap) questionEntry.get("Answers");
-                                                System.out.println("Current question's answer list: " + answersList);
+                                                //System.out.println("Current question's answer list: " + answersList);
 
                                                 //gets the question name
                                                 Object question = questionEntry.get("Name");
-                                                System.out.println("Current question: " + question);
+                                                //System.out.println("Current question: " + question);
 
                                                 //make the answers an array for easy access
                                                 Object[] objectAnswers = answersList.keySet().toArray();
@@ -189,7 +189,7 @@ public class MyApplication extends Application {
                                             //    System.out.println("Error");
                                             // }
                                             id = questionID;
-                                            System.out.println("#### QuestionID #### " + questionID);
+                                            //System.out.println("#### QuestionID #### " + questionID);
 
                                         } else {
                                             //Question has already been seen, go to next question via recursion

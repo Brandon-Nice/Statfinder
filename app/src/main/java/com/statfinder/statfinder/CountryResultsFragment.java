@@ -102,10 +102,10 @@ public class CountryResultsFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         HashMap<String, Object> countryMap = (HashMap) dataSnapshot.getValue();
-                        System.out.println("CountryMap in Country: " + countryMap);
+                        //System.out.println("CountryMap in Country: " + countryMap);
                         for (Map.Entry<String, Object> entry : countryMap.entrySet()) {
                             HashMap<String, Object> statesMap = (HashMap) entry.getValue();
-                            System.out.println("StatesMap in Country:" + statesMap);
+                            //System.out.println("StatesMap in Country:" + statesMap);
                             for (Map.Entry<String, Object> entry2 : statesMap.entrySet()) {
                                 HashMap<String, Object> value = (HashMap) entry2.getValue();
                                 HashMap<String, Object> questionId = (HashMap) value.get(category);
