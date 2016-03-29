@@ -42,7 +42,7 @@ public class QuestionActivityFromAddQuestion extends FragmentActivity {
         boolean modStatus = (boolean) questionInfo.get("Moderated");
 
         final TextView questionNameLabel = (TextView) findViewById(R.id.qText);
-        questionNameLabel.setText(((String) questionInfo.get("Name")).replace('_', ' '));
+        questionNameLabel.setText(((String) questionInfo.get("Name")));
 
         TextView categoryLabel = (TextView) findViewById(R.id.categoryLabel);
         if (category.equals("SciTech"))

@@ -41,12 +41,12 @@ public class QuestionActivityFromSearch extends FragmentActivity {
         final ArrayList<HashMap<String, Object>> searchQuestions = (ArrayList) init.getSerializableExtra("List");
         final int position = init.getIntExtra("CurrentQuestion", 0);
         final User currentUser = ((MyApplication) getApplication()).getUser();
-        final String name = ((String) ((HashMap) searchQuestions.get(position).entrySet().iterator().next().getValue()).get("Name")).replace('_', ' ');
+        final String name = ((String) ((HashMap) searchQuestions.get(position).entrySet().iterator().next().getValue()).get("Name"));
         final String category = (String) ((HashMap) searchQuestions.get(position).entrySet().iterator().next().getValue()).get("Category");
         final String questionID = searchQuestions.get(position).entrySet().iterator().next().getKey();
 
         final TextView questionNameLabel = (TextView) findViewById(R.id.qText);
-        questionNameLabel.setText(name);
+        questionNameLabel.setText(name.replace(' ', '_'));
 
         flag = (Button) findViewById(R.id.flagButton);
 

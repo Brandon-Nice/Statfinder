@@ -49,7 +49,7 @@ public class QuestionActivityFromHistory extends FragmentActivity {
         final String cameFrom = init.getStringExtra("CameFrom");
 
         final TextView questionNameLabel = (TextView) findViewById(R.id.qText);
-        questionNameLabel.setText(((String) questionInfo.get("Name")).replace('_', ' '));
+        questionNameLabel.setText(((String) questionInfo.get("Name")));
 
         TextView categoryLabel = (TextView) findViewById(R.id.categoryLabel);
         if (category.equals("SciTech"))

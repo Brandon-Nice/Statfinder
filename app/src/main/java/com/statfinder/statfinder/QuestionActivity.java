@@ -592,7 +592,7 @@ public class QuestionActivity extends FragmentActivity {
                                              if (modStatus) {
                                                  tv.setTextColor(getResources().getColor(R.color.lightBlue));
                                              }
-                                             tv.setText(questionName);
+                                             tv.setText(questionName.replace(' ', '_'));
 
                                             /* Set category at top left */
                                              TextView cat = (TextView) findViewById(R.id.categoryLabel);
